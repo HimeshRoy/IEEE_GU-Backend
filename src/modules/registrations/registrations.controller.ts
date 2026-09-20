@@ -2,23 +2,85 @@ import type { Request, Response } from "express";
 import {
   publicRegistrationSchema,
   registrationListQuerySchema,
+  scanRegistrationQrSchema,
   updateRegistrationStatusSchema,
 } from "./registrations.dto.js";
 import {
   getEventRegistrations,
+  getMyRegistrations,
   promoteNextWaitlisted,
   registerForEvent,
-  getMyRegistrations,
+  scanRegistrationQr,
   updateRegistrationStatus,
 } from "./registrations.service.js";
 import { syncEventRegistrationsToExcel } from "./registrations.excel.js";
 
-function getParam(value: string | string[] | undefined): string | null {
-  if (typeof value === "string" && value.length > 0) {
-    return value;
+function getAuthenticatedUserId(req: Request) {
+  const userId = req.user?.id;
+
+  if (!userId) {
+    throw new Error("Authentication required");
   }
 
-  return null;
+  return userId;
+}
+
+function getRouteParam(req: Request, name: string) {
+  const value = req.params[name];
+
+  if (typeof value !== "string" || value.length === 0) {
+    throw new Error(`Invalid ${name}`);
+  }
+
+  return value;
+}
+
+function getErrorStatus(message: string) {
+  if (
+    message === "Authentication required" ||
+    message === "You must be logged in to register for this event"
+  ) {
+    return 401;
+  }
+
+  if (
+    message === "Event not found" ||
+    message === "Registration not found" ||
+    message === "Registration form is not available"
+  ) {
+    return 404;
+  }
+
+  if (
+    message.includes("not authorized") ||
+    message.includes("active IEEE GU membership") ||
+    message.includes("User account not found")
+  ) {
+    return 403;
+  }
+
+  if (
+    message.includes("already registered") ||
+    message.includes("already reached") ||
+    message.includes("capacity") ||
+    message.includes("closed") ||
+    message.includes("waitlist") ||
+    message.includes("Waitlist") ||
+    message.includes("Invalid registration status") ||
+    message.includes("cannot") ||
+    message.includes("required") ||
+    message.includes("not allowed") ||
+    message.includes("does not belong") ||
+    message.includes("already been recorded") ||
+    message.includes("Attendance must be recorded") ||
+    message.includes("not eligible") ||
+    message.includes("QR attendance") ||
+    message.includes("Invalid QR")
+  ) {
+    return 409;
+  }
+
+  return 400;
 }
 
 function getDownloadFileName(eventTitle: string) {
@@ -30,20 +92,20 @@ function getDownloadFileName(eventTitle: string) {
   return `${safeTitle || "Event"}-Registrations.xlsx`;
 }
 
-export async function registerForEventController(req: Request, res: Response) {
+export async function registerForEventController(
+  req: Request,
+  res: Response,
+) {
   try {
-    const eventId = getParam(req.params.eventId);
-
-    if (!eventId) {
-      return res.status(400).json({
-        success: false,
-        message: "Event ID is required",
-      });
-    }
+    const eventId = getRouteParam(req, "eventId");
 
     const input = publicRegistrationSchema.parse(req.body);
 
-    const registration = await registerForEvent(eventId, input, req.user?.id);
+    const registration = await registerForEvent(
+      eventId,
+      input,
+      req.user?.id,
+    );
 
     try {
       await syncEventRegistrationsToExcel(eventId);
@@ -64,11 +126,11 @@ export async function registerForEventController(req: Request, res: Response) {
     });
   } catch (error) {
     const message =
-      error instanceof Error ? error.message : "Failed to register for event";
+      error instanceof Error
+        ? error.message
+        : "Failed to register for event";
 
-    const status = message === "Event not found" ? 404 : 400;
-
-    return res.status(status).json({
+    return res.status(getErrorStatus(message)).json({
       success: false,
       message,
     });
@@ -80,18 +142,15 @@ export async function getEventRegistrationsController(
   res: Response,
 ) {
   try {
-    const eventId = getParam(req.params.eventId);
+    const eventId = getRouteParam(req, "eventId");
 
-    if (!eventId) {
-      return res.status(400).json({
-        success: false,
-        message: "Event ID is required",
-      });
-    }
+    const filters =
+      registrationListQuerySchema.parse(req.query);
 
-    const filters = registrationListQuerySchema.parse(req.query);
-
-    const result = await getEventRegistrations(eventId, filters);
+    const result = await getEventRegistrations(
+      eventId,
+      filters,
+    );
 
     return res.status(200).json({
       success: true,
@@ -99,11 +158,11 @@ export async function getEventRegistrationsController(
     });
   } catch (error) {
     const message =
-      error instanceof Error ? error.message : "Failed to fetch registrations";
+      error instanceof Error
+        ? error.message
+        : "Failed to fetch registrations";
 
-    const status = message === "Event not found" ? 404 : 400;
-
-    return res.status(status).json({
+    return res.status(getErrorStatus(message)).json({
       success: false,
       message,
     });
@@ -115,32 +174,27 @@ export async function updateRegistrationStatusController(
   res: Response,
 ) {
   try {
-    const registrationId = getParam(req.params.registrationId);
+    const actorId = getAuthenticatedUserId(req);
 
-    if (!registrationId) {
-      return res.status(400).json({
-        success: false,
-        message: "Registration ID is required",
-      });
-    }
-
-    if (!req.user) {
-      return res.status(401).json({
-        success: false,
-        message: "Authentication required",
-      });
-    }
-
-    const input = updateRegistrationStatusSchema.parse(req.body);
-
-    const registration = await updateRegistrationStatus(
-      registrationId,
-      input.status,
-      req.user.id,
+    const registrationId = getRouteParam(
+      req,
+      "registrationId",
     );
 
+    const input =
+      updateRegistrationStatusSchema.parse(req.body);
+
+    const registration =
+      await updateRegistrationStatus(
+        registrationId,
+        input.status,
+        actorId,
+      );
+
     try {
-      await syncEventRegistrationsToExcel(registration.eventId);
+      await syncEventRegistrationsToExcel(
+        registration.eventId,
+      );
     } catch (excelError) {
       console.error(
         "Excel synchronization failed after registration status update:",
@@ -150,16 +204,17 @@ export async function updateRegistrationStatusController(
 
     return res.status(200).json({
       success: true,
-      message: "Registration status updated successfully",
+      message:
+        "Registration status updated successfully",
       data: registration,
     });
   } catch (error) {
     const message =
-      error instanceof Error ? error.message : "Failed to update registration";
+      error instanceof Error
+        ? error.message
+        : "Failed to update registration status";
 
-    const status = message === "Registration not found" ? 404 : 400;
-
-    return res.status(status).json({
+    return res.status(getErrorStatus(message)).json({
       success: false,
       message,
     });
@@ -171,23 +226,15 @@ export async function promoteNextWaitlistedController(
   res: Response,
 ) {
   try {
-    const eventId = getParam(req.params.eventId);
+    const actorId = getAuthenticatedUserId(req);
 
-    if (!eventId) {
-      return res.status(400).json({
-        success: false,
-        message: "Event ID is required",
-      });
-    }
+    const eventId = getRouteParam(req, "eventId");
 
-    if (!req.user) {
-      return res.status(401).json({
-        success: false,
-        message: "Authentication required",
-      });
-    }
-
-    const registration = await promoteNextWaitlisted(eventId, req.user.id);
+    const registration =
+      await promoteNextWaitlisted(
+        eventId,
+        actorId,
+      );
 
     try {
       await syncEventRegistrationsToExcel(eventId);
@@ -200,7 +247,8 @@ export async function promoteNextWaitlistedController(
 
     return res.status(200).json({
       success: true,
-      message: "Next waitlisted participant promoted successfully",
+      message:
+        "Next waitlisted participant promoted successfully",
       data: registration,
     });
   } catch (error) {
@@ -209,9 +257,53 @@ export async function promoteNextWaitlistedController(
         ? error.message
         : "Failed to promote waitlisted participant";
 
-    const status = message === "Event not found" ? 404 : 400;
+    return res.status(getErrorStatus(message)).json({
+      success: false,
+      message,
+    });
+  }
+}
 
-    return res.status(status).json({
+export async function scanRegistrationQrController(
+  req: Request,
+  res: Response,
+) {
+  try {
+    const actorId = getAuthenticatedUserId(req);
+
+    const input =
+      scanRegistrationQrSchema.parse(req.body);
+
+    const result = await scanRegistrationQr(
+      input.qrToken,
+      input.eventId,
+      actorId,
+    );
+
+    try {
+      await syncEventRegistrationsToExcel(
+        input.eventId,
+      );
+    } catch (excelError) {
+      console.error(
+        "Excel synchronization failed after QR attendance:",
+        excelError,
+      );
+    }
+
+    return res.status(200).json({
+      success: true,
+      message:
+        "Participant attendance recorded successfully",
+      data: result,
+    });
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "QR attendance scan failed";
+
+    return res.status(getErrorStatus(message)).json({
       success: false,
       message,
     });
@@ -223,35 +315,29 @@ export async function syncEventRegistrationsToExcelController(
   res: Response,
 ) {
   try {
-    const eventId = getParam(req.params.eventId);
+    const eventId = getRouteParam(req, "eventId");
 
-    if (!eventId) {
-      return res.status(400).json({
-        success: false,
-        message: "Event ID is required",
-      });
-    }
-
-    const result = await syncEventRegistrationsToExcel(eventId);
+    const result =
+      await syncEventRegistrationsToExcel(eventId);
 
     return res.status(200).json({
       success: true,
-      message: "Event registrations exported to Excel successfully",
+      message:
+        "Event registrations synchronized successfully",
       data: {
         eventId: result.eventId,
         eventTitle: result.eventTitle,
-        registrationCount: result.registrationCount,
+        registrationCount:
+          result.registrationCount,
       },
     });
   } catch (error) {
     const message =
       error instanceof Error
         ? error.message
-        : "Failed to export registrations to Excel";
+        : "Failed to synchronize registrations";
 
-    const status = message === "Event not found" ? 404 : 500;
-
-    return res.status(status).json({
+    return res.status(getErrorStatus(message)).json({
       success: false,
       message,
     });
@@ -263,40 +349,42 @@ export async function downloadEventRegistrationsExcelController(
   res: Response,
 ) {
   try {
-    const eventId = getParam(req.params.eventId);
+    const eventId = getRouteParam(req, "eventId");
 
-    if (!eventId) {
-      return res.status(400).json({
-        success: false,
-        message: "Event ID is required",
-      });
-    }
+    const result =
+      await syncEventRegistrationsToExcel(eventId);
 
-    const result = await syncEventRegistrationsToExcel(eventId);
+    const fileName = getDownloadFileName(
+      result.eventTitle,
+    );
 
-    const fileName = getDownloadFileName(result.eventTitle);
+    return res.download(
+      result.filePath,
+      fileName,
+      (error) => {
+        if (error) {
+          console.error(
+            "Excel download failed:",
+            error,
+          );
 
-    return res.download(result.filePath, fileName, (error) => {
-      if (error) {
-        console.error("Excel download failed:", error);
-
-        if (!res.headersSent) {
-          res.status(500).json({
-            success: false,
-            message: "Failed to download Excel file",
-          });
+          if (!res.headersSent) {
+            res.status(500).json({
+              success: false,
+              message:
+                "Failed to download Excel file",
+            });
+          }
         }
-      }
-    });
+      },
+    );
   } catch (error) {
     const message =
       error instanceof Error
         ? error.message
         : "Failed to download registrations Excel file";
 
-    const status = message === "Event not found" ? 404 : 500;
-
-    return res.status(status).json({
+    return res.status(getErrorStatus(message)).json({
       success: false,
       message,
     });
@@ -308,14 +396,10 @@ export async function getMyRegistrationsController(
   res: Response,
 ) {
   try {
-    if (!req.user) {
-      return res.status(401).json({
-        success: false,
-        message: "Authentication required",
-      });
-    }
+    const userId = getAuthenticatedUserId(req);
 
-    const registrations = await getMyRegistrations(req.user.id);
+    const registrations =
+      await getMyRegistrations(userId);
 
     return res.status(200).json({
       success: true,
@@ -327,7 +411,7 @@ export async function getMyRegistrationsController(
         ? error.message
         : "Failed to fetch your registrations";
 
-    return res.status(500).json({
+    return res.status(getErrorStatus(message)).json({
       success: false,
       message,
     });

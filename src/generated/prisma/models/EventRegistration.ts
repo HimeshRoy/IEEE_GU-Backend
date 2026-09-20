@@ -28,9 +28,12 @@ export type EventRegistrationMinAggregateOutputType = {
   id: string | null
   eventId: string | null
   userId: string | null
+  teamId: string | null
   name: string | null
   email: string | null
   phone: string | null
+  qrToken: string | null
+  isTeamLeader: boolean | null
   registrationStatus: $Enums.RegistrationStatus | null
   registeredAt: Date | null
   attendedAt: Date | null
@@ -40,9 +43,12 @@ export type EventRegistrationMaxAggregateOutputType = {
   id: string | null
   eventId: string | null
   userId: string | null
+  teamId: string | null
   name: string | null
   email: string | null
   phone: string | null
+  qrToken: string | null
+  isTeamLeader: boolean | null
   registrationStatus: $Enums.RegistrationStatus | null
   registeredAt: Date | null
   attendedAt: Date | null
@@ -52,9 +58,12 @@ export type EventRegistrationCountAggregateOutputType = {
   id: number
   eventId: number
   userId: number
+  teamId: number
   name: number
   email: number
   phone: number
+  qrToken: number
+  isTeamLeader: number
   registrationStatus: number
   registeredAt: number
   attendedAt: number
@@ -66,9 +75,12 @@ export type EventRegistrationMinAggregateInputType = {
   id?: true
   eventId?: true
   userId?: true
+  teamId?: true
   name?: true
   email?: true
   phone?: true
+  qrToken?: true
+  isTeamLeader?: true
   registrationStatus?: true
   registeredAt?: true
   attendedAt?: true
@@ -78,9 +90,12 @@ export type EventRegistrationMaxAggregateInputType = {
   id?: true
   eventId?: true
   userId?: true
+  teamId?: true
   name?: true
   email?: true
   phone?: true
+  qrToken?: true
+  isTeamLeader?: true
   registrationStatus?: true
   registeredAt?: true
   attendedAt?: true
@@ -90,9 +105,12 @@ export type EventRegistrationCountAggregateInputType = {
   id?: true
   eventId?: true
   userId?: true
+  teamId?: true
   name?: true
   email?: true
   phone?: true
+  qrToken?: true
+  isTeamLeader?: true
   registrationStatus?: true
   registeredAt?: true
   attendedAt?: true
@@ -175,9 +193,12 @@ export type EventRegistrationGroupByOutputType = {
   id: string
   eventId: string
   userId: string | null
+  teamId: string | null
   name: string
   email: string
   phone: string | null
+  qrToken: string | null
+  isTeamLeader: boolean
   registrationStatus: $Enums.RegistrationStatus
   registeredAt: Date
   attendedAt: Date | null
@@ -208,55 +229,73 @@ export type EventRegistrationWhereInput = {
   id?: Prisma.StringFilter<"EventRegistration"> | string
   eventId?: Prisma.StringFilter<"EventRegistration"> | string
   userId?: Prisma.StringNullableFilter<"EventRegistration"> | string | null
+  teamId?: Prisma.StringNullableFilter<"EventRegistration"> | string | null
   name?: Prisma.StringFilter<"EventRegistration"> | string
   email?: Prisma.StringFilter<"EventRegistration"> | string
   phone?: Prisma.StringNullableFilter<"EventRegistration"> | string | null
+  qrToken?: Prisma.StringNullableFilter<"EventRegistration"> | string | null
+  isTeamLeader?: Prisma.BoolFilter<"EventRegistration"> | boolean
   registrationStatus?: Prisma.EnumRegistrationStatusFilter<"EventRegistration"> | $Enums.RegistrationStatus
   registeredAt?: Prisma.DateTimeFilter<"EventRegistration"> | Date | string
   attendedAt?: Prisma.DateTimeNullableFilter<"EventRegistration"> | Date | string | null
   event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  team?: Prisma.XOR<Prisma.EventTeamNullableScalarRelationFilter, Prisma.EventTeamWhereInput> | null
+  formResponse?: Prisma.XOR<Prisma.EventFormResponseNullableScalarRelationFilter, Prisma.EventFormResponseWhereInput> | null
 }
 
 export type EventRegistrationOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
+  teamId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  qrToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  isTeamLeader?: Prisma.SortOrder
   registrationStatus?: Prisma.SortOrder
   registeredAt?: Prisma.SortOrder
   attendedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   event?: Prisma.EventOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
+  team?: Prisma.EventTeamOrderByWithRelationInput
+  formResponse?: Prisma.EventFormResponseOrderByWithRelationInput
 }
 
 export type EventRegistrationWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  qrToken?: string
   eventId_email?: Prisma.EventRegistrationEventIdEmailCompoundUniqueInput
   AND?: Prisma.EventRegistrationWhereInput | Prisma.EventRegistrationWhereInput[]
   OR?: Prisma.EventRegistrationWhereInput[]
   NOT?: Prisma.EventRegistrationWhereInput | Prisma.EventRegistrationWhereInput[]
   eventId?: Prisma.StringFilter<"EventRegistration"> | string
   userId?: Prisma.StringNullableFilter<"EventRegistration"> | string | null
+  teamId?: Prisma.StringNullableFilter<"EventRegistration"> | string | null
   name?: Prisma.StringFilter<"EventRegistration"> | string
   email?: Prisma.StringFilter<"EventRegistration"> | string
   phone?: Prisma.StringNullableFilter<"EventRegistration"> | string | null
+  isTeamLeader?: Prisma.BoolFilter<"EventRegistration"> | boolean
   registrationStatus?: Prisma.EnumRegistrationStatusFilter<"EventRegistration"> | $Enums.RegistrationStatus
   registeredAt?: Prisma.DateTimeFilter<"EventRegistration"> | Date | string
   attendedAt?: Prisma.DateTimeNullableFilter<"EventRegistration"> | Date | string | null
   event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
-}, "id" | "eventId_email">
+  team?: Prisma.XOR<Prisma.EventTeamNullableScalarRelationFilter, Prisma.EventTeamWhereInput> | null
+  formResponse?: Prisma.XOR<Prisma.EventFormResponseNullableScalarRelationFilter, Prisma.EventFormResponseWhereInput> | null
+}, "id" | "qrToken" | "eventId_email">
 
 export type EventRegistrationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
+  teamId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  qrToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  isTeamLeader?: Prisma.SortOrder
   registrationStatus?: Prisma.SortOrder
   registeredAt?: Prisma.SortOrder
   attendedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -272,9 +311,12 @@ export type EventRegistrationScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"EventRegistration"> | string
   eventId?: Prisma.StringWithAggregatesFilter<"EventRegistration"> | string
   userId?: Prisma.StringNullableWithAggregatesFilter<"EventRegistration"> | string | null
+  teamId?: Prisma.StringNullableWithAggregatesFilter<"EventRegistration"> | string | null
   name?: Prisma.StringWithAggregatesFilter<"EventRegistration"> | string
   email?: Prisma.StringWithAggregatesFilter<"EventRegistration"> | string
   phone?: Prisma.StringNullableWithAggregatesFilter<"EventRegistration"> | string | null
+  qrToken?: Prisma.StringNullableWithAggregatesFilter<"EventRegistration"> | string | null
+  isTeamLeader?: Prisma.BoolWithAggregatesFilter<"EventRegistration"> | boolean
   registrationStatus?: Prisma.EnumRegistrationStatusWithAggregatesFilter<"EventRegistration"> | $Enums.RegistrationStatus
   registeredAt?: Prisma.DateTimeWithAggregatesFilter<"EventRegistration"> | Date | string
   attendedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"EventRegistration"> | Date | string | null
@@ -285,23 +327,31 @@ export type EventRegistrationCreateInput = {
   name: string
   email: string
   phone?: string | null
+  qrToken?: string | null
+  isTeamLeader?: boolean
   registrationStatus?: $Enums.RegistrationStatus
   registeredAt?: Date | string
   attendedAt?: Date | string | null
   event: Prisma.EventCreateNestedOneWithoutRegistrationsInput
   user?: Prisma.UserCreateNestedOneWithoutEventRegistrationsInput
+  team?: Prisma.EventTeamCreateNestedOneWithoutRegistrationsInput
+  formResponse?: Prisma.EventFormResponseCreateNestedOneWithoutRegistrationInput
 }
 
 export type EventRegistrationUncheckedCreateInput = {
   id?: string
   eventId: string
   userId?: string | null
+  teamId?: string | null
   name: string
   email: string
   phone?: string | null
+  qrToken?: string | null
+  isTeamLeader?: boolean
   registrationStatus?: $Enums.RegistrationStatus
   registeredAt?: Date | string
   attendedAt?: Date | string | null
+  formResponse?: Prisma.EventFormResponseUncheckedCreateNestedOneWithoutRegistrationInput
 }
 
 export type EventRegistrationUpdateInput = {
@@ -309,32 +359,43 @@ export type EventRegistrationUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTeamLeader?: Prisma.BoolFieldUpdateOperationsInput | boolean
   registrationStatus?: Prisma.EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   event?: Prisma.EventUpdateOneRequiredWithoutRegistrationsNestedInput
   user?: Prisma.UserUpdateOneWithoutEventRegistrationsNestedInput
+  team?: Prisma.EventTeamUpdateOneWithoutRegistrationsNestedInput
+  formResponse?: Prisma.EventFormResponseUpdateOneWithoutRegistrationNestedInput
 }
 
 export type EventRegistrationUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTeamLeader?: Prisma.BoolFieldUpdateOperationsInput | boolean
   registrationStatus?: Prisma.EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  formResponse?: Prisma.EventFormResponseUncheckedUpdateOneWithoutRegistrationNestedInput
 }
 
 export type EventRegistrationCreateManyInput = {
   id?: string
   eventId: string
   userId?: string | null
+  teamId?: string | null
   name: string
   email: string
   phone?: string | null
+  qrToken?: string | null
+  isTeamLeader?: boolean
   registrationStatus?: $Enums.RegistrationStatus
   registeredAt?: Date | string
   attendedAt?: Date | string | null
@@ -345,6 +406,8 @@ export type EventRegistrationUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTeamLeader?: Prisma.BoolFieldUpdateOperationsInput | boolean
   registrationStatus?: Prisma.EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -354,9 +417,12 @@ export type EventRegistrationUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTeamLeader?: Prisma.BoolFieldUpdateOperationsInput | boolean
   registrationStatus?: Prisma.EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -381,9 +447,12 @@ export type EventRegistrationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  teamId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  qrToken?: Prisma.SortOrder
+  isTeamLeader?: Prisma.SortOrder
   registrationStatus?: Prisma.SortOrder
   registeredAt?: Prisma.SortOrder
   attendedAt?: Prisma.SortOrder
@@ -393,9 +462,12 @@ export type EventRegistrationMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  teamId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  qrToken?: Prisma.SortOrder
+  isTeamLeader?: Prisma.SortOrder
   registrationStatus?: Prisma.SortOrder
   registeredAt?: Prisma.SortOrder
   attendedAt?: Prisma.SortOrder
@@ -405,12 +477,20 @@ export type EventRegistrationMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  teamId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  qrToken?: Prisma.SortOrder
+  isTeamLeader?: Prisma.SortOrder
   registrationStatus?: Prisma.SortOrder
   registeredAt?: Prisma.SortOrder
   attendedAt?: Prisma.SortOrder
+}
+
+export type EventRegistrationScalarRelationFilter = {
+  is?: Prisma.EventRegistrationWhereInput
+  isNot?: Prisma.EventRegistrationWhereInput
 }
 
 export type EventRegistrationCreateNestedManyWithoutUserInput = {
@@ -501,26 +581,90 @@ export type EnumRegistrationStatusFieldUpdateOperationsInput = {
   set?: $Enums.RegistrationStatus
 }
 
+export type EventRegistrationCreateNestedOneWithoutFormResponseInput = {
+  create?: Prisma.XOR<Prisma.EventRegistrationCreateWithoutFormResponseInput, Prisma.EventRegistrationUncheckedCreateWithoutFormResponseInput>
+  connectOrCreate?: Prisma.EventRegistrationCreateOrConnectWithoutFormResponseInput
+  connect?: Prisma.EventRegistrationWhereUniqueInput
+}
+
+export type EventRegistrationUpdateOneRequiredWithoutFormResponseNestedInput = {
+  create?: Prisma.XOR<Prisma.EventRegistrationCreateWithoutFormResponseInput, Prisma.EventRegistrationUncheckedCreateWithoutFormResponseInput>
+  connectOrCreate?: Prisma.EventRegistrationCreateOrConnectWithoutFormResponseInput
+  upsert?: Prisma.EventRegistrationUpsertWithoutFormResponseInput
+  connect?: Prisma.EventRegistrationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EventRegistrationUpdateToOneWithWhereWithoutFormResponseInput, Prisma.EventRegistrationUpdateWithoutFormResponseInput>, Prisma.EventRegistrationUncheckedUpdateWithoutFormResponseInput>
+}
+
+export type EventRegistrationCreateNestedManyWithoutTeamInput = {
+  create?: Prisma.XOR<Prisma.EventRegistrationCreateWithoutTeamInput, Prisma.EventRegistrationUncheckedCreateWithoutTeamInput> | Prisma.EventRegistrationCreateWithoutTeamInput[] | Prisma.EventRegistrationUncheckedCreateWithoutTeamInput[]
+  connectOrCreate?: Prisma.EventRegistrationCreateOrConnectWithoutTeamInput | Prisma.EventRegistrationCreateOrConnectWithoutTeamInput[]
+  createMany?: Prisma.EventRegistrationCreateManyTeamInputEnvelope
+  connect?: Prisma.EventRegistrationWhereUniqueInput | Prisma.EventRegistrationWhereUniqueInput[]
+}
+
+export type EventRegistrationUncheckedCreateNestedManyWithoutTeamInput = {
+  create?: Prisma.XOR<Prisma.EventRegistrationCreateWithoutTeamInput, Prisma.EventRegistrationUncheckedCreateWithoutTeamInput> | Prisma.EventRegistrationCreateWithoutTeamInput[] | Prisma.EventRegistrationUncheckedCreateWithoutTeamInput[]
+  connectOrCreate?: Prisma.EventRegistrationCreateOrConnectWithoutTeamInput | Prisma.EventRegistrationCreateOrConnectWithoutTeamInput[]
+  createMany?: Prisma.EventRegistrationCreateManyTeamInputEnvelope
+  connect?: Prisma.EventRegistrationWhereUniqueInput | Prisma.EventRegistrationWhereUniqueInput[]
+}
+
+export type EventRegistrationUpdateManyWithoutTeamNestedInput = {
+  create?: Prisma.XOR<Prisma.EventRegistrationCreateWithoutTeamInput, Prisma.EventRegistrationUncheckedCreateWithoutTeamInput> | Prisma.EventRegistrationCreateWithoutTeamInput[] | Prisma.EventRegistrationUncheckedCreateWithoutTeamInput[]
+  connectOrCreate?: Prisma.EventRegistrationCreateOrConnectWithoutTeamInput | Prisma.EventRegistrationCreateOrConnectWithoutTeamInput[]
+  upsert?: Prisma.EventRegistrationUpsertWithWhereUniqueWithoutTeamInput | Prisma.EventRegistrationUpsertWithWhereUniqueWithoutTeamInput[]
+  createMany?: Prisma.EventRegistrationCreateManyTeamInputEnvelope
+  set?: Prisma.EventRegistrationWhereUniqueInput | Prisma.EventRegistrationWhereUniqueInput[]
+  disconnect?: Prisma.EventRegistrationWhereUniqueInput | Prisma.EventRegistrationWhereUniqueInput[]
+  delete?: Prisma.EventRegistrationWhereUniqueInput | Prisma.EventRegistrationWhereUniqueInput[]
+  connect?: Prisma.EventRegistrationWhereUniqueInput | Prisma.EventRegistrationWhereUniqueInput[]
+  update?: Prisma.EventRegistrationUpdateWithWhereUniqueWithoutTeamInput | Prisma.EventRegistrationUpdateWithWhereUniqueWithoutTeamInput[]
+  updateMany?: Prisma.EventRegistrationUpdateManyWithWhereWithoutTeamInput | Prisma.EventRegistrationUpdateManyWithWhereWithoutTeamInput[]
+  deleteMany?: Prisma.EventRegistrationScalarWhereInput | Prisma.EventRegistrationScalarWhereInput[]
+}
+
+export type EventRegistrationUncheckedUpdateManyWithoutTeamNestedInput = {
+  create?: Prisma.XOR<Prisma.EventRegistrationCreateWithoutTeamInput, Prisma.EventRegistrationUncheckedCreateWithoutTeamInput> | Prisma.EventRegistrationCreateWithoutTeamInput[] | Prisma.EventRegistrationUncheckedCreateWithoutTeamInput[]
+  connectOrCreate?: Prisma.EventRegistrationCreateOrConnectWithoutTeamInput | Prisma.EventRegistrationCreateOrConnectWithoutTeamInput[]
+  upsert?: Prisma.EventRegistrationUpsertWithWhereUniqueWithoutTeamInput | Prisma.EventRegistrationUpsertWithWhereUniqueWithoutTeamInput[]
+  createMany?: Prisma.EventRegistrationCreateManyTeamInputEnvelope
+  set?: Prisma.EventRegistrationWhereUniqueInput | Prisma.EventRegistrationWhereUniqueInput[]
+  disconnect?: Prisma.EventRegistrationWhereUniqueInput | Prisma.EventRegistrationWhereUniqueInput[]
+  delete?: Prisma.EventRegistrationWhereUniqueInput | Prisma.EventRegistrationWhereUniqueInput[]
+  connect?: Prisma.EventRegistrationWhereUniqueInput | Prisma.EventRegistrationWhereUniqueInput[]
+  update?: Prisma.EventRegistrationUpdateWithWhereUniqueWithoutTeamInput | Prisma.EventRegistrationUpdateWithWhereUniqueWithoutTeamInput[]
+  updateMany?: Prisma.EventRegistrationUpdateManyWithWhereWithoutTeamInput | Prisma.EventRegistrationUpdateManyWithWhereWithoutTeamInput[]
+  deleteMany?: Prisma.EventRegistrationScalarWhereInput | Prisma.EventRegistrationScalarWhereInput[]
+}
+
 export type EventRegistrationCreateWithoutUserInput = {
   id?: string
   name: string
   email: string
   phone?: string | null
+  qrToken?: string | null
+  isTeamLeader?: boolean
   registrationStatus?: $Enums.RegistrationStatus
   registeredAt?: Date | string
   attendedAt?: Date | string | null
   event: Prisma.EventCreateNestedOneWithoutRegistrationsInput
+  team?: Prisma.EventTeamCreateNestedOneWithoutRegistrationsInput
+  formResponse?: Prisma.EventFormResponseCreateNestedOneWithoutRegistrationInput
 }
 
 export type EventRegistrationUncheckedCreateWithoutUserInput = {
   id?: string
   eventId: string
+  teamId?: string | null
   name: string
   email: string
   phone?: string | null
+  qrToken?: string | null
+  isTeamLeader?: boolean
   registrationStatus?: $Enums.RegistrationStatus
   registeredAt?: Date | string
   attendedAt?: Date | string | null
+  formResponse?: Prisma.EventFormResponseUncheckedCreateNestedOneWithoutRegistrationInput
 }
 
 export type EventRegistrationCreateOrConnectWithoutUserInput = {
@@ -556,9 +700,12 @@ export type EventRegistrationScalarWhereInput = {
   id?: Prisma.StringFilter<"EventRegistration"> | string
   eventId?: Prisma.StringFilter<"EventRegistration"> | string
   userId?: Prisma.StringNullableFilter<"EventRegistration"> | string | null
+  teamId?: Prisma.StringNullableFilter<"EventRegistration"> | string | null
   name?: Prisma.StringFilter<"EventRegistration"> | string
   email?: Prisma.StringFilter<"EventRegistration"> | string
   phone?: Prisma.StringNullableFilter<"EventRegistration"> | string | null
+  qrToken?: Prisma.StringNullableFilter<"EventRegistration"> | string | null
+  isTeamLeader?: Prisma.BoolFilter<"EventRegistration"> | boolean
   registrationStatus?: Prisma.EnumRegistrationStatusFilter<"EventRegistration"> | $Enums.RegistrationStatus
   registeredAt?: Prisma.DateTimeFilter<"EventRegistration"> | Date | string
   attendedAt?: Prisma.DateTimeNullableFilter<"EventRegistration"> | Date | string | null
@@ -569,21 +716,29 @@ export type EventRegistrationCreateWithoutEventInput = {
   name: string
   email: string
   phone?: string | null
+  qrToken?: string | null
+  isTeamLeader?: boolean
   registrationStatus?: $Enums.RegistrationStatus
   registeredAt?: Date | string
   attendedAt?: Date | string | null
   user?: Prisma.UserCreateNestedOneWithoutEventRegistrationsInput
+  team?: Prisma.EventTeamCreateNestedOneWithoutRegistrationsInput
+  formResponse?: Prisma.EventFormResponseCreateNestedOneWithoutRegistrationInput
 }
 
 export type EventRegistrationUncheckedCreateWithoutEventInput = {
   id?: string
   userId?: string | null
+  teamId?: string | null
   name: string
   email: string
   phone?: string | null
+  qrToken?: string | null
+  isTeamLeader?: boolean
   registrationStatus?: $Enums.RegistrationStatus
   registeredAt?: Date | string
   attendedAt?: Date | string | null
+  formResponse?: Prisma.EventFormResponseUncheckedCreateNestedOneWithoutRegistrationInput
 }
 
 export type EventRegistrationCreateOrConnectWithoutEventInput = {
@@ -612,12 +767,147 @@ export type EventRegistrationUpdateManyWithWhereWithoutEventInput = {
   data: Prisma.XOR<Prisma.EventRegistrationUpdateManyMutationInput, Prisma.EventRegistrationUncheckedUpdateManyWithoutEventInput>
 }
 
-export type EventRegistrationCreateManyUserInput = {
+export type EventRegistrationCreateWithoutFormResponseInput = {
   id?: string
-  eventId: string
   name: string
   email: string
   phone?: string | null
+  qrToken?: string | null
+  isTeamLeader?: boolean
+  registrationStatus?: $Enums.RegistrationStatus
+  registeredAt?: Date | string
+  attendedAt?: Date | string | null
+  event: Prisma.EventCreateNestedOneWithoutRegistrationsInput
+  user?: Prisma.UserCreateNestedOneWithoutEventRegistrationsInput
+  team?: Prisma.EventTeamCreateNestedOneWithoutRegistrationsInput
+}
+
+export type EventRegistrationUncheckedCreateWithoutFormResponseInput = {
+  id?: string
+  eventId: string
+  userId?: string | null
+  teamId?: string | null
+  name: string
+  email: string
+  phone?: string | null
+  qrToken?: string | null
+  isTeamLeader?: boolean
+  registrationStatus?: $Enums.RegistrationStatus
+  registeredAt?: Date | string
+  attendedAt?: Date | string | null
+}
+
+export type EventRegistrationCreateOrConnectWithoutFormResponseInput = {
+  where: Prisma.EventRegistrationWhereUniqueInput
+  create: Prisma.XOR<Prisma.EventRegistrationCreateWithoutFormResponseInput, Prisma.EventRegistrationUncheckedCreateWithoutFormResponseInput>
+}
+
+export type EventRegistrationUpsertWithoutFormResponseInput = {
+  update: Prisma.XOR<Prisma.EventRegistrationUpdateWithoutFormResponseInput, Prisma.EventRegistrationUncheckedUpdateWithoutFormResponseInput>
+  create: Prisma.XOR<Prisma.EventRegistrationCreateWithoutFormResponseInput, Prisma.EventRegistrationUncheckedCreateWithoutFormResponseInput>
+  where?: Prisma.EventRegistrationWhereInput
+}
+
+export type EventRegistrationUpdateToOneWithWhereWithoutFormResponseInput = {
+  where?: Prisma.EventRegistrationWhereInput
+  data: Prisma.XOR<Prisma.EventRegistrationUpdateWithoutFormResponseInput, Prisma.EventRegistrationUncheckedUpdateWithoutFormResponseInput>
+}
+
+export type EventRegistrationUpdateWithoutFormResponseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTeamLeader?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationStatus?: Prisma.EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
+  registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  event?: Prisma.EventUpdateOneRequiredWithoutRegistrationsNestedInput
+  user?: Prisma.UserUpdateOneWithoutEventRegistrationsNestedInput
+  team?: Prisma.EventTeamUpdateOneWithoutRegistrationsNestedInput
+}
+
+export type EventRegistrationUncheckedUpdateWithoutFormResponseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTeamLeader?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationStatus?: Prisma.EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
+  registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type EventRegistrationCreateWithoutTeamInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  qrToken?: string | null
+  isTeamLeader?: boolean
+  registrationStatus?: $Enums.RegistrationStatus
+  registeredAt?: Date | string
+  attendedAt?: Date | string | null
+  event: Prisma.EventCreateNestedOneWithoutRegistrationsInput
+  user?: Prisma.UserCreateNestedOneWithoutEventRegistrationsInput
+  formResponse?: Prisma.EventFormResponseCreateNestedOneWithoutRegistrationInput
+}
+
+export type EventRegistrationUncheckedCreateWithoutTeamInput = {
+  id?: string
+  eventId: string
+  userId?: string | null
+  name: string
+  email: string
+  phone?: string | null
+  qrToken?: string | null
+  isTeamLeader?: boolean
+  registrationStatus?: $Enums.RegistrationStatus
+  registeredAt?: Date | string
+  attendedAt?: Date | string | null
+  formResponse?: Prisma.EventFormResponseUncheckedCreateNestedOneWithoutRegistrationInput
+}
+
+export type EventRegistrationCreateOrConnectWithoutTeamInput = {
+  where: Prisma.EventRegistrationWhereUniqueInput
+  create: Prisma.XOR<Prisma.EventRegistrationCreateWithoutTeamInput, Prisma.EventRegistrationUncheckedCreateWithoutTeamInput>
+}
+
+export type EventRegistrationCreateManyTeamInputEnvelope = {
+  data: Prisma.EventRegistrationCreateManyTeamInput | Prisma.EventRegistrationCreateManyTeamInput[]
+  skipDuplicates?: boolean
+}
+
+export type EventRegistrationUpsertWithWhereUniqueWithoutTeamInput = {
+  where: Prisma.EventRegistrationWhereUniqueInput
+  update: Prisma.XOR<Prisma.EventRegistrationUpdateWithoutTeamInput, Prisma.EventRegistrationUncheckedUpdateWithoutTeamInput>
+  create: Prisma.XOR<Prisma.EventRegistrationCreateWithoutTeamInput, Prisma.EventRegistrationUncheckedCreateWithoutTeamInput>
+}
+
+export type EventRegistrationUpdateWithWhereUniqueWithoutTeamInput = {
+  where: Prisma.EventRegistrationWhereUniqueInput
+  data: Prisma.XOR<Prisma.EventRegistrationUpdateWithoutTeamInput, Prisma.EventRegistrationUncheckedUpdateWithoutTeamInput>
+}
+
+export type EventRegistrationUpdateManyWithWhereWithoutTeamInput = {
+  where: Prisma.EventRegistrationScalarWhereInput
+  data: Prisma.XOR<Prisma.EventRegistrationUpdateManyMutationInput, Prisma.EventRegistrationUncheckedUpdateManyWithoutTeamInput>
+}
+
+export type EventRegistrationCreateManyUserInput = {
+  id?: string
+  eventId: string
+  teamId?: string | null
+  name: string
+  email: string
+  phone?: string | null
+  qrToken?: string | null
+  isTeamLeader?: boolean
   registrationStatus?: $Enums.RegistrationStatus
   registeredAt?: Date | string
   attendedAt?: Date | string | null
@@ -628,29 +918,40 @@ export type EventRegistrationUpdateWithoutUserInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTeamLeader?: Prisma.BoolFieldUpdateOperationsInput | boolean
   registrationStatus?: Prisma.EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   event?: Prisma.EventUpdateOneRequiredWithoutRegistrationsNestedInput
+  team?: Prisma.EventTeamUpdateOneWithoutRegistrationsNestedInput
+  formResponse?: Prisma.EventFormResponseUpdateOneWithoutRegistrationNestedInput
 }
 
 export type EventRegistrationUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTeamLeader?: Prisma.BoolFieldUpdateOperationsInput | boolean
   registrationStatus?: Prisma.EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  formResponse?: Prisma.EventFormResponseUncheckedUpdateOneWithoutRegistrationNestedInput
 }
 
 export type EventRegistrationUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTeamLeader?: Prisma.BoolFieldUpdateOperationsInput | boolean
   registrationStatus?: Prisma.EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -659,9 +960,12 @@ export type EventRegistrationUncheckedUpdateManyWithoutUserInput = {
 export type EventRegistrationCreateManyEventInput = {
   id?: string
   userId?: string | null
+  teamId?: string | null
   name: string
   email: string
   phone?: string | null
+  qrToken?: string | null
+  isTeamLeader?: boolean
   registrationStatus?: $Enums.RegistrationStatus
   registeredAt?: Date | string
   attendedAt?: Date | string | null
@@ -672,29 +976,98 @@ export type EventRegistrationUpdateWithoutEventInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTeamLeader?: Prisma.BoolFieldUpdateOperationsInput | boolean
   registrationStatus?: Prisma.EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneWithoutEventRegistrationsNestedInput
+  team?: Prisma.EventTeamUpdateOneWithoutRegistrationsNestedInput
+  formResponse?: Prisma.EventFormResponseUpdateOneWithoutRegistrationNestedInput
 }
 
 export type EventRegistrationUncheckedUpdateWithoutEventInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTeamLeader?: Prisma.BoolFieldUpdateOperationsInput | boolean
   registrationStatus?: Prisma.EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  formResponse?: Prisma.EventFormResponseUncheckedUpdateOneWithoutRegistrationNestedInput
 }
 
 export type EventRegistrationUncheckedUpdateManyWithoutEventInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTeamLeader?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationStatus?: Prisma.EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
+  registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type EventRegistrationCreateManyTeamInput = {
+  id?: string
+  eventId: string
+  userId?: string | null
+  name: string
+  email: string
+  phone?: string | null
+  qrToken?: string | null
+  isTeamLeader?: boolean
+  registrationStatus?: $Enums.RegistrationStatus
+  registeredAt?: Date | string
+  attendedAt?: Date | string | null
+}
+
+export type EventRegistrationUpdateWithoutTeamInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTeamLeader?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationStatus?: Prisma.EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
+  registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  event?: Prisma.EventUpdateOneRequiredWithoutRegistrationsNestedInput
+  user?: Prisma.UserUpdateOneWithoutEventRegistrationsNestedInput
+  formResponse?: Prisma.EventFormResponseUpdateOneWithoutRegistrationNestedInput
+}
+
+export type EventRegistrationUncheckedUpdateWithoutTeamInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTeamLeader?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationStatus?: Prisma.EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
+  registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  formResponse?: Prisma.EventFormResponseUncheckedUpdateOneWithoutRegistrationNestedInput
+}
+
+export type EventRegistrationUncheckedUpdateManyWithoutTeamInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTeamLeader?: Prisma.BoolFieldUpdateOperationsInput | boolean
   registrationStatus?: Prisma.EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -706,68 +1079,88 @@ export type EventRegistrationSelect<ExtArgs extends runtime.Types.Extensions.Int
   id?: boolean
   eventId?: boolean
   userId?: boolean
+  teamId?: boolean
   name?: boolean
   email?: boolean
   phone?: boolean
+  qrToken?: boolean
+  isTeamLeader?: boolean
   registrationStatus?: boolean
   registeredAt?: boolean
   attendedAt?: boolean
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   user?: boolean | Prisma.EventRegistration$userArgs<ExtArgs>
+  team?: boolean | Prisma.EventRegistration$teamArgs<ExtArgs>
+  formResponse?: boolean | Prisma.EventRegistration$formResponseArgs<ExtArgs>
 }, ExtArgs["result"]["eventRegistration"]>
 
 export type EventRegistrationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   eventId?: boolean
   userId?: boolean
+  teamId?: boolean
   name?: boolean
   email?: boolean
   phone?: boolean
+  qrToken?: boolean
+  isTeamLeader?: boolean
   registrationStatus?: boolean
   registeredAt?: boolean
   attendedAt?: boolean
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   user?: boolean | Prisma.EventRegistration$userArgs<ExtArgs>
+  team?: boolean | Prisma.EventRegistration$teamArgs<ExtArgs>
 }, ExtArgs["result"]["eventRegistration"]>
 
 export type EventRegistrationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   eventId?: boolean
   userId?: boolean
+  teamId?: boolean
   name?: boolean
   email?: boolean
   phone?: boolean
+  qrToken?: boolean
+  isTeamLeader?: boolean
   registrationStatus?: boolean
   registeredAt?: boolean
   attendedAt?: boolean
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   user?: boolean | Prisma.EventRegistration$userArgs<ExtArgs>
+  team?: boolean | Prisma.EventRegistration$teamArgs<ExtArgs>
 }, ExtArgs["result"]["eventRegistration"]>
 
 export type EventRegistrationSelectScalar = {
   id?: boolean
   eventId?: boolean
   userId?: boolean
+  teamId?: boolean
   name?: boolean
   email?: boolean
   phone?: boolean
+  qrToken?: boolean
+  isTeamLeader?: boolean
   registrationStatus?: boolean
   registeredAt?: boolean
   attendedAt?: boolean
 }
 
-export type EventRegistrationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "eventId" | "userId" | "name" | "email" | "phone" | "registrationStatus" | "registeredAt" | "attendedAt", ExtArgs["result"]["eventRegistration"]>
+export type EventRegistrationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "eventId" | "userId" | "teamId" | "name" | "email" | "phone" | "qrToken" | "isTeamLeader" | "registrationStatus" | "registeredAt" | "attendedAt", ExtArgs["result"]["eventRegistration"]>
 export type EventRegistrationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   user?: boolean | Prisma.EventRegistration$userArgs<ExtArgs>
+  team?: boolean | Prisma.EventRegistration$teamArgs<ExtArgs>
+  formResponse?: boolean | Prisma.EventRegistration$formResponseArgs<ExtArgs>
 }
 export type EventRegistrationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   user?: boolean | Prisma.EventRegistration$userArgs<ExtArgs>
+  team?: boolean | Prisma.EventRegistration$teamArgs<ExtArgs>
 }
 export type EventRegistrationIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   user?: boolean | Prisma.EventRegistration$userArgs<ExtArgs>
+  team?: boolean | Prisma.EventRegistration$teamArgs<ExtArgs>
 }
 
 export type $EventRegistrationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -775,14 +1168,19 @@ export type $EventRegistrationPayload<ExtArgs extends runtime.Types.Extensions.I
   objects: {
     event: Prisma.$EventPayload<ExtArgs>
     user: Prisma.$UserPayload<ExtArgs> | null
+    team: Prisma.$EventTeamPayload<ExtArgs> | null
+    formResponse: Prisma.$EventFormResponsePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     eventId: string
     userId: string | null
+    teamId: string | null
     name: string
     email: string
     phone: string | null
+    qrToken: string | null
+    isTeamLeader: boolean
     registrationStatus: $Enums.RegistrationStatus
     registeredAt: Date
     attendedAt: Date | null
@@ -1182,6 +1580,8 @@ export interface Prisma__EventRegistrationClient<T, Null = never, ExtArgs extend
   readonly [Symbol.toStringTag]: "PrismaPromise"
   event<T extends Prisma.EventDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventDefaultArgs<ExtArgs>>): Prisma.Prisma__EventClient<runtime.Types.Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.EventRegistration$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventRegistration$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  team<T extends Prisma.EventRegistration$teamArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventRegistration$teamArgs<ExtArgs>>): Prisma.Prisma__EventTeamClient<runtime.Types.Result.GetResult<Prisma.$EventTeamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  formResponse<T extends Prisma.EventRegistration$formResponseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventRegistration$formResponseArgs<ExtArgs>>): Prisma.Prisma__EventFormResponseClient<runtime.Types.Result.GetResult<Prisma.$EventFormResponsePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1214,9 +1614,12 @@ export interface EventRegistrationFieldRefs {
   readonly id: Prisma.FieldRef<"EventRegistration", 'String'>
   readonly eventId: Prisma.FieldRef<"EventRegistration", 'String'>
   readonly userId: Prisma.FieldRef<"EventRegistration", 'String'>
+  readonly teamId: Prisma.FieldRef<"EventRegistration", 'String'>
   readonly name: Prisma.FieldRef<"EventRegistration", 'String'>
   readonly email: Prisma.FieldRef<"EventRegistration", 'String'>
   readonly phone: Prisma.FieldRef<"EventRegistration", 'String'>
+  readonly qrToken: Prisma.FieldRef<"EventRegistration", 'String'>
+  readonly isTeamLeader: Prisma.FieldRef<"EventRegistration", 'Boolean'>
   readonly registrationStatus: Prisma.FieldRef<"EventRegistration", 'RegistrationStatus'>
   readonly registeredAt: Prisma.FieldRef<"EventRegistration", 'DateTime'>
   readonly attendedAt: Prisma.FieldRef<"EventRegistration", 'DateTime'>
@@ -1637,6 +2040,44 @@ export type EventRegistration$userArgs<ExtArgs extends runtime.Types.Extensions.
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * EventRegistration.team
+ */
+export type EventRegistration$teamArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EventTeam
+   */
+  select?: Prisma.EventTeamSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EventTeam
+   */
+  omit?: Prisma.EventTeamOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EventTeamInclude<ExtArgs> | null
+  where?: Prisma.EventTeamWhereInput
+}
+
+/**
+ * EventRegistration.formResponse
+ */
+export type EventRegistration$formResponseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EventFormResponse
+   */
+  select?: Prisma.EventFormResponseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EventFormResponse
+   */
+  omit?: Prisma.EventFormResponseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EventFormResponseInclude<ExtArgs> | null
+  where?: Prisma.EventFormResponseWhereInput
 }
 
 /**

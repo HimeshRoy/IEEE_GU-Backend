@@ -57,6 +57,11 @@ export const ModelName = {
   BranchLeadership: 'BranchLeadership',
   Event: 'Event',
   EventRegistration: 'EventRegistration',
+  EventForm: 'EventForm',
+  EventFormField: 'EventFormField',
+  EventFormResponse: 'EventFormResponse',
+  EventFormAnswer: 'EventFormAnswer',
+  EventTeam: 'EventTeam',
   Announcement: 'Announcement',
   GalleryAlbum: 'GalleryAlbum',
   GalleryImage: 'GalleryImage',
@@ -164,6 +169,11 @@ export const EventScalarFieldEnum = {
   status: 'status',
   access: 'access',
   isFeatured: 'isFeatured',
+  registrationTemplate: 'registrationTemplate',
+  participationType: 'participationType',
+  minTeamSize: 'minTeamSize',
+  maxTeamSize: 'maxTeamSize',
+  enableQrAttendance: 'enableQrAttendance',
   createdById: 'createdById',
   approvalStatus: 'approvalStatus',
   approvedById: 'approvedById',
@@ -180,15 +190,87 @@ export const EventRegistrationScalarFieldEnum = {
   id: 'id',
   eventId: 'eventId',
   userId: 'userId',
+  teamId: 'teamId',
   name: 'name',
   email: 'email',
   phone: 'phone',
+  qrToken: 'qrToken',
+  isTeamLeader: 'isTeamLeader',
   registrationStatus: 'registrationStatus',
   registeredAt: 'registeredAt',
   attendedAt: 'attendedAt'
 } as const
 
 export type EventRegistrationScalarFieldEnum = (typeof EventRegistrationScalarFieldEnum)[keyof typeof EventRegistrationScalarFieldEnum]
+
+
+export const EventFormScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  title: 'title',
+  description: 'description',
+  template: 'template',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventFormScalarFieldEnum = (typeof EventFormScalarFieldEnum)[keyof typeof EventFormScalarFieldEnum]
+
+
+export const EventFormFieldScalarFieldEnum = {
+  id: 'id',
+  formId: 'formId',
+  key: 'key',
+  label: 'label',
+  description: 'description',
+  type: 'type',
+  scope: 'scope',
+  required: 'required',
+  placeholder: 'placeholder',
+  options: 'options',
+  validation: 'validation',
+  order: 'order',
+  isSystemField: 'isSystemField',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventFormFieldScalarFieldEnum = (typeof EventFormFieldScalarFieldEnum)[keyof typeof EventFormFieldScalarFieldEnum]
+
+
+export const EventFormResponseScalarFieldEnum = {
+  id: 'id',
+  formId: 'formId',
+  registrationId: 'registrationId',
+  submittedAt: 'submittedAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventFormResponseScalarFieldEnum = (typeof EventFormResponseScalarFieldEnum)[keyof typeof EventFormResponseScalarFieldEnum]
+
+
+export const EventFormAnswerScalarFieldEnum = {
+  id: 'id',
+  responseId: 'responseId',
+  fieldId: 'fieldId',
+  value: 'value',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventFormAnswerScalarFieldEnum = (typeof EventFormAnswerScalarFieldEnum)[keyof typeof EventFormAnswerScalarFieldEnum]
+
+
+export const EventTeamScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventTeamScalarFieldEnum = (typeof EventTeamScalarFieldEnum)[keyof typeof EventTeamScalarFieldEnum]
 
 
 export const AnnouncementScalarFieldEnum = {
@@ -273,6 +355,21 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -287,4 +384,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

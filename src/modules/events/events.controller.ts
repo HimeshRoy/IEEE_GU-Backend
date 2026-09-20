@@ -87,7 +87,8 @@ export async function getEventsController(req: Request, res: Response) {
     const isStaff =
       req.user?.role === "WEBMASTER" ||
       req.user?.role === "IEEE_COUNSELOR" ||
-      req.user?.role === "FACULTY_ADVISOR";
+      req.user?.role === "FACULTY_ADVISOR" ||
+      req.user?.role === "CHAIRMAN";
 
     const events = await getEvents(query, isStaff);
 
@@ -118,7 +119,8 @@ export async function getEventController(req: Request, res: Response) {
     const isStaff =
       req.user?.role === "WEBMASTER" ||
       req.user?.role === "IEEE_COUNSELOR" ||
-      req.user?.role === "FACULTY_ADVISOR";
+      req.user?.role === "FACULTY_ADVISOR" ||
+      req.user?.role === "CHAIRMAN";
 
     const event = await getEventById(eventId, isStaff);
 
@@ -154,7 +156,8 @@ export async function getEventManagementController(
     const isStaff =
       req.user?.role === "WEBMASTER" ||
       req.user?.role === "IEEE_COUNSELOR" ||
-      req.user?.role === "FACULTY_ADVISOR";
+      req.user?.role === "FACULTY_ADVISOR" ||
+      req.user?.role === "CHAIRMAN";
 
     if (!isStaff) {
       const chairman = await prisma.branchLeadership.findFirst({

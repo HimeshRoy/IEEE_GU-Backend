@@ -1,5 +1,7 @@
 import type {
   EventAccess,
+  EventRegistrationTemplate,
+  EventParticipationType,
   EventStatus,
 } from "../../generated/prisma/client.js";
 
@@ -17,6 +19,11 @@ export interface CreateEventInput {
   capacity?: number | undefined;
   access: EventAccess;
   isFeatured?: boolean | undefined;
+  registrationTemplate?: EventRegistrationTemplate | undefined;
+  participationType: EventParticipationType;
+  minTeamSize?: number | undefined;
+  maxTeamSize?: number | undefined;
+  enableQrAttendance: boolean;
 }
 
 export interface UpdateEventInput {
@@ -33,6 +40,11 @@ export interface UpdateEventInput {
   capacity?: number | undefined;
   access?: EventAccess | undefined;
   isFeatured?: boolean | undefined;
+  registrationTemplate?: EventRegistrationTemplate | undefined;
+  participationType?: EventParticipationType | undefined;
+  minTeamSize?: number | undefined;
+  maxTeamSize?: number | undefined;
+  enableQrAttendance?: boolean | undefined;
 }
 
 export interface EventListFilters {

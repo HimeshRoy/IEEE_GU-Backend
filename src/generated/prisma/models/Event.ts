@@ -28,10 +28,14 @@ export type AggregateEvent = {
 
 export type EventAvgAggregateOutputType = {
   capacity: number | null
+  minTeamSize: number | null
+  maxTeamSize: number | null
 }
 
 export type EventSumAggregateOutputType = {
   capacity: number | null
+  minTeamSize: number | null
+  maxTeamSize: number | null
 }
 
 export type EventMinAggregateOutputType = {
@@ -50,6 +54,11 @@ export type EventMinAggregateOutputType = {
   status: $Enums.EventStatus | null
   access: $Enums.EventAccess | null
   isFeatured: boolean | null
+  registrationTemplate: $Enums.EventRegistrationTemplate | null
+  participationType: $Enums.EventParticipationType | null
+  minTeamSize: number | null
+  maxTeamSize: number | null
+  enableQrAttendance: boolean | null
   createdById: string | null
   approvalStatus: $Enums.ApprovalStatus | null
   approvedById: string | null
@@ -75,6 +84,11 @@ export type EventMaxAggregateOutputType = {
   status: $Enums.EventStatus | null
   access: $Enums.EventAccess | null
   isFeatured: boolean | null
+  registrationTemplate: $Enums.EventRegistrationTemplate | null
+  participationType: $Enums.EventParticipationType | null
+  minTeamSize: number | null
+  maxTeamSize: number | null
+  enableQrAttendance: boolean | null
   createdById: string | null
   approvalStatus: $Enums.ApprovalStatus | null
   approvedById: string | null
@@ -100,6 +114,11 @@ export type EventCountAggregateOutputType = {
   status: number
   access: number
   isFeatured: number
+  registrationTemplate: number
+  participationType: number
+  minTeamSize: number
+  maxTeamSize: number
+  enableQrAttendance: number
   createdById: number
   approvalStatus: number
   approvedById: number
@@ -113,10 +132,14 @@ export type EventCountAggregateOutputType = {
 
 export type EventAvgAggregateInputType = {
   capacity?: true
+  minTeamSize?: true
+  maxTeamSize?: true
 }
 
 export type EventSumAggregateInputType = {
   capacity?: true
+  minTeamSize?: true
+  maxTeamSize?: true
 }
 
 export type EventMinAggregateInputType = {
@@ -135,6 +158,11 @@ export type EventMinAggregateInputType = {
   status?: true
   access?: true
   isFeatured?: true
+  registrationTemplate?: true
+  participationType?: true
+  minTeamSize?: true
+  maxTeamSize?: true
+  enableQrAttendance?: true
   createdById?: true
   approvalStatus?: true
   approvedById?: true
@@ -160,6 +188,11 @@ export type EventMaxAggregateInputType = {
   status?: true
   access?: true
   isFeatured?: true
+  registrationTemplate?: true
+  participationType?: true
+  minTeamSize?: true
+  maxTeamSize?: true
+  enableQrAttendance?: true
   createdById?: true
   approvalStatus?: true
   approvedById?: true
@@ -185,6 +218,11 @@ export type EventCountAggregateInputType = {
   status?: true
   access?: true
   isFeatured?: true
+  registrationTemplate?: true
+  participationType?: true
+  minTeamSize?: true
+  maxTeamSize?: true
+  enableQrAttendance?: true
   createdById?: true
   approvalStatus?: true
   approvedById?: true
@@ -297,6 +335,11 @@ export type EventGroupByOutputType = {
   status: $Enums.EventStatus
   access: $Enums.EventAccess
   isFeatured: boolean
+  registrationTemplate: $Enums.EventRegistrationTemplate | null
+  participationType: $Enums.EventParticipationType
+  minTeamSize: number | null
+  maxTeamSize: number | null
+  enableQrAttendance: boolean
   createdById: string
   approvalStatus: $Enums.ApprovalStatus
   approvedById: string | null
@@ -345,6 +388,11 @@ export type EventWhereInput = {
   status?: Prisma.EnumEventStatusFilter<"Event"> | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFilter<"Event"> | $Enums.EventAccess
   isFeatured?: Prisma.BoolFilter<"Event"> | boolean
+  registrationTemplate?: Prisma.EnumEventRegistrationTemplateNullableFilter<"Event"> | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeFilter<"Event"> | $Enums.EventParticipationType
+  minTeamSize?: Prisma.IntNullableFilter<"Event"> | number | null
+  maxTeamSize?: Prisma.IntNullableFilter<"Event"> | number | null
+  enableQrAttendance?: Prisma.BoolFilter<"Event"> | boolean
   createdById?: Prisma.StringFilter<"Event"> | string
   approvalStatus?: Prisma.EnumApprovalStatusFilter<"Event"> | $Enums.ApprovalStatus
   approvedById?: Prisma.StringNullableFilter<"Event"> | string | null
@@ -353,7 +401,9 @@ export type EventWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Event"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Event"> | Date | string
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  registrationForm?: Prisma.XOR<Prisma.EventFormNullableScalarRelationFilter, Prisma.EventFormWhereInput> | null
   registrations?: Prisma.EventRegistrationListRelationFilter
+  teams?: Prisma.EventTeamListRelationFilter
 }
 
 export type EventOrderByWithRelationInput = {
@@ -372,6 +422,11 @@ export type EventOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   access?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  registrationTemplate?: Prisma.SortOrderInput | Prisma.SortOrder
+  participationType?: Prisma.SortOrder
+  minTeamSize?: Prisma.SortOrderInput | Prisma.SortOrder
+  maxTeamSize?: Prisma.SortOrderInput | Prisma.SortOrder
+  enableQrAttendance?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   approvalStatus?: Prisma.SortOrder
   approvedById?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -380,7 +435,9 @@ export type EventOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.UserOrderByWithRelationInput
+  registrationForm?: Prisma.EventFormOrderByWithRelationInput
   registrations?: Prisma.EventRegistrationOrderByRelationAggregateInput
+  teams?: Prisma.EventTeamOrderByRelationAggregateInput
 }
 
 export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -402,6 +459,11 @@ export type EventWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumEventStatusFilter<"Event"> | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFilter<"Event"> | $Enums.EventAccess
   isFeatured?: Prisma.BoolFilter<"Event"> | boolean
+  registrationTemplate?: Prisma.EnumEventRegistrationTemplateNullableFilter<"Event"> | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeFilter<"Event"> | $Enums.EventParticipationType
+  minTeamSize?: Prisma.IntNullableFilter<"Event"> | number | null
+  maxTeamSize?: Prisma.IntNullableFilter<"Event"> | number | null
+  enableQrAttendance?: Prisma.BoolFilter<"Event"> | boolean
   createdById?: Prisma.StringFilter<"Event"> | string
   approvalStatus?: Prisma.EnumApprovalStatusFilter<"Event"> | $Enums.ApprovalStatus
   approvedById?: Prisma.StringNullableFilter<"Event"> | string | null
@@ -410,7 +472,9 @@ export type EventWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Event"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Event"> | Date | string
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  registrationForm?: Prisma.XOR<Prisma.EventFormNullableScalarRelationFilter, Prisma.EventFormWhereInput> | null
   registrations?: Prisma.EventRegistrationListRelationFilter
+  teams?: Prisma.EventTeamListRelationFilter
 }, "id" | "slug">
 
 export type EventOrderByWithAggregationInput = {
@@ -429,6 +493,11 @@ export type EventOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   access?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  registrationTemplate?: Prisma.SortOrderInput | Prisma.SortOrder
+  participationType?: Prisma.SortOrder
+  minTeamSize?: Prisma.SortOrderInput | Prisma.SortOrder
+  maxTeamSize?: Prisma.SortOrderInput | Prisma.SortOrder
+  enableQrAttendance?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   approvalStatus?: Prisma.SortOrder
   approvedById?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -462,6 +531,11 @@ export type EventScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumEventStatusWithAggregatesFilter<"Event"> | $Enums.EventStatus
   access?: Prisma.EnumEventAccessWithAggregatesFilter<"Event"> | $Enums.EventAccess
   isFeatured?: Prisma.BoolWithAggregatesFilter<"Event"> | boolean
+  registrationTemplate?: Prisma.EnumEventRegistrationTemplateNullableWithAggregatesFilter<"Event"> | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeWithAggregatesFilter<"Event"> | $Enums.EventParticipationType
+  minTeamSize?: Prisma.IntNullableWithAggregatesFilter<"Event"> | number | null
+  maxTeamSize?: Prisma.IntNullableWithAggregatesFilter<"Event"> | number | null
+  enableQrAttendance?: Prisma.BoolWithAggregatesFilter<"Event"> | boolean
   createdById?: Prisma.StringWithAggregatesFilter<"Event"> | string
   approvalStatus?: Prisma.EnumApprovalStatusWithAggregatesFilter<"Event"> | $Enums.ApprovalStatus
   approvedById?: Prisma.StringNullableWithAggregatesFilter<"Event"> | string | null
@@ -487,6 +561,11 @@ export type EventCreateInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  participationType?: $Enums.EventParticipationType
+  minTeamSize?: number | null
+  maxTeamSize?: number | null
+  enableQrAttendance?: boolean
   approvalStatus?: $Enums.ApprovalStatus
   approvedById?: string | null
   approvedAt?: Date | string | null
@@ -494,7 +573,9 @@ export type EventCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedEventsInput
+  registrationForm?: Prisma.EventFormCreateNestedOneWithoutEventInput
   registrations?: Prisma.EventRegistrationCreateNestedManyWithoutEventInput
+  teams?: Prisma.EventTeamCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateInput = {
@@ -513,6 +594,11 @@ export type EventUncheckedCreateInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  participationType?: $Enums.EventParticipationType
+  minTeamSize?: number | null
+  maxTeamSize?: number | null
+  enableQrAttendance?: boolean
   createdById: string
   approvalStatus?: $Enums.ApprovalStatus
   approvedById?: string | null
@@ -520,7 +606,9 @@ export type EventUncheckedCreateInput = {
   rejectionReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  registrationForm?: Prisma.EventFormUncheckedCreateNestedOneWithoutEventInput
   registrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutEventInput
+  teams?: Prisma.EventTeamUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventUpdateInput = {
@@ -539,6 +627,11 @@ export type EventUpdateInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
+  minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  enableQrAttendance?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvalStatus?: Prisma.EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -546,7 +639,9 @@ export type EventUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedEventsNestedInput
+  registrationForm?: Prisma.EventFormUpdateOneWithoutEventNestedInput
   registrations?: Prisma.EventRegistrationUpdateManyWithoutEventNestedInput
+  teams?: Prisma.EventTeamUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateInput = {
@@ -565,6 +660,11 @@ export type EventUncheckedUpdateInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
+  minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  enableQrAttendance?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   approvalStatus?: Prisma.EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -572,7 +672,9 @@ export type EventUncheckedUpdateInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  registrationForm?: Prisma.EventFormUncheckedUpdateOneWithoutEventNestedInput
   registrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutEventNestedInput
+  teams?: Prisma.EventTeamUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateManyInput = {
@@ -591,6 +693,11 @@ export type EventCreateManyInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  participationType?: $Enums.EventParticipationType
+  minTeamSize?: number | null
+  maxTeamSize?: number | null
+  enableQrAttendance?: boolean
   createdById: string
   approvalStatus?: $Enums.ApprovalStatus
   approvedById?: string | null
@@ -616,6 +723,11 @@ export type EventUpdateManyMutationInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
+  minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  enableQrAttendance?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvalStatus?: Prisma.EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -640,6 +752,11 @@ export type EventUncheckedUpdateManyInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
+  minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  enableQrAttendance?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   approvalStatus?: Prisma.EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -675,6 +792,11 @@ export type EventCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   access?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  registrationTemplate?: Prisma.SortOrder
+  participationType?: Prisma.SortOrder
+  minTeamSize?: Prisma.SortOrder
+  maxTeamSize?: Prisma.SortOrder
+  enableQrAttendance?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   approvalStatus?: Prisma.SortOrder
   approvedById?: Prisma.SortOrder
@@ -686,6 +808,8 @@ export type EventCountOrderByAggregateInput = {
 
 export type EventAvgOrderByAggregateInput = {
   capacity?: Prisma.SortOrder
+  minTeamSize?: Prisma.SortOrder
+  maxTeamSize?: Prisma.SortOrder
 }
 
 export type EventMaxOrderByAggregateInput = {
@@ -704,6 +828,11 @@ export type EventMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   access?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  registrationTemplate?: Prisma.SortOrder
+  participationType?: Prisma.SortOrder
+  minTeamSize?: Prisma.SortOrder
+  maxTeamSize?: Prisma.SortOrder
+  enableQrAttendance?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   approvalStatus?: Prisma.SortOrder
   approvedById?: Prisma.SortOrder
@@ -729,6 +858,11 @@ export type EventMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   access?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  registrationTemplate?: Prisma.SortOrder
+  participationType?: Prisma.SortOrder
+  minTeamSize?: Prisma.SortOrder
+  maxTeamSize?: Prisma.SortOrder
+  enableQrAttendance?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   approvalStatus?: Prisma.SortOrder
   approvedById?: Prisma.SortOrder
@@ -740,6 +874,8 @@ export type EventMinOrderByAggregateInput = {
 
 export type EventSumOrderByAggregateInput = {
   capacity?: Prisma.SortOrder
+  minTeamSize?: Prisma.SortOrder
+  maxTeamSize?: Prisma.SortOrder
 }
 
 export type EventScalarRelationFilter = {
@@ -805,6 +941,14 @@ export type EnumEventAccessFieldUpdateOperationsInput = {
   set?: $Enums.EventAccess
 }
 
+export type NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput = {
+  set?: $Enums.EventRegistrationTemplate | null
+}
+
+export type EnumEventParticipationTypeFieldUpdateOperationsInput = {
+  set?: $Enums.EventParticipationType
+}
+
 export type EnumApprovalStatusFieldUpdateOperationsInput = {
   set?: $Enums.ApprovalStatus
 }
@@ -823,6 +967,34 @@ export type EventUpdateOneRequiredWithoutRegistrationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutRegistrationsInput, Prisma.EventUpdateWithoutRegistrationsInput>, Prisma.EventUncheckedUpdateWithoutRegistrationsInput>
 }
 
+export type EventCreateNestedOneWithoutRegistrationFormInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutRegistrationFormInput, Prisma.EventUncheckedCreateWithoutRegistrationFormInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutRegistrationFormInput
+  connect?: Prisma.EventWhereUniqueInput
+}
+
+export type EventUpdateOneRequiredWithoutRegistrationFormNestedInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutRegistrationFormInput, Prisma.EventUncheckedCreateWithoutRegistrationFormInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutRegistrationFormInput
+  upsert?: Prisma.EventUpsertWithoutRegistrationFormInput
+  connect?: Prisma.EventWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutRegistrationFormInput, Prisma.EventUpdateWithoutRegistrationFormInput>, Prisma.EventUncheckedUpdateWithoutRegistrationFormInput>
+}
+
+export type EventCreateNestedOneWithoutTeamsInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutTeamsInput, Prisma.EventUncheckedCreateWithoutTeamsInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutTeamsInput
+  connect?: Prisma.EventWhereUniqueInput
+}
+
+export type EventUpdateOneRequiredWithoutTeamsNestedInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutTeamsInput, Prisma.EventUncheckedCreateWithoutTeamsInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutTeamsInput
+  upsert?: Prisma.EventUpsertWithoutTeamsInput
+  connect?: Prisma.EventWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutTeamsInput, Prisma.EventUpdateWithoutTeamsInput>, Prisma.EventUncheckedUpdateWithoutTeamsInput>
+}
+
 export type EventCreateWithoutCreatedByInput = {
   id?: string
   title: string
@@ -839,13 +1011,20 @@ export type EventCreateWithoutCreatedByInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  participationType?: $Enums.EventParticipationType
+  minTeamSize?: number | null
+  maxTeamSize?: number | null
+  enableQrAttendance?: boolean
   approvalStatus?: $Enums.ApprovalStatus
   approvedById?: string | null
   approvedAt?: Date | string | null
   rejectionReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  registrationForm?: Prisma.EventFormCreateNestedOneWithoutEventInput
   registrations?: Prisma.EventRegistrationCreateNestedManyWithoutEventInput
+  teams?: Prisma.EventTeamCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutCreatedByInput = {
@@ -864,13 +1043,20 @@ export type EventUncheckedCreateWithoutCreatedByInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  participationType?: $Enums.EventParticipationType
+  minTeamSize?: number | null
+  maxTeamSize?: number | null
+  enableQrAttendance?: boolean
   approvalStatus?: $Enums.ApprovalStatus
   approvedById?: string | null
   approvedAt?: Date | string | null
   rejectionReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  registrationForm?: Prisma.EventFormUncheckedCreateNestedOneWithoutEventInput
   registrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutEventInput
+  teams?: Prisma.EventTeamUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutCreatedByInput = {
@@ -918,6 +1104,11 @@ export type EventScalarWhereInput = {
   status?: Prisma.EnumEventStatusFilter<"Event"> | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFilter<"Event"> | $Enums.EventAccess
   isFeatured?: Prisma.BoolFilter<"Event"> | boolean
+  registrationTemplate?: Prisma.EnumEventRegistrationTemplateNullableFilter<"Event"> | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeFilter<"Event"> | $Enums.EventParticipationType
+  minTeamSize?: Prisma.IntNullableFilter<"Event"> | number | null
+  maxTeamSize?: Prisma.IntNullableFilter<"Event"> | number | null
+  enableQrAttendance?: Prisma.BoolFilter<"Event"> | boolean
   createdById?: Prisma.StringFilter<"Event"> | string
   approvalStatus?: Prisma.EnumApprovalStatusFilter<"Event"> | $Enums.ApprovalStatus
   approvedById?: Prisma.StringNullableFilter<"Event"> | string | null
@@ -943,6 +1134,11 @@ export type EventCreateWithoutRegistrationsInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  participationType?: $Enums.EventParticipationType
+  minTeamSize?: number | null
+  maxTeamSize?: number | null
+  enableQrAttendance?: boolean
   approvalStatus?: $Enums.ApprovalStatus
   approvedById?: string | null
   approvedAt?: Date | string | null
@@ -950,6 +1146,8 @@ export type EventCreateWithoutRegistrationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedEventsInput
+  registrationForm?: Prisma.EventFormCreateNestedOneWithoutEventInput
+  teams?: Prisma.EventTeamCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutRegistrationsInput = {
@@ -968,6 +1166,11 @@ export type EventUncheckedCreateWithoutRegistrationsInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  participationType?: $Enums.EventParticipationType
+  minTeamSize?: number | null
+  maxTeamSize?: number | null
+  enableQrAttendance?: boolean
   createdById: string
   approvalStatus?: $Enums.ApprovalStatus
   approvedById?: string | null
@@ -975,6 +1178,8 @@ export type EventUncheckedCreateWithoutRegistrationsInput = {
   rejectionReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  registrationForm?: Prisma.EventFormUncheckedCreateNestedOneWithoutEventInput
+  teams?: Prisma.EventTeamUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutRegistrationsInput = {
@@ -1009,6 +1214,11 @@ export type EventUpdateWithoutRegistrationsInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
+  minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  enableQrAttendance?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvalStatus?: Prisma.EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1016,6 +1226,8 @@ export type EventUpdateWithoutRegistrationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedEventsNestedInput
+  registrationForm?: Prisma.EventFormUpdateOneWithoutEventNestedInput
+  teams?: Prisma.EventTeamUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutRegistrationsInput = {
@@ -1034,6 +1246,11 @@ export type EventUncheckedUpdateWithoutRegistrationsInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
+  minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  enableQrAttendance?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   approvalStatus?: Prisma.EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1041,6 +1258,296 @@ export type EventUncheckedUpdateWithoutRegistrationsInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  registrationForm?: Prisma.EventFormUncheckedUpdateOneWithoutEventNestedInput
+  teams?: Prisma.EventTeamUncheckedUpdateManyWithoutEventNestedInput
+}
+
+export type EventCreateWithoutRegistrationFormInput = {
+  id?: string
+  title: string
+  slug: string
+  shortDescription?: string | null
+  description: string
+  bannerImage?: string | null
+  venue?: string | null
+  eventDate: Date | string
+  startTime?: Date | string | null
+  endTime?: Date | string | null
+  registrationDeadline?: Date | string | null
+  capacity?: number | null
+  status?: $Enums.EventStatus
+  access?: $Enums.EventAccess
+  isFeatured?: boolean
+  registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  participationType?: $Enums.EventParticipationType
+  minTeamSize?: number | null
+  maxTeamSize?: number | null
+  enableQrAttendance?: boolean
+  approvalStatus?: $Enums.ApprovalStatus
+  approvedById?: string | null
+  approvedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedEventsInput
+  registrations?: Prisma.EventRegistrationCreateNestedManyWithoutEventInput
+  teams?: Prisma.EventTeamCreateNestedManyWithoutEventInput
+}
+
+export type EventUncheckedCreateWithoutRegistrationFormInput = {
+  id?: string
+  title: string
+  slug: string
+  shortDescription?: string | null
+  description: string
+  bannerImage?: string | null
+  venue?: string | null
+  eventDate: Date | string
+  startTime?: Date | string | null
+  endTime?: Date | string | null
+  registrationDeadline?: Date | string | null
+  capacity?: number | null
+  status?: $Enums.EventStatus
+  access?: $Enums.EventAccess
+  isFeatured?: boolean
+  registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  participationType?: $Enums.EventParticipationType
+  minTeamSize?: number | null
+  maxTeamSize?: number | null
+  enableQrAttendance?: boolean
+  createdById: string
+  approvalStatus?: $Enums.ApprovalStatus
+  approvedById?: string | null
+  approvedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  registrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutEventInput
+  teams?: Prisma.EventTeamUncheckedCreateNestedManyWithoutEventInput
+}
+
+export type EventCreateOrConnectWithoutRegistrationFormInput = {
+  where: Prisma.EventWhereUniqueInput
+  create: Prisma.XOR<Prisma.EventCreateWithoutRegistrationFormInput, Prisma.EventUncheckedCreateWithoutRegistrationFormInput>
+}
+
+export type EventUpsertWithoutRegistrationFormInput = {
+  update: Prisma.XOR<Prisma.EventUpdateWithoutRegistrationFormInput, Prisma.EventUncheckedUpdateWithoutRegistrationFormInput>
+  create: Prisma.XOR<Prisma.EventCreateWithoutRegistrationFormInput, Prisma.EventUncheckedCreateWithoutRegistrationFormInput>
+  where?: Prisma.EventWhereInput
+}
+
+export type EventUpdateToOneWithWhereWithoutRegistrationFormInput = {
+  where?: Prisma.EventWhereInput
+  data: Prisma.XOR<Prisma.EventUpdateWithoutRegistrationFormInput, Prisma.EventUncheckedUpdateWithoutRegistrationFormInput>
+}
+
+export type EventUpdateWithoutRegistrationFormInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  venue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  registrationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+  access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
+  minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  enableQrAttendance?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvalStatus?: Prisma.EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedEventsNestedInput
+  registrations?: Prisma.EventRegistrationUpdateManyWithoutEventNestedInput
+  teams?: Prisma.EventTeamUpdateManyWithoutEventNestedInput
+}
+
+export type EventUncheckedUpdateWithoutRegistrationFormInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  venue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  registrationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+  access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
+  minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  enableQrAttendance?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  approvalStatus?: Prisma.EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  registrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutEventNestedInput
+  teams?: Prisma.EventTeamUncheckedUpdateManyWithoutEventNestedInput
+}
+
+export type EventCreateWithoutTeamsInput = {
+  id?: string
+  title: string
+  slug: string
+  shortDescription?: string | null
+  description: string
+  bannerImage?: string | null
+  venue?: string | null
+  eventDate: Date | string
+  startTime?: Date | string | null
+  endTime?: Date | string | null
+  registrationDeadline?: Date | string | null
+  capacity?: number | null
+  status?: $Enums.EventStatus
+  access?: $Enums.EventAccess
+  isFeatured?: boolean
+  registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  participationType?: $Enums.EventParticipationType
+  minTeamSize?: number | null
+  maxTeamSize?: number | null
+  enableQrAttendance?: boolean
+  approvalStatus?: $Enums.ApprovalStatus
+  approvedById?: string | null
+  approvedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedEventsInput
+  registrationForm?: Prisma.EventFormCreateNestedOneWithoutEventInput
+  registrations?: Prisma.EventRegistrationCreateNestedManyWithoutEventInput
+}
+
+export type EventUncheckedCreateWithoutTeamsInput = {
+  id?: string
+  title: string
+  slug: string
+  shortDescription?: string | null
+  description: string
+  bannerImage?: string | null
+  venue?: string | null
+  eventDate: Date | string
+  startTime?: Date | string | null
+  endTime?: Date | string | null
+  registrationDeadline?: Date | string | null
+  capacity?: number | null
+  status?: $Enums.EventStatus
+  access?: $Enums.EventAccess
+  isFeatured?: boolean
+  registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  participationType?: $Enums.EventParticipationType
+  minTeamSize?: number | null
+  maxTeamSize?: number | null
+  enableQrAttendance?: boolean
+  createdById: string
+  approvalStatus?: $Enums.ApprovalStatus
+  approvedById?: string | null
+  approvedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  registrationForm?: Prisma.EventFormUncheckedCreateNestedOneWithoutEventInput
+  registrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutEventInput
+}
+
+export type EventCreateOrConnectWithoutTeamsInput = {
+  where: Prisma.EventWhereUniqueInput
+  create: Prisma.XOR<Prisma.EventCreateWithoutTeamsInput, Prisma.EventUncheckedCreateWithoutTeamsInput>
+}
+
+export type EventUpsertWithoutTeamsInput = {
+  update: Prisma.XOR<Prisma.EventUpdateWithoutTeamsInput, Prisma.EventUncheckedUpdateWithoutTeamsInput>
+  create: Prisma.XOR<Prisma.EventCreateWithoutTeamsInput, Prisma.EventUncheckedCreateWithoutTeamsInput>
+  where?: Prisma.EventWhereInput
+}
+
+export type EventUpdateToOneWithWhereWithoutTeamsInput = {
+  where?: Prisma.EventWhereInput
+  data: Prisma.XOR<Prisma.EventUpdateWithoutTeamsInput, Prisma.EventUncheckedUpdateWithoutTeamsInput>
+}
+
+export type EventUpdateWithoutTeamsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  venue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  registrationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+  access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
+  minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  enableQrAttendance?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvalStatus?: Prisma.EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedEventsNestedInput
+  registrationForm?: Prisma.EventFormUpdateOneWithoutEventNestedInput
+  registrations?: Prisma.EventRegistrationUpdateManyWithoutEventNestedInput
+}
+
+export type EventUncheckedUpdateWithoutTeamsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  venue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  registrationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+  access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
+  minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  enableQrAttendance?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  approvalStatus?: Prisma.EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  registrationForm?: Prisma.EventFormUncheckedUpdateOneWithoutEventNestedInput
+  registrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateManyCreatedByInput = {
@@ -1059,6 +1566,11 @@ export type EventCreateManyCreatedByInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  participationType?: $Enums.EventParticipationType
+  minTeamSize?: number | null
+  maxTeamSize?: number | null
+  enableQrAttendance?: boolean
   approvalStatus?: $Enums.ApprovalStatus
   approvedById?: string | null
   approvedAt?: Date | string | null
@@ -1083,13 +1595,20 @@ export type EventUpdateWithoutCreatedByInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
+  minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  enableQrAttendance?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvalStatus?: Prisma.EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  registrationForm?: Prisma.EventFormUpdateOneWithoutEventNestedInput
   registrations?: Prisma.EventRegistrationUpdateManyWithoutEventNestedInput
+  teams?: Prisma.EventTeamUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutCreatedByInput = {
@@ -1108,13 +1627,20 @@ export type EventUncheckedUpdateWithoutCreatedByInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
+  minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  enableQrAttendance?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvalStatus?: Prisma.EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  registrationForm?: Prisma.EventFormUncheckedUpdateOneWithoutEventNestedInput
   registrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutEventNestedInput
+  teams?: Prisma.EventTeamUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateManyWithoutCreatedByInput = {
@@ -1133,6 +1659,11 @@ export type EventUncheckedUpdateManyWithoutCreatedByInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
+  minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  enableQrAttendance?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvalStatus?: Prisma.EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1148,10 +1679,12 @@ export type EventUncheckedUpdateManyWithoutCreatedByInput = {
 
 export type EventCountOutputType = {
   registrations: number
+  teams: number
 }
 
 export type EventCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   registrations?: boolean | EventCountOutputTypeCountRegistrationsArgs
+  teams?: boolean | EventCountOutputTypeCountTeamsArgs
 }
 
 /**
@@ -1171,6 +1704,13 @@ export type EventCountOutputTypeCountRegistrationsArgs<ExtArgs extends runtime.T
   where?: Prisma.EventRegistrationWhereInput
 }
 
+/**
+ * EventCountOutputType without action
+ */
+export type EventCountOutputTypeCountTeamsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EventTeamWhereInput
+}
+
 
 export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1188,6 +1728,11 @@ export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   status?: boolean
   access?: boolean
   isFeatured?: boolean
+  registrationTemplate?: boolean
+  participationType?: boolean
+  minTeamSize?: boolean
+  maxTeamSize?: boolean
+  enableQrAttendance?: boolean
   createdById?: boolean
   approvalStatus?: boolean
   approvedById?: boolean
@@ -1196,7 +1741,9 @@ export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  registrationForm?: boolean | Prisma.Event$registrationFormArgs<ExtArgs>
   registrations?: boolean | Prisma.Event$registrationsArgs<ExtArgs>
+  teams?: boolean | Prisma.Event$teamsArgs<ExtArgs>
   _count?: boolean | Prisma.EventCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["event"]>
 
@@ -1216,6 +1763,11 @@ export type EventSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   status?: boolean
   access?: boolean
   isFeatured?: boolean
+  registrationTemplate?: boolean
+  participationType?: boolean
+  minTeamSize?: boolean
+  maxTeamSize?: boolean
+  enableQrAttendance?: boolean
   createdById?: boolean
   approvalStatus?: boolean
   approvedById?: boolean
@@ -1242,6 +1794,11 @@ export type EventSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   status?: boolean
   access?: boolean
   isFeatured?: boolean
+  registrationTemplate?: boolean
+  participationType?: boolean
+  minTeamSize?: boolean
+  maxTeamSize?: boolean
+  enableQrAttendance?: boolean
   createdById?: boolean
   approvalStatus?: boolean
   approvedById?: boolean
@@ -1268,6 +1825,11 @@ export type EventSelectScalar = {
   status?: boolean
   access?: boolean
   isFeatured?: boolean
+  registrationTemplate?: boolean
+  participationType?: boolean
+  minTeamSize?: boolean
+  maxTeamSize?: boolean
+  enableQrAttendance?: boolean
   createdById?: boolean
   approvalStatus?: boolean
   approvedById?: boolean
@@ -1277,10 +1839,12 @@ export type EventSelectScalar = {
   updatedAt?: boolean
 }
 
-export type EventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "shortDescription" | "description" | "bannerImage" | "venue" | "eventDate" | "startTime" | "endTime" | "registrationDeadline" | "capacity" | "status" | "access" | "isFeatured" | "createdById" | "approvalStatus" | "approvedById" | "approvedAt" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
+export type EventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "shortDescription" | "description" | "bannerImage" | "venue" | "eventDate" | "startTime" | "endTime" | "registrationDeadline" | "capacity" | "status" | "access" | "isFeatured" | "registrationTemplate" | "participationType" | "minTeamSize" | "maxTeamSize" | "enableQrAttendance" | "createdById" | "approvalStatus" | "approvedById" | "approvedAt" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
 export type EventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  registrationForm?: boolean | Prisma.Event$registrationFormArgs<ExtArgs>
   registrations?: boolean | Prisma.Event$registrationsArgs<ExtArgs>
+  teams?: boolean | Prisma.Event$teamsArgs<ExtArgs>
   _count?: boolean | Prisma.EventCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EventIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1294,7 +1858,9 @@ export type $EventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name: "Event"
   objects: {
     createdBy: Prisma.$UserPayload<ExtArgs>
+    registrationForm: Prisma.$EventFormPayload<ExtArgs> | null
     registrations: Prisma.$EventRegistrationPayload<ExtArgs>[]
+    teams: Prisma.$EventTeamPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1312,6 +1878,11 @@ export type $EventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     status: $Enums.EventStatus
     access: $Enums.EventAccess
     isFeatured: boolean
+    registrationTemplate: $Enums.EventRegistrationTemplate | null
+    participationType: $Enums.EventParticipationType
+    minTeamSize: number | null
+    maxTeamSize: number | null
+    enableQrAttendance: boolean
     createdById: string
     approvalStatus: $Enums.ApprovalStatus
     approvedById: string | null
@@ -1714,7 +2285,9 @@ readonly fields: EventFieldRefs;
 export interface Prisma__EventClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  registrationForm<T extends Prisma.Event$registrationFormArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$registrationFormArgs<ExtArgs>>): Prisma.Prisma__EventFormClient<runtime.Types.Result.GetResult<Prisma.$EventFormPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   registrations<T extends Prisma.Event$registrationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$registrationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventRegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  teams<T extends Prisma.Event$teamsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$teamsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventTeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1759,6 +2332,11 @@ export interface EventFieldRefs {
   readonly status: Prisma.FieldRef<"Event", 'EventStatus'>
   readonly access: Prisma.FieldRef<"Event", 'EventAccess'>
   readonly isFeatured: Prisma.FieldRef<"Event", 'Boolean'>
+  readonly registrationTemplate: Prisma.FieldRef<"Event", 'EventRegistrationTemplate'>
+  readonly participationType: Prisma.FieldRef<"Event", 'EventParticipationType'>
+  readonly minTeamSize: Prisma.FieldRef<"Event", 'Int'>
+  readonly maxTeamSize: Prisma.FieldRef<"Event", 'Int'>
+  readonly enableQrAttendance: Prisma.FieldRef<"Event", 'Boolean'>
   readonly createdById: Prisma.FieldRef<"Event", 'String'>
   readonly approvalStatus: Prisma.FieldRef<"Event", 'ApprovalStatus'>
   readonly approvedById: Prisma.FieldRef<"Event", 'String'>
@@ -2167,6 +2745,25 @@ export type EventDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
+ * Event.registrationForm
+ */
+export type Event$registrationFormArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EventForm
+   */
+  select?: Prisma.EventFormSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EventForm
+   */
+  omit?: Prisma.EventFormOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EventFormInclude<ExtArgs> | null
+  where?: Prisma.EventFormWhereInput
+}
+
+/**
  * Event.registrations
  */
 export type Event$registrationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2188,6 +2785,30 @@ export type Event$registrationsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.EventRegistrationScalarFieldEnum | Prisma.EventRegistrationScalarFieldEnum[]
+}
+
+/**
+ * Event.teams
+ */
+export type Event$teamsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EventTeam
+   */
+  select?: Prisma.EventTeamSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EventTeam
+   */
+  omit?: Prisma.EventTeamOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EventTeamInclude<ExtArgs> | null
+  where?: Prisma.EventTeamWhereInput
+  orderBy?: Prisma.EventTeamOrderByWithRelationInput | Prisma.EventTeamOrderByWithRelationInput[]
+  cursor?: Prisma.EventTeamWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EventTeamScalarFieldEnum | Prisma.EventTeamScalarFieldEnum[]
 }
 
 /**

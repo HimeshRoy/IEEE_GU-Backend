@@ -77,6 +77,48 @@ enum ApprovalStatus {
   REJECTED
 }
 
+enum EventRegistrationTemplate {
+  UNIVERSITY_INDIVIDUAL
+  UNIVERSITY_TEAM
+  INTER_UNIVERSITY_INDIVIDUAL
+  INTER_UNIVERSITY_TEAM
+  PUBLIC_INDIVIDUAL
+  PUBLIC_TEAM
+  CUSTOM
+}
+
+enum EventParticipationType {
+  INDIVIDUAL
+  TEAM
+}
+
+enum EventFormStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED
+  ARCHIVED
+}
+
+enum EventFormFieldType {
+  SHORT_ANSWER
+  PARAGRAPH
+  EMAIL
+  PHONE
+  NUMBER
+  MULTIPLE_CHOICE
+  CHECKBOXES
+  DROPDOWN
+  DATE
+  TIME
+  FILE_UPLOAD
+  IMAGE_UPLOAD
+}
+
+enum EventFormFieldScope {
+  PARTICIPANT
+  TEAM
+}
+
 enum NotificationType {
   EVENT
   ANNOUNCEMENT
@@ -207,33 +249,38 @@ model Event {
   slug             String  @unique
   shortDescription String?
   description      String
+  bannerImage      String?
+  venue            String?
 
-  bannerImage String?
-
-  venue     String?
-  eventDate DateTime
-  startTime DateTime?
-  endTime   DateTime?
-
+  eventDate            DateTime
+  startTime            DateTime?
+  endTime              DateTime?
   registrationDeadline DateTime?
-  capacity             Int?
 
-  status EventStatus @default(DRAFT)
-  access EventAccess @default(PUBLIC)
+  capacity Int?
 
-  isFeatured Boolean @default(false)
+  status     EventStatus @default(DRAFT)
+  access     EventAccess @default(PUBLIC)
+  isFeatured Boolean     @default(false)
+
+  registrationTemplate EventRegistrationTemplate?
+  participationType    EventParticipationType     @default(INDIVIDUAL)
+  minTeamSize          Int?
+  maxTeamSize          Int?
+
+  enableQrAttendance Boolean @default(false)
 
   createdById String
   createdBy   User   @relation("EventCreator", fields: [createdById], references: [id])
 
-  approvalStatus ApprovalStatus @default(PENDING)
-
-  approvedById String?
-  approvedAt   DateTime?
-
+  approvalStatus  ApprovalStatus @default(PENDING)
+  approvedById    String?
+  approvedAt      DateTime?
   rejectionReason String?
 
-  registrations EventRegistration[]
+  registrationForm EventForm?
+  registrations    EventRegistration[]
+  teams            EventTeam[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -241,6 +288,7 @@ model Event {
   @@index([status])
   @@index([eventDate])
   @@index([createdById])
+  @@index([registrationTemplate])
 }
 
 model EventRegistration {
@@ -252,18 +300,134 @@ model EventRegistration {
   userId String?
   user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
+  teamId String?
+  team   EventTeam? @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
   name  String
   email String
   phone String?
+
+  qrToken String? @unique
+
+  isTeamLeader Boolean @default(false)
 
   registrationStatus RegistrationStatus @default(REGISTERED)
 
   registeredAt DateTime  @default(now())
   attendedAt   DateTime?
 
+  formResponse EventFormResponse?
+
   @@unique([eventId, email])
   @@index([eventId])
   @@index([userId])
+  @@index([teamId])
+  @@index([registrationStatus])
+}
+
+model EventForm {
+  id String @id @default(cuid())
+
+  eventId String @unique
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  title       String
+  description String?
+
+  template EventRegistrationTemplate?
+  status   EventFormStatus            @default(DRAFT)
+
+  fields    EventFormField[]
+  responses EventFormResponse[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EventFormField {
+  id String @id @default(cuid())
+
+  formId String
+  form   EventForm @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  key         String
+  label       String
+  description String?
+
+  type  EventFormFieldType
+  scope EventFormFieldScope @default(PARTICIPANT)
+
+  required Boolean @default(false)
+
+  placeholder String?
+
+  options    Json?
+  validation Json?
+
+  order Int
+
+  isSystemField Boolean @default(false)
+
+  answers EventFormAnswer[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([formId, key])
+  @@index([formId, order])
+}
+
+model EventFormResponse {
+  id String @id @default(cuid())
+
+  formId String
+  form   EventForm @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  registrationId String            @unique
+  registration   EventRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+
+  submittedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  answers EventFormAnswer[]
+
+  @@index([formId])
+  @@index([submittedAt])
+}
+
+model EventFormAnswer {
+  id String @id @default(cuid())
+
+  responseId String
+  response   EventFormResponse @relation(fields: [responseId], references: [id], onDelete: Cascade)
+
+  fieldId String
+  field   EventFormField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+
+  value Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([responseId, fieldId])
+  @@index([fieldId])
+}
+
+model EventTeam {
+  id String @id @default(cuid())
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  name String
+
+  registrations EventRegistration[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([eventId, name])
+  @@index([eventId])
 }
 
 model Announcement {

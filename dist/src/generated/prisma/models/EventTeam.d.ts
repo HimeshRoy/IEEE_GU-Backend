@@ -1,0 +1,1304 @@
+import type * as runtime from "@prisma/client/runtime/client";
+import type * as Prisma from "../internal/prismaNamespace.js";
+/**
+ * Model EventTeam
+ *
+ */
+export type EventTeamModel = runtime.Types.Result.DefaultSelection<Prisma.$EventTeamPayload>;
+export type AggregateEventTeam = {
+    _count: EventTeamCountAggregateOutputType | null;
+    _min: EventTeamMinAggregateOutputType | null;
+    _max: EventTeamMaxAggregateOutputType | null;
+};
+export type EventTeamMinAggregateOutputType = {
+    id: string | null;
+    eventId: string | null;
+    name: string | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+};
+export type EventTeamMaxAggregateOutputType = {
+    id: string | null;
+    eventId: string | null;
+    name: string | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+};
+export type EventTeamCountAggregateOutputType = {
+    id: number;
+    eventId: number;
+    name: number;
+    createdAt: number;
+    updatedAt: number;
+    _all: number;
+};
+export type EventTeamMinAggregateInputType = {
+    id?: true;
+    eventId?: true;
+    name?: true;
+    createdAt?: true;
+    updatedAt?: true;
+};
+export type EventTeamMaxAggregateInputType = {
+    id?: true;
+    eventId?: true;
+    name?: true;
+    createdAt?: true;
+    updatedAt?: true;
+};
+export type EventTeamCountAggregateInputType = {
+    id?: true;
+    eventId?: true;
+    name?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    _all?: true;
+};
+export type EventTeamAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventTeam to aggregate.
+     */
+    where?: Prisma.EventTeamWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of EventTeams to fetch.
+     */
+    orderBy?: Prisma.EventTeamOrderByWithRelationInput | Prisma.EventTeamOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.EventTeamWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` EventTeams from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` EventTeams.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned EventTeams
+    **/
+    _count?: true | EventTeamCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: EventTeamMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: EventTeamMaxAggregateInputType;
+};
+export type GetEventTeamAggregateType<T extends EventTeamAggregateArgs> = {
+    [P in keyof T & keyof AggregateEventTeam]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateEventTeam[P]> : Prisma.GetScalarType<T[P], AggregateEventTeam[P]>;
+};
+export type EventTeamGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.EventTeamWhereInput;
+    orderBy?: Prisma.EventTeamOrderByWithAggregationInput | Prisma.EventTeamOrderByWithAggregationInput[];
+    by: Prisma.EventTeamScalarFieldEnum[] | Prisma.EventTeamScalarFieldEnum;
+    having?: Prisma.EventTeamScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: EventTeamCountAggregateInputType | true;
+    _min?: EventTeamMinAggregateInputType;
+    _max?: EventTeamMaxAggregateInputType;
+};
+export type EventTeamGroupByOutputType = {
+    id: string;
+    eventId: string;
+    name: string;
+    createdAt: Date;
+    updatedAt: Date;
+    _count: EventTeamCountAggregateOutputType | null;
+    _min: EventTeamMinAggregateOutputType | null;
+    _max: EventTeamMaxAggregateOutputType | null;
+};
+export type GetEventTeamGroupByPayload<T extends EventTeamGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<EventTeamGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof EventTeamGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], EventTeamGroupByOutputType[P]> : Prisma.GetScalarType<T[P], EventTeamGroupByOutputType[P]>;
+}>>;
+export type EventTeamWhereInput = {
+    AND?: Prisma.EventTeamWhereInput | Prisma.EventTeamWhereInput[];
+    OR?: Prisma.EventTeamWhereInput[];
+    NOT?: Prisma.EventTeamWhereInput | Prisma.EventTeamWhereInput[];
+    id?: Prisma.StringFilter<"EventTeam"> | string;
+    eventId?: Prisma.StringFilter<"EventTeam"> | string;
+    name?: Prisma.StringFilter<"EventTeam"> | string;
+    createdAt?: Prisma.DateTimeFilter<"EventTeam"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"EventTeam"> | Date | string;
+    event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>;
+    registrations?: Prisma.EventRegistrationListRelationFilter;
+};
+export type EventTeamOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    eventId?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    event?: Prisma.EventOrderByWithRelationInput;
+    registrations?: Prisma.EventRegistrationOrderByRelationAggregateInput;
+};
+export type EventTeamWhereUniqueInput = Prisma.AtLeast<{
+    id?: string;
+    eventId_name?: Prisma.EventTeamEventIdNameCompoundUniqueInput;
+    AND?: Prisma.EventTeamWhereInput | Prisma.EventTeamWhereInput[];
+    OR?: Prisma.EventTeamWhereInput[];
+    NOT?: Prisma.EventTeamWhereInput | Prisma.EventTeamWhereInput[];
+    eventId?: Prisma.StringFilter<"EventTeam"> | string;
+    name?: Prisma.StringFilter<"EventTeam"> | string;
+    createdAt?: Prisma.DateTimeFilter<"EventTeam"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"EventTeam"> | Date | string;
+    event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>;
+    registrations?: Prisma.EventRegistrationListRelationFilter;
+}, "id" | "eventId_name">;
+export type EventTeamOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    eventId?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    _count?: Prisma.EventTeamCountOrderByAggregateInput;
+    _max?: Prisma.EventTeamMaxOrderByAggregateInput;
+    _min?: Prisma.EventTeamMinOrderByAggregateInput;
+};
+export type EventTeamScalarWhereWithAggregatesInput = {
+    AND?: Prisma.EventTeamScalarWhereWithAggregatesInput | Prisma.EventTeamScalarWhereWithAggregatesInput[];
+    OR?: Prisma.EventTeamScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.EventTeamScalarWhereWithAggregatesInput | Prisma.EventTeamScalarWhereWithAggregatesInput[];
+    id?: Prisma.StringWithAggregatesFilter<"EventTeam"> | string;
+    eventId?: Prisma.StringWithAggregatesFilter<"EventTeam"> | string;
+    name?: Prisma.StringWithAggregatesFilter<"EventTeam"> | string;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"EventTeam"> | Date | string;
+    updatedAt?: Prisma.DateTimeWithAggregatesFilter<"EventTeam"> | Date | string;
+};
+export type EventTeamCreateInput = {
+    id?: string;
+    name: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    event: Prisma.EventCreateNestedOneWithoutTeamsInput;
+    registrations?: Prisma.EventRegistrationCreateNestedManyWithoutTeamInput;
+};
+export type EventTeamUncheckedCreateInput = {
+    id?: string;
+    eventId: string;
+    name: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    registrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutTeamInput;
+};
+export type EventTeamUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    event?: Prisma.EventUpdateOneRequiredWithoutTeamsNestedInput;
+    registrations?: Prisma.EventRegistrationUpdateManyWithoutTeamNestedInput;
+};
+export type EventTeamUncheckedUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    eventId?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    registrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutTeamNestedInput;
+};
+export type EventTeamCreateManyInput = {
+    id?: string;
+    eventId: string;
+    name: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type EventTeamUpdateManyMutationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type EventTeamUncheckedUpdateManyInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    eventId?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type EventTeamListRelationFilter = {
+    every?: Prisma.EventTeamWhereInput;
+    some?: Prisma.EventTeamWhereInput;
+    none?: Prisma.EventTeamWhereInput;
+};
+export type EventTeamOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type EventTeamNullableScalarRelationFilter = {
+    is?: Prisma.EventTeamWhereInput | null;
+    isNot?: Prisma.EventTeamWhereInput | null;
+};
+export type EventTeamEventIdNameCompoundUniqueInput = {
+    eventId: string;
+    name: string;
+};
+export type EventTeamCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    eventId?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type EventTeamMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    eventId?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type EventTeamMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    eventId?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type EventTeamCreateNestedManyWithoutEventInput = {
+    create?: Prisma.XOR<Prisma.EventTeamCreateWithoutEventInput, Prisma.EventTeamUncheckedCreateWithoutEventInput> | Prisma.EventTeamCreateWithoutEventInput[] | Prisma.EventTeamUncheckedCreateWithoutEventInput[];
+    connectOrCreate?: Prisma.EventTeamCreateOrConnectWithoutEventInput | Prisma.EventTeamCreateOrConnectWithoutEventInput[];
+    createMany?: Prisma.EventTeamCreateManyEventInputEnvelope;
+    connect?: Prisma.EventTeamWhereUniqueInput | Prisma.EventTeamWhereUniqueInput[];
+};
+export type EventTeamUncheckedCreateNestedManyWithoutEventInput = {
+    create?: Prisma.XOR<Prisma.EventTeamCreateWithoutEventInput, Prisma.EventTeamUncheckedCreateWithoutEventInput> | Prisma.EventTeamCreateWithoutEventInput[] | Prisma.EventTeamUncheckedCreateWithoutEventInput[];
+    connectOrCreate?: Prisma.EventTeamCreateOrConnectWithoutEventInput | Prisma.EventTeamCreateOrConnectWithoutEventInput[];
+    createMany?: Prisma.EventTeamCreateManyEventInputEnvelope;
+    connect?: Prisma.EventTeamWhereUniqueInput | Prisma.EventTeamWhereUniqueInput[];
+};
+export type EventTeamUpdateManyWithoutEventNestedInput = {
+    create?: Prisma.XOR<Prisma.EventTeamCreateWithoutEventInput, Prisma.EventTeamUncheckedCreateWithoutEventInput> | Prisma.EventTeamCreateWithoutEventInput[] | Prisma.EventTeamUncheckedCreateWithoutEventInput[];
+    connectOrCreate?: Prisma.EventTeamCreateOrConnectWithoutEventInput | Prisma.EventTeamCreateOrConnectWithoutEventInput[];
+    upsert?: Prisma.EventTeamUpsertWithWhereUniqueWithoutEventInput | Prisma.EventTeamUpsertWithWhereUniqueWithoutEventInput[];
+    createMany?: Prisma.EventTeamCreateManyEventInputEnvelope;
+    set?: Prisma.EventTeamWhereUniqueInput | Prisma.EventTeamWhereUniqueInput[];
+    disconnect?: Prisma.EventTeamWhereUniqueInput | Prisma.EventTeamWhereUniqueInput[];
+    delete?: Prisma.EventTeamWhereUniqueInput | Prisma.EventTeamWhereUniqueInput[];
+    connect?: Prisma.EventTeamWhereUniqueInput | Prisma.EventTeamWhereUniqueInput[];
+    update?: Prisma.EventTeamUpdateWithWhereUniqueWithoutEventInput | Prisma.EventTeamUpdateWithWhereUniqueWithoutEventInput[];
+    updateMany?: Prisma.EventTeamUpdateManyWithWhereWithoutEventInput | Prisma.EventTeamUpdateManyWithWhereWithoutEventInput[];
+    deleteMany?: Prisma.EventTeamScalarWhereInput | Prisma.EventTeamScalarWhereInput[];
+};
+export type EventTeamUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: Prisma.XOR<Prisma.EventTeamCreateWithoutEventInput, Prisma.EventTeamUncheckedCreateWithoutEventInput> | Prisma.EventTeamCreateWithoutEventInput[] | Prisma.EventTeamUncheckedCreateWithoutEventInput[];
+    connectOrCreate?: Prisma.EventTeamCreateOrConnectWithoutEventInput | Prisma.EventTeamCreateOrConnectWithoutEventInput[];
+    upsert?: Prisma.EventTeamUpsertWithWhereUniqueWithoutEventInput | Prisma.EventTeamUpsertWithWhereUniqueWithoutEventInput[];
+    createMany?: Prisma.EventTeamCreateManyEventInputEnvelope;
+    set?: Prisma.EventTeamWhereUniqueInput | Prisma.EventTeamWhereUniqueInput[];
+    disconnect?: Prisma.EventTeamWhereUniqueInput | Prisma.EventTeamWhereUniqueInput[];
+    delete?: Prisma.EventTeamWhereUniqueInput | Prisma.EventTeamWhereUniqueInput[];
+    connect?: Prisma.EventTeamWhereUniqueInput | Prisma.EventTeamWhereUniqueInput[];
+    update?: Prisma.EventTeamUpdateWithWhereUniqueWithoutEventInput | Prisma.EventTeamUpdateWithWhereUniqueWithoutEventInput[];
+    updateMany?: Prisma.EventTeamUpdateManyWithWhereWithoutEventInput | Prisma.EventTeamUpdateManyWithWhereWithoutEventInput[];
+    deleteMany?: Prisma.EventTeamScalarWhereInput | Prisma.EventTeamScalarWhereInput[];
+};
+export type EventTeamCreateNestedOneWithoutRegistrationsInput = {
+    create?: Prisma.XOR<Prisma.EventTeamCreateWithoutRegistrationsInput, Prisma.EventTeamUncheckedCreateWithoutRegistrationsInput>;
+    connectOrCreate?: Prisma.EventTeamCreateOrConnectWithoutRegistrationsInput;
+    connect?: Prisma.EventTeamWhereUniqueInput;
+};
+export type EventTeamUpdateOneWithoutRegistrationsNestedInput = {
+    create?: Prisma.XOR<Prisma.EventTeamCreateWithoutRegistrationsInput, Prisma.EventTeamUncheckedCreateWithoutRegistrationsInput>;
+    connectOrCreate?: Prisma.EventTeamCreateOrConnectWithoutRegistrationsInput;
+    upsert?: Prisma.EventTeamUpsertWithoutRegistrationsInput;
+    disconnect?: Prisma.EventTeamWhereInput | boolean;
+    delete?: Prisma.EventTeamWhereInput | boolean;
+    connect?: Prisma.EventTeamWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.EventTeamUpdateToOneWithWhereWithoutRegistrationsInput, Prisma.EventTeamUpdateWithoutRegistrationsInput>, Prisma.EventTeamUncheckedUpdateWithoutRegistrationsInput>;
+};
+export type EventTeamCreateWithoutEventInput = {
+    id?: string;
+    name: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    registrations?: Prisma.EventRegistrationCreateNestedManyWithoutTeamInput;
+};
+export type EventTeamUncheckedCreateWithoutEventInput = {
+    id?: string;
+    name: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    registrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutTeamInput;
+};
+export type EventTeamCreateOrConnectWithoutEventInput = {
+    where: Prisma.EventTeamWhereUniqueInput;
+    create: Prisma.XOR<Prisma.EventTeamCreateWithoutEventInput, Prisma.EventTeamUncheckedCreateWithoutEventInput>;
+};
+export type EventTeamCreateManyEventInputEnvelope = {
+    data: Prisma.EventTeamCreateManyEventInput | Prisma.EventTeamCreateManyEventInput[];
+    skipDuplicates?: boolean;
+};
+export type EventTeamUpsertWithWhereUniqueWithoutEventInput = {
+    where: Prisma.EventTeamWhereUniqueInput;
+    update: Prisma.XOR<Prisma.EventTeamUpdateWithoutEventInput, Prisma.EventTeamUncheckedUpdateWithoutEventInput>;
+    create: Prisma.XOR<Prisma.EventTeamCreateWithoutEventInput, Prisma.EventTeamUncheckedCreateWithoutEventInput>;
+};
+export type EventTeamUpdateWithWhereUniqueWithoutEventInput = {
+    where: Prisma.EventTeamWhereUniqueInput;
+    data: Prisma.XOR<Prisma.EventTeamUpdateWithoutEventInput, Prisma.EventTeamUncheckedUpdateWithoutEventInput>;
+};
+export type EventTeamUpdateManyWithWhereWithoutEventInput = {
+    where: Prisma.EventTeamScalarWhereInput;
+    data: Prisma.XOR<Prisma.EventTeamUpdateManyMutationInput, Prisma.EventTeamUncheckedUpdateManyWithoutEventInput>;
+};
+export type EventTeamScalarWhereInput = {
+    AND?: Prisma.EventTeamScalarWhereInput | Prisma.EventTeamScalarWhereInput[];
+    OR?: Prisma.EventTeamScalarWhereInput[];
+    NOT?: Prisma.EventTeamScalarWhereInput | Prisma.EventTeamScalarWhereInput[];
+    id?: Prisma.StringFilter<"EventTeam"> | string;
+    eventId?: Prisma.StringFilter<"EventTeam"> | string;
+    name?: Prisma.StringFilter<"EventTeam"> | string;
+    createdAt?: Prisma.DateTimeFilter<"EventTeam"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"EventTeam"> | Date | string;
+};
+export type EventTeamCreateWithoutRegistrationsInput = {
+    id?: string;
+    name: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    event: Prisma.EventCreateNestedOneWithoutTeamsInput;
+};
+export type EventTeamUncheckedCreateWithoutRegistrationsInput = {
+    id?: string;
+    eventId: string;
+    name: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type EventTeamCreateOrConnectWithoutRegistrationsInput = {
+    where: Prisma.EventTeamWhereUniqueInput;
+    create: Prisma.XOR<Prisma.EventTeamCreateWithoutRegistrationsInput, Prisma.EventTeamUncheckedCreateWithoutRegistrationsInput>;
+};
+export type EventTeamUpsertWithoutRegistrationsInput = {
+    update: Prisma.XOR<Prisma.EventTeamUpdateWithoutRegistrationsInput, Prisma.EventTeamUncheckedUpdateWithoutRegistrationsInput>;
+    create: Prisma.XOR<Prisma.EventTeamCreateWithoutRegistrationsInput, Prisma.EventTeamUncheckedCreateWithoutRegistrationsInput>;
+    where?: Prisma.EventTeamWhereInput;
+};
+export type EventTeamUpdateToOneWithWhereWithoutRegistrationsInput = {
+    where?: Prisma.EventTeamWhereInput;
+    data: Prisma.XOR<Prisma.EventTeamUpdateWithoutRegistrationsInput, Prisma.EventTeamUncheckedUpdateWithoutRegistrationsInput>;
+};
+export type EventTeamUpdateWithoutRegistrationsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    event?: Prisma.EventUpdateOneRequiredWithoutTeamsNestedInput;
+};
+export type EventTeamUncheckedUpdateWithoutRegistrationsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    eventId?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type EventTeamCreateManyEventInput = {
+    id?: string;
+    name: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type EventTeamUpdateWithoutEventInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    registrations?: Prisma.EventRegistrationUpdateManyWithoutTeamNestedInput;
+};
+export type EventTeamUncheckedUpdateWithoutEventInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    registrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutTeamNestedInput;
+};
+export type EventTeamUncheckedUpdateManyWithoutEventInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+/**
+ * Count Type EventTeamCountOutputType
+ */
+export type EventTeamCountOutputType = {
+    registrations: number;
+};
+export type EventTeamCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    registrations?: boolean | EventTeamCountOutputTypeCountRegistrationsArgs;
+};
+/**
+ * EventTeamCountOutputType without action
+ */
+export type EventTeamCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTeamCountOutputType
+     */
+    select?: Prisma.EventTeamCountOutputTypeSelect<ExtArgs> | null;
+};
+/**
+ * EventTeamCountOutputType without action
+ */
+export type EventTeamCountOutputTypeCountRegistrationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.EventRegistrationWhereInput;
+};
+export type EventTeamSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    eventId?: boolean;
+    name?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    event?: boolean | Prisma.EventDefaultArgs<ExtArgs>;
+    registrations?: boolean | Prisma.EventTeam$registrationsArgs<ExtArgs>;
+    _count?: boolean | Prisma.EventTeamCountOutputTypeDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["eventTeam"]>;
+export type EventTeamSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    eventId?: boolean;
+    name?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    event?: boolean | Prisma.EventDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["eventTeam"]>;
+export type EventTeamSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    eventId?: boolean;
+    name?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    event?: boolean | Prisma.EventDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["eventTeam"]>;
+export type EventTeamSelectScalar = {
+    id?: boolean;
+    eventId?: boolean;
+    name?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+};
+export type EventTeamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "eventId" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["eventTeam"]>;
+export type EventTeamInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    event?: boolean | Prisma.EventDefaultArgs<ExtArgs>;
+    registrations?: boolean | Prisma.EventTeam$registrationsArgs<ExtArgs>;
+    _count?: boolean | Prisma.EventTeamCountOutputTypeDefaultArgs<ExtArgs>;
+};
+export type EventTeamIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    event?: boolean | Prisma.EventDefaultArgs<ExtArgs>;
+};
+export type EventTeamIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    event?: boolean | Prisma.EventDefaultArgs<ExtArgs>;
+};
+export type $EventTeamPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "EventTeam";
+    objects: {
+        event: Prisma.$EventPayload<ExtArgs>;
+        registrations: Prisma.$EventRegistrationPayload<ExtArgs>[];
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: string;
+        eventId: string;
+        name: string;
+        createdAt: Date;
+        updatedAt: Date;
+    }, ExtArgs["result"]["eventTeam"]>;
+    composites: {};
+};
+export type EventTeamGetPayload<S extends boolean | null | undefined | EventTeamDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$EventTeamPayload, S>;
+export type EventTeamCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<EventTeamFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: EventTeamCountAggregateInputType | true;
+};
+export interface EventTeamDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['EventTeam'];
+        meta: {
+            name: 'EventTeam';
+        };
+    };
+    /**
+     * Find zero or one EventTeam that matches the filter.
+     * @param {EventTeamFindUniqueArgs} args - Arguments to find a EventTeam
+     * @example
+     * // Get one EventTeam
+     * const eventTeam = await prisma.eventTeam.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EventTeamFindUniqueArgs>(args: Prisma.SelectSubset<T, EventTeamFindUniqueArgs<ExtArgs>>): Prisma.Prisma__EventTeamClient<runtime.Types.Result.GetResult<Prisma.$EventTeamPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one EventTeam that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EventTeamFindUniqueOrThrowArgs} args - Arguments to find a EventTeam
+     * @example
+     * // Get one EventTeam
+     * const eventTeam = await prisma.eventTeam.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EventTeamFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, EventTeamFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__EventTeamClient<runtime.Types.Result.GetResult<Prisma.$EventTeamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first EventTeam that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventTeamFindFirstArgs} args - Arguments to find a EventTeam
+     * @example
+     * // Get one EventTeam
+     * const eventTeam = await prisma.eventTeam.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EventTeamFindFirstArgs>(args?: Prisma.SelectSubset<T, EventTeamFindFirstArgs<ExtArgs>>): Prisma.Prisma__EventTeamClient<runtime.Types.Result.GetResult<Prisma.$EventTeamPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first EventTeam that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventTeamFindFirstOrThrowArgs} args - Arguments to find a EventTeam
+     * @example
+     * // Get one EventTeam
+     * const eventTeam = await prisma.eventTeam.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EventTeamFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, EventTeamFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__EventTeamClient<runtime.Types.Result.GetResult<Prisma.$EventTeamPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more EventTeams that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventTeamFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EventTeams
+     * const eventTeams = await prisma.eventTeam.findMany()
+     *
+     * // Get first 10 EventTeams
+     * const eventTeams = await prisma.eventTeam.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const eventTeamWithIdOnly = await prisma.eventTeam.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends EventTeamFindManyArgs>(args?: Prisma.SelectSubset<T, EventTeamFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventTeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a EventTeam.
+     * @param {EventTeamCreateArgs} args - Arguments to create a EventTeam.
+     * @example
+     * // Create one EventTeam
+     * const EventTeam = await prisma.eventTeam.create({
+     *   data: {
+     *     // ... data to create a EventTeam
+     *   }
+     * })
+     *
+     */
+    create<T extends EventTeamCreateArgs>(args: Prisma.SelectSubset<T, EventTeamCreateArgs<ExtArgs>>): Prisma.Prisma__EventTeamClient<runtime.Types.Result.GetResult<Prisma.$EventTeamPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many EventTeams.
+     * @param {EventTeamCreateManyArgs} args - Arguments to create many EventTeams.
+     * @example
+     * // Create many EventTeams
+     * const eventTeam = await prisma.eventTeam.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends EventTeamCreateManyArgs>(args?: Prisma.SelectSubset<T, EventTeamCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many EventTeams and returns the data saved in the database.
+     * @param {EventTeamCreateManyAndReturnArgs} args - Arguments to create many EventTeams.
+     * @example
+     * // Create many EventTeams
+     * const eventTeam = await prisma.eventTeam.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many EventTeams and only return the `id`
+     * const eventTeamWithIdOnly = await prisma.eventTeam.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends EventTeamCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, EventTeamCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventTeamPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a EventTeam.
+     * @param {EventTeamDeleteArgs} args - Arguments to delete one EventTeam.
+     * @example
+     * // Delete one EventTeam
+     * const EventTeam = await prisma.eventTeam.delete({
+     *   where: {
+     *     // ... filter to delete one EventTeam
+     *   }
+     * })
+     *
+     */
+    delete<T extends EventTeamDeleteArgs>(args: Prisma.SelectSubset<T, EventTeamDeleteArgs<ExtArgs>>): Prisma.Prisma__EventTeamClient<runtime.Types.Result.GetResult<Prisma.$EventTeamPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one EventTeam.
+     * @param {EventTeamUpdateArgs} args - Arguments to update one EventTeam.
+     * @example
+     * // Update one EventTeam
+     * const eventTeam = await prisma.eventTeam.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends EventTeamUpdateArgs>(args: Prisma.SelectSubset<T, EventTeamUpdateArgs<ExtArgs>>): Prisma.Prisma__EventTeamClient<runtime.Types.Result.GetResult<Prisma.$EventTeamPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more EventTeams.
+     * @param {EventTeamDeleteManyArgs} args - Arguments to filter EventTeams to delete.
+     * @example
+     * // Delete a few EventTeams
+     * const { count } = await prisma.eventTeam.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends EventTeamDeleteManyArgs>(args?: Prisma.SelectSubset<T, EventTeamDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more EventTeams.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventTeamUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EventTeams
+     * const eventTeam = await prisma.eventTeam.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends EventTeamUpdateManyArgs>(args: Prisma.SelectSubset<T, EventTeamUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more EventTeams and returns the data updated in the database.
+     * @param {EventTeamUpdateManyAndReturnArgs} args - Arguments to update many EventTeams.
+     * @example
+     * // Update many EventTeams
+     * const eventTeam = await prisma.eventTeam.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more EventTeams and only return the `id`
+     * const eventTeamWithIdOnly = await prisma.eventTeam.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends EventTeamUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, EventTeamUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventTeamPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one EventTeam.
+     * @param {EventTeamUpsertArgs} args - Arguments to update or create a EventTeam.
+     * @example
+     * // Update or create a EventTeam
+     * const eventTeam = await prisma.eventTeam.upsert({
+     *   create: {
+     *     // ... data to create a EventTeam
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EventTeam we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EventTeamUpsertArgs>(args: Prisma.SelectSubset<T, EventTeamUpsertArgs<ExtArgs>>): Prisma.Prisma__EventTeamClient<runtime.Types.Result.GetResult<Prisma.$EventTeamPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of EventTeams.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventTeamCountArgs} args - Arguments to filter EventTeams to count.
+     * @example
+     * // Count the number of EventTeams
+     * const count = await prisma.eventTeam.count({
+     *   where: {
+     *     // ... the filter for the EventTeams we want to count
+     *   }
+     * })
+    **/
+    count<T extends EventTeamCountArgs>(args?: Prisma.Subset<T, EventTeamCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], EventTeamCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a EventTeam.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventTeamAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EventTeamAggregateArgs>(args: Prisma.Subset<T, EventTeamAggregateArgs>): Prisma.PrismaPromise<GetEventTeamAggregateType<T>>;
+    /**
+     * Group by EventTeam.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventTeamGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends EventTeamGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: EventTeamGroupByArgs['orderBy'];
+    } : {
+        orderBy?: EventTeamGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, EventTeamGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEventTeamGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the EventTeam model
+     */
+    readonly fields: EventTeamFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for EventTeam.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__EventTeamClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    event<T extends Prisma.EventDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventDefaultArgs<ExtArgs>>): Prisma.Prisma__EventClient<runtime.Types.Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    registrations<T extends Prisma.EventTeam$registrationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventTeam$registrationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventRegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the EventTeam model
+ */
+export interface EventTeamFieldRefs {
+    readonly id: Prisma.FieldRef<"EventTeam", 'String'>;
+    readonly eventId: Prisma.FieldRef<"EventTeam", 'String'>;
+    readonly name: Prisma.FieldRef<"EventTeam", 'String'>;
+    readonly createdAt: Prisma.FieldRef<"EventTeam", 'DateTime'>;
+    readonly updatedAt: Prisma.FieldRef<"EventTeam", 'DateTime'>;
+}
+/**
+ * EventTeam findUnique
+ */
+export type EventTeamFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTeam
+     */
+    select?: Prisma.EventTeamSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EventTeam
+     */
+    omit?: Prisma.EventTeamOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EventTeamInclude<ExtArgs> | null;
+    /**
+     * Filter, which EventTeam to fetch.
+     */
+    where: Prisma.EventTeamWhereUniqueInput;
+};
+/**
+ * EventTeam findUniqueOrThrow
+ */
+export type EventTeamFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTeam
+     */
+    select?: Prisma.EventTeamSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EventTeam
+     */
+    omit?: Prisma.EventTeamOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EventTeamInclude<ExtArgs> | null;
+    /**
+     * Filter, which EventTeam to fetch.
+     */
+    where: Prisma.EventTeamWhereUniqueInput;
+};
+/**
+ * EventTeam findFirst
+ */
+export type EventTeamFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTeam
+     */
+    select?: Prisma.EventTeamSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EventTeam
+     */
+    omit?: Prisma.EventTeamOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EventTeamInclude<ExtArgs> | null;
+    /**
+     * Filter, which EventTeam to fetch.
+     */
+    where?: Prisma.EventTeamWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of EventTeams to fetch.
+     */
+    orderBy?: Prisma.EventTeamOrderByWithRelationInput | Prisma.EventTeamOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for EventTeams.
+     */
+    cursor?: Prisma.EventTeamWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` EventTeams from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` EventTeams.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of EventTeams.
+     */
+    distinct?: Prisma.EventTeamScalarFieldEnum | Prisma.EventTeamScalarFieldEnum[];
+};
+/**
+ * EventTeam findFirstOrThrow
+ */
+export type EventTeamFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTeam
+     */
+    select?: Prisma.EventTeamSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EventTeam
+     */
+    omit?: Prisma.EventTeamOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EventTeamInclude<ExtArgs> | null;
+    /**
+     * Filter, which EventTeam to fetch.
+     */
+    where?: Prisma.EventTeamWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of EventTeams to fetch.
+     */
+    orderBy?: Prisma.EventTeamOrderByWithRelationInput | Prisma.EventTeamOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for EventTeams.
+     */
+    cursor?: Prisma.EventTeamWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` EventTeams from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` EventTeams.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of EventTeams.
+     */
+    distinct?: Prisma.EventTeamScalarFieldEnum | Prisma.EventTeamScalarFieldEnum[];
+};
+/**
+ * EventTeam findMany
+ */
+export type EventTeamFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTeam
+     */
+    select?: Prisma.EventTeamSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EventTeam
+     */
+    omit?: Prisma.EventTeamOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EventTeamInclude<ExtArgs> | null;
+    /**
+     * Filter, which EventTeams to fetch.
+     */
+    where?: Prisma.EventTeamWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of EventTeams to fetch.
+     */
+    orderBy?: Prisma.EventTeamOrderByWithRelationInput | Prisma.EventTeamOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing EventTeams.
+     */
+    cursor?: Prisma.EventTeamWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` EventTeams from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` EventTeams.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of EventTeams.
+     */
+    distinct?: Prisma.EventTeamScalarFieldEnum | Prisma.EventTeamScalarFieldEnum[];
+};
+/**
+ * EventTeam create
+ */
+export type EventTeamCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTeam
+     */
+    select?: Prisma.EventTeamSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EventTeam
+     */
+    omit?: Prisma.EventTeamOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EventTeamInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a EventTeam.
+     */
+    data: Prisma.XOR<Prisma.EventTeamCreateInput, Prisma.EventTeamUncheckedCreateInput>;
+};
+/**
+ * EventTeam createMany
+ */
+export type EventTeamCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EventTeams.
+     */
+    data: Prisma.EventTeamCreateManyInput | Prisma.EventTeamCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * EventTeam createManyAndReturn
+ */
+export type EventTeamCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTeam
+     */
+    select?: Prisma.EventTeamSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EventTeam
+     */
+    omit?: Prisma.EventTeamOmit<ExtArgs> | null;
+    /**
+     * The data used to create many EventTeams.
+     */
+    data: Prisma.EventTeamCreateManyInput | Prisma.EventTeamCreateManyInput[];
+    skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EventTeamIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * EventTeam update
+ */
+export type EventTeamUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTeam
+     */
+    select?: Prisma.EventTeamSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EventTeam
+     */
+    omit?: Prisma.EventTeamOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EventTeamInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a EventTeam.
+     */
+    data: Prisma.XOR<Prisma.EventTeamUpdateInput, Prisma.EventTeamUncheckedUpdateInput>;
+    /**
+     * Choose, which EventTeam to update.
+     */
+    where: Prisma.EventTeamWhereUniqueInput;
+};
+/**
+ * EventTeam updateMany
+ */
+export type EventTeamUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EventTeams.
+     */
+    data: Prisma.XOR<Prisma.EventTeamUpdateManyMutationInput, Prisma.EventTeamUncheckedUpdateManyInput>;
+    /**
+     * Filter which EventTeams to update
+     */
+    where?: Prisma.EventTeamWhereInput;
+    /**
+     * Limit how many EventTeams to update.
+     */
+    limit?: number;
+};
+/**
+ * EventTeam updateManyAndReturn
+ */
+export type EventTeamUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTeam
+     */
+    select?: Prisma.EventTeamSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EventTeam
+     */
+    omit?: Prisma.EventTeamOmit<ExtArgs> | null;
+    /**
+     * The data used to update EventTeams.
+     */
+    data: Prisma.XOR<Prisma.EventTeamUpdateManyMutationInput, Prisma.EventTeamUncheckedUpdateManyInput>;
+    /**
+     * Filter which EventTeams to update
+     */
+    where?: Prisma.EventTeamWhereInput;
+    /**
+     * Limit how many EventTeams to update.
+     */
+    limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EventTeamIncludeUpdateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * EventTeam upsert
+ */
+export type EventTeamUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTeam
+     */
+    select?: Prisma.EventTeamSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EventTeam
+     */
+    omit?: Prisma.EventTeamOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EventTeamInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the EventTeam to update in case it exists.
+     */
+    where: Prisma.EventTeamWhereUniqueInput;
+    /**
+     * In case the EventTeam found by the `where` argument doesn't exist, create a new EventTeam with this data.
+     */
+    create: Prisma.XOR<Prisma.EventTeamCreateInput, Prisma.EventTeamUncheckedCreateInput>;
+    /**
+     * In case the EventTeam was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.EventTeamUpdateInput, Prisma.EventTeamUncheckedUpdateInput>;
+};
+/**
+ * EventTeam delete
+ */
+export type EventTeamDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTeam
+     */
+    select?: Prisma.EventTeamSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EventTeam
+     */
+    omit?: Prisma.EventTeamOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EventTeamInclude<ExtArgs> | null;
+    /**
+     * Filter which EventTeam to delete.
+     */
+    where: Prisma.EventTeamWhereUniqueInput;
+};
+/**
+ * EventTeam deleteMany
+ */
+export type EventTeamDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventTeams to delete
+     */
+    where?: Prisma.EventTeamWhereInput;
+    /**
+     * Limit how many EventTeams to delete.
+     */
+    limit?: number;
+};
+/**
+ * EventTeam.registrations
+ */
+export type EventTeam$registrationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventRegistration
+     */
+    select?: Prisma.EventRegistrationSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EventRegistration
+     */
+    omit?: Prisma.EventRegistrationOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EventRegistrationInclude<ExtArgs> | null;
+    where?: Prisma.EventRegistrationWhereInput;
+    orderBy?: Prisma.EventRegistrationOrderByWithRelationInput | Prisma.EventRegistrationOrderByWithRelationInput[];
+    cursor?: Prisma.EventRegistrationWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.EventRegistrationScalarFieldEnum | Prisma.EventRegistrationScalarFieldEnum[];
+};
+/**
+ * EventTeam without action
+ */
+export type EventTeamDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTeam
+     */
+    select?: Prisma.EventTeamSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EventTeam
+     */
+    omit?: Prisma.EventTeamOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EventTeamInclude<ExtArgs> | null;
+};
+//# sourceMappingURL=EventTeam.d.ts.map

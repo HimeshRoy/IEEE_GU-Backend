@@ -2,13 +2,14 @@ import { Router } from "express";
 import { authenticate } from "../../middlewares/auth.middleware.js";
 import { authorizeRolesOrPositions } from "../../middlewares/role.middleware.js";
 import {
+  downloadEventRegistrationsExcelController,
   getEventRegistrationsController,
+  getMyRegistrationsController,
   promoteNextWaitlistedController,
   registerForEventController,
-  updateRegistrationStatusController,
+  scanRegistrationQrController,
   syncEventRegistrationsToExcelController,
-  downloadEventRegistrationsExcelController,
-  getMyRegistrationsController,
+  updateRegistrationStatusController,
 } from "./registrations.controller.js";
 
 const router = Router();
@@ -18,11 +19,22 @@ const registrationManagementAccess = authorizeRolesOrPositions(
   ["CHAIRMAN"],
 );
 
-router.post("/:eventId", registerForEventController);
+const qrAttendanceAccess = authorizeRolesOrPositions(
+  ["FACULTY_ADVISOR", "IEEE_COUNSELOR", "WEBMASTER"],
+  ["CHAIRMAN"],
+);
 
-router.post("/:eventId/member", authenticate, registerForEventController);
+router.post(
+  "/scan-qr",
+  authenticate,
+  qrAttendanceAccess,
+  scanRegistrationQrController,
+);
 
-router.get("/my", authenticate, getMyRegistrationsController);
+router.post(
+  "/:eventId",
+  registerForEventController,
+);
 
 router.get(
   "/event/:eventId",
@@ -31,18 +43,25 @@ router.get(
   getEventRegistrationsController,
 );
 
+router.get(
+  "/event/:eventId/export",
+  authenticate,
+  registrationManagementAccess,
+  downloadEventRegistrationsExcelController,
+);
+
 router.post(
-  "/event/:eventId/export-excel",
+  "/event/:eventId/export/sync",
   authenticate,
   registrationManagementAccess,
   syncEventRegistrationsToExcelController,
 );
 
-router.get(
-  "/event/:eventId/export-excel/download",
+router.post(
+  "/event/:eventId/promote-waitlist",
   authenticate,
   registrationManagementAccess,
-  downloadEventRegistrationsExcelController,
+  promoteNextWaitlistedController,
 );
 
 router.patch(
@@ -52,11 +71,6 @@ router.patch(
   updateRegistrationStatusController,
 );
 
-router.post(
-  "/event/:eventId/promote-waitlist",
-  authenticate,
-  registrationManagementAccess,
-  promoteNextWaitlistedController,
-);
+router.get("/me", authenticate, getMyRegistrationsController);
 
 export default router;

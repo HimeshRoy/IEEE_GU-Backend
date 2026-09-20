@@ -1,0 +1,113 @@
+import { Router } from "express";
+import { authenticate } from "../../middlewares/auth.middleware.js";
+import { authorizeRolesOrPositions } from "../../middlewares/role.middleware.js";
+import {
+  addEventFormFieldController,
+  archiveEventFormController,
+  closeEventFormController,
+  createEventFormController,
+  deleteEventFormController,
+  deleteEventFormFieldController,
+  getEventFormController,
+  getPublicEventFormController,
+  publishEventFormController,
+  reorderEventFormFieldsController,
+  updateEventFormController,
+  reopenEventFormController,
+  updateEventFormFieldController,
+} from "./event-forms.controller.js";
+
+const router = Router();
+
+const formManagementAccess = authorizeRolesOrPositions(
+  ["FACULTY_ADVISOR", "IEEE_COUNSELOR", "WEBMASTER"],
+  ["CHAIRMAN"],
+);
+
+router.get("/public/:eventId", getPublicEventFormController);
+
+router.get(
+  "/event/:eventId",
+  authenticate,
+  formManagementAccess,
+  getEventFormController,
+);
+
+router.post(
+  "/event/:eventId",
+  authenticate,
+  formManagementAccess,
+  createEventFormController,
+);
+
+router.patch(
+  "/:formId",
+  authenticate,
+  formManagementAccess,
+  updateEventFormController,
+);
+
+router.delete(
+  "/:formId",
+  authenticate,
+  formManagementAccess,
+  deleteEventFormController,
+);
+
+router.post(
+  "/:formId/fields",
+  authenticate,
+  formManagementAccess,
+  addEventFormFieldController,
+);
+
+router.patch(
+  "/fields/:fieldId",
+  authenticate,
+  formManagementAccess,
+  updateEventFormFieldController,
+);
+
+router.delete(
+  "/fields/:fieldId",
+  authenticate,
+  formManagementAccess,
+  deleteEventFormFieldController,
+);
+
+router.patch(
+  "/:formId/fields/reorder",
+  authenticate,
+  formManagementAccess,
+  reorderEventFormFieldsController,
+);
+
+router.patch(
+  "/:formId/publish",
+  authenticate,
+  formManagementAccess,
+  publishEventFormController,
+);
+
+router.patch(
+  "/:formId/close",
+  authenticate,
+  formManagementAccess,
+  closeEventFormController,
+);
+
+router.patch(
+  "/:formId/reopen",
+  authenticate,
+  formManagementAccess,
+  reopenEventFormController,
+);
+
+router.patch(
+  "/:formId/archive",
+  authenticate,
+  formManagementAccess,
+  archiveEventFormController,
+);
+
+export default router;

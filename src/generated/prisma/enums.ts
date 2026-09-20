@@ -103,6 +103,63 @@ export const ApprovalStatus = {
 export type ApprovalStatus = (typeof ApprovalStatus)[keyof typeof ApprovalStatus]
 
 
+export const EventRegistrationTemplate = {
+  UNIVERSITY_INDIVIDUAL: 'UNIVERSITY_INDIVIDUAL',
+  UNIVERSITY_TEAM: 'UNIVERSITY_TEAM',
+  INTER_UNIVERSITY_INDIVIDUAL: 'INTER_UNIVERSITY_INDIVIDUAL',
+  INTER_UNIVERSITY_TEAM: 'INTER_UNIVERSITY_TEAM',
+  PUBLIC_INDIVIDUAL: 'PUBLIC_INDIVIDUAL',
+  PUBLIC_TEAM: 'PUBLIC_TEAM',
+  CUSTOM: 'CUSTOM'
+} as const
+
+export type EventRegistrationTemplate = (typeof EventRegistrationTemplate)[keyof typeof EventRegistrationTemplate]
+
+
+export const EventParticipationType = {
+  INDIVIDUAL: 'INDIVIDUAL',
+  TEAM: 'TEAM'
+} as const
+
+export type EventParticipationType = (typeof EventParticipationType)[keyof typeof EventParticipationType]
+
+
+export const EventFormStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  CLOSED: 'CLOSED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type EventFormStatus = (typeof EventFormStatus)[keyof typeof EventFormStatus]
+
+
+export const EventFormFieldType = {
+  SHORT_ANSWER: 'SHORT_ANSWER',
+  PARAGRAPH: 'PARAGRAPH',
+  EMAIL: 'EMAIL',
+  PHONE: 'PHONE',
+  NUMBER: 'NUMBER',
+  MULTIPLE_CHOICE: 'MULTIPLE_CHOICE',
+  CHECKBOXES: 'CHECKBOXES',
+  DROPDOWN: 'DROPDOWN',
+  DATE: 'DATE',
+  TIME: 'TIME',
+  FILE_UPLOAD: 'FILE_UPLOAD',
+  IMAGE_UPLOAD: 'IMAGE_UPLOAD'
+} as const
+
+export type EventFormFieldType = (typeof EventFormFieldType)[keyof typeof EventFormFieldType]
+
+
+export const EventFormFieldScope = {
+  PARTICIPANT: 'PARTICIPANT',
+  TEAM: 'TEAM'
+} as const
+
+export type EventFormFieldScope = (typeof EventFormFieldScope)[keyof typeof EventFormFieldScope]
+
+
 export const NotificationType = {
   EVENT: 'EVENT',
   ANNOUNCEMENT: 'ANNOUNCEMENT',

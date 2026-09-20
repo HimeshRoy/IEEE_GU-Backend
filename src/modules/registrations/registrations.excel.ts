@@ -14,7 +14,7 @@ const workbookPath = path.join(
   "IEEE-GU-Event-Registrations.xlsx",
 );
 
-const headers = [
+const baseHeaders = [
   "Registration ID",
   "Name",
   "Email",
@@ -25,6 +25,8 @@ const headers = [
   "Course",
   "Year",
   "Roll Number",
+  "Team Name",
+  "Team Leader",
   "Registration Status",
   "Registered At",
   "Attended At",
@@ -38,16 +40,175 @@ function getSafeSheetName(name: string) {
   return (cleaned || "Event").slice(0, 31);
 }
 
-function getSafeTableName(name: string) {
+function getSafeTableName(name: string, eventId: string) {
   const cleaned = name
     .replace(/[^a-zA-Z0-9_]/g, "_")
     .replace(/^[^a-zA-Z_]+/, "")
     .trim();
 
-  return `Event_${cleaned || "Registrations"}`.slice(
+  const idPart = eventId.replace(/[^a-zA-Z0-9_]/g, "_");
+
+  return `Event_${cleaned || "Registrations"}_${idPart}`.slice(
     0,
     200,
   );
+}
+
+function getUniqueHeader(
+  label: string,
+  usedHeaders: Set<string>,
+) {
+  const base = label.trim() || "Field";
+
+  if (!usedHeaders.has(base)) {
+    usedHeaders.add(base);
+    return base;
+  }
+
+  let counter = 2;
+
+  while (usedHeaders.has(`${base} (${counter})`)) {
+    counter += 1;
+  }
+
+  const uniqueHeader = `${base} (${counter})`;
+  usedHeaders.add(uniqueHeader);
+
+  return uniqueHeader;
+}
+
+function serializeExcelValue(value: unknown): string | number | boolean {
+  if (
+    typeof value === "string" ||
+    typeof value === "number" ||
+    typeof value === "boolean"
+  ) {
+    return value;
+  }
+
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => serializeExcelValue(item))
+      .join(", ");
+  }
+
+  if (typeof value === "object") {
+    try {
+      return JSON.stringify(value);
+    } catch {
+      return String(value);
+    }
+  }
+
+  return String(value);
+}
+
+function formatWorksheet(
+  worksheet: ExcelJS.Worksheet,
+  columnCount: number,
+) {
+  const headerRow = worksheet.getRow(1);
+
+  headerRow.font = {
+    bold: true,
+    size: 11,
+  };
+
+  headerRow.alignment = {
+    vertical: "middle",
+    horizontal: "center",
+    wrapText: true,
+  };
+
+  headerRow.height = 30;
+
+  worksheet.views = [
+    {
+      state: "frozen",
+      ySplit: 1,
+    },
+  ];
+
+  if (worksheet.rowCount >= 1) {
+    worksheet.autoFilter = {
+      from: {
+        row: 1,
+        column: 1,
+      },
+      to: {
+        row: 1,
+        column: columnCount,
+      },
+    };
+  }
+
+  for (let index = 1; index <= columnCount; index += 1) {
+    const column = worksheet.getColumn(index);
+
+    column.width = index <= 15 ? 24 : 30;
+  }
+
+  worksheet.getColumn(4).numFmt = "@";
+  worksheet.getColumn(5).numFmt = "@";
+  worksheet.getColumn(10).numFmt = "@";
+
+  const registeredAtColumn = 14;
+  const attendedAtColumn = 15;
+
+  worksheet.getColumn(registeredAtColumn).numFmt =
+    "yyyy-mm-dd hh:mm:ss";
+
+  worksheet.getColumn(attendedAtColumn).numFmt =
+    "yyyy-mm-dd hh:mm:ss";
+
+  worksheet.eachRow((row, rowNumber) => {
+    if (rowNumber === 1) {
+      return;
+    }
+
+    row.alignment = {
+      vertical: "middle",
+      wrapText: true,
+    };
+
+    row.height = 22;
+  });
+}
+
+function createEventTable(
+  worksheet: ExcelJS.Worksheet,
+  headers: string[],
+  eventTitle: string,
+  eventId: string,
+) {
+  if (worksheet.rowCount < 2) {
+    return;
+  }
+
+  const lastRow = worksheet.rowCount;
+
+  worksheet.addTable({
+    name: getSafeTableName(eventTitle, eventId),
+    ref: `A1:${worksheet.getColumn(headers.length).letter}${lastRow}`,
+    headerRow: true,
+    totalsRow: false,
+    style: {
+      theme: "TableStyleMedium2",
+      showFirstColumn: false,
+      showLastColumn: false,
+      showRowStripes: true,
+      showColumnStripes: false,
+    },
+    columns: headers.map((header) => ({
+      name: header,
+      filterButton: true,
+    })),
+    rows: [],
+  });
 }
 
 async function ensureStorageDirectory() {
@@ -77,151 +238,155 @@ async function loadWorkbook() {
   return workbook;
 }
 
-function formatWorksheet(
-  worksheet: ExcelJS.Worksheet,
+type RegistrationWithDynamicData = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  registrationStatus: string;
+  registeredAt: Date;
+  attendedAt: Date | null;
+  isTeamLeader: boolean;
+  team: {
+    name: string;
+  } | null;
+  user: {
+    ieeeMembershipNumber: string | null;
+    memberProfile: {
+      membershipStatus: string;
+      department: string | null;
+      course: string | null;
+      year: string | null;
+      rollNumber: string | null;
+    } | null;
+  } | null;
+  formResponse: {
+    answers: Array<{
+      value: unknown;
+      field: {
+        id: string;
+        key: string;
+        label: string;
+        order: number;
+      };
+    }>;
+  } | null;
+};
+
+function buildDynamicHeaders(
+  registrations: RegistrationWithDynamicData[],
 ) {
-  const headerRow = worksheet.getRow(1);
+  const headers = [...baseHeaders];
+  const usedHeaders = new Set(headers);
 
-  headerRow.font = {
-    bold: true,
-    size: 11,
-  };
+  const fields = registrations
+    .flatMap((registration) =>
+      registration.formResponse?.answers.map(
+        (answer) => answer.field,
+      ) ?? [],
+    )
+    .sort((a, b) => a.order - b.order);
 
-  headerRow.alignment = {
-    vertical: "middle",
-    horizontal: "center",
-    wrapText: true,
-  };
+  const seenFieldIds = new Set<string>();
 
-  headerRow.height = 30;
-
-  worksheet.views = [
-    {
-      state: "frozen",
-      ySplit: 1,
-    },
-  ];
-
-  worksheet.autoFilter = {
-    from: {
-      row: 1,
-      column: 1,
-    },
-    to: {
-      row: 1,
-      column: headers.length,
-    },
-  };
-
-  const widths = [
-    26,
-    24,
-    34,
-    18,
-    26,
-    20,
-    24,
-    24,
-    14,
-    22,
-    22,
-    24,
-    24,
-  ];
-
-  widths.forEach((width, index) => {
-    worksheet.getColumn(index + 1).width = width;
-  });
-
-  worksheet.getColumn(4).numFmt = "@";
-  worksheet.getColumn(5).numFmt = "@";
-  worksheet.getColumn(10).numFmt = "@";
-  worksheet.getColumn(12).numFmt =
-    "yyyy-mm-dd hh:mm:ss";
-  worksheet.getColumn(13).numFmt =
-    "yyyy-mm-dd hh:mm:ss";
-
-  worksheet.eachRow((row, rowNumber) => {
-    if (rowNumber === 1) {
-      return;
+  for (const field of fields) {
+    if (seenFieldIds.has(field.id)) {
+      continue;
     }
 
-    row.alignment = {
-      vertical: "middle",
-      wrapText: true,
-    };
+    seenFieldIds.add(field.id);
+    headers.push(
+      getUniqueHeader(field.label, usedHeaders),
+    );
+  }
 
-    row.height = 22;
-  });
+  return headers;
+}
+
+function buildFieldHeaderMap(
+  headers: string[],
+  registrations: RegistrationWithDynamicData[],
+) {
+  const map = new Map<string, string>();
+
+  const fieldAnswers = registrations.flatMap(
+    (registration) =>
+      registration.formResponse?.answers ?? [],
+  );
+
+  const usedLabels = new Map<string, number>();
+
+  for (const answer of fieldAnswers) {
+    const label = answer.field.label.trim() || "Field";
+    const count = (usedLabels.get(label) ?? 0) + 1;
+    usedLabels.set(label, count);
+
+    const header =
+      count === 1
+        ? label
+        : `${label} (${count})`;
+
+    if (
+      headers.includes(header) &&
+      !map.has(answer.field.id)
+    ) {
+      map.set(answer.field.id, header);
+    }
+  }
+
+  return map;
 }
 
 function registrationToRow(
-  registration: {
-    id: string;
-    name: string;
-    email: string;
-    phone: string | null;
-    registrationStatus: string;
-    registeredAt: Date;
-    attendedAt: Date | null;
-    user: {
-      ieeeMembershipNumber: string | null;
-      memberProfile: {
-        membershipStatus: string;
-        department: string | null;
-        course: string | null;
-        year: string | null;
-        rollNumber: string | null;
-      } | null;
-    } | null;
-  },
+  registration: RegistrationWithDynamicData,
+  headers: string[],
+  fieldHeaderMap: Map<string, string>,
 ) {
-  return [
-    registration.id,
-    registration.name,
-    registration.email,
-    registration.phone ?? "",
-    registration.user?.ieeeMembershipNumber ?? "",
-    registration.user?.memberProfile?.membershipStatus ?? "",
-    registration.user?.memberProfile?.department ?? "",
-    registration.user?.memberProfile?.course ?? "",
-    registration.user?.memberProfile?.year ?? "",
-    registration.user?.memberProfile?.rollNumber ?? "",
-    registration.registrationStatus,
-    registration.registeredAt,
-    registration.attendedAt ?? "",
-  ];
-}
+  const row = new Array<unknown>(headers.length).fill("");
 
-function createEventTable(
-  worksheet: ExcelJS.Worksheet,
-  eventTitle: string,
-) {
-  const lastRow = Math.max(
-    worksheet.rowCount,
-    1,
-  );
+  row[0] = registration.id;
+  row[1] = registration.name;
+  row[2] = registration.email;
+  row[3] = registration.phone ?? "";
+  row[4] =
+    registration.user?.ieeeMembershipNumber ?? "";
+  row[5] =
+    registration.user?.memberProfile?.membershipStatus ??
+    "";
+  row[6] =
+    registration.user?.memberProfile?.department ?? "";
+  row[7] =
+    registration.user?.memberProfile?.course ?? "";
+  row[8] =
+    registration.user?.memberProfile?.year ?? "";
+  row[9] =
+    registration.user?.memberProfile?.rollNumber ?? "";
+  row[10] = registration.team?.name ?? "";
+  row[11] = registration.isTeamLeader ? "Yes" : "No";
+  row[12] = registration.registrationStatus;
+  row[13] = registration.registeredAt;
+  row[14] = registration.attendedAt ?? "";
 
-  const tableName = getSafeTableName(eventTitle);
+  for (const answer of registration.formResponse
+    ?.answers ?? []) {
+    const header = fieldHeaderMap.get(answer.field.id);
 
-  worksheet.addTable({
-    name: tableName,
-    ref: `A1:M${lastRow}`,
-    headerRow: true,
-    totalsRow: false,
-    style: {
-      theme: "TableStyleMedium2",
-      showFirstColumn: false,
-      showLastColumn: false,
-      showRowStripes: true,
-      showColumnStripes: false,
-    },
-    columns: headers.map((header) => ({
-      name: header,
-      filterButton: true,
-    })),
-    rows: [],
-  });
+    if (!header) {
+      continue;
+    }
+
+    const columnIndex = headers.indexOf(header);
+
+    if (columnIndex === -1) {
+      continue;
+    }
+
+    row[columnIndex] = serializeExcelValue(
+      answer.value,
+    );
+  }
+
+  return row;
 }
 
 export async function syncEventRegistrationsToExcel(
@@ -261,11 +426,41 @@ export async function syncEventRegistrationsToExcel(
             },
           },
         },
+        team: {
+          select: {
+            name: true,
+          },
+        },
+        formResponse: {
+          include: {
+            answers: {
+              include: {
+                field: {
+                  select: {
+                    id: true,
+                    key: true,
+                    label: true,
+                    order: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
       orderBy: {
         registeredAt: "asc",
       },
     });
+
+  const dynamicHeaders =
+    buildDynamicHeaders(registrations);
+
+  const fieldHeaderMap =
+    buildFieldHeaderMap(
+      dynamicHeaders,
+      registrations,
+    );
 
   const workbook = await loadWorkbook();
 
@@ -283,38 +478,29 @@ export async function syncEventRegistrationsToExcel(
   const worksheet =
     workbook.addWorksheet(sheetName);
 
-  worksheet.addRow(headers);
+  worksheet.addRow(dynamicHeaders);
 
   for (const registration of registrations) {
     worksheet.addRow(
-      registrationToRow(registration),
+      registrationToRow(
+        registration,
+        dynamicHeaders,
+        fieldHeaderMap,
+      ),
     );
   }
 
-  formatWorksheet(worksheet);
+  formatWorksheet(
+    worksheet,
+    dynamicHeaders.length,
+  );
 
-  if (registrations.length > 0) {
-    const lastRow = worksheet.rowCount;
-
-    worksheet.addTable({
-      name: getSafeTableName(event.title),
-      ref: `A1:M${lastRow}`,
-      headerRow: true,
-      totalsRow: false,
-      style: {
-        theme: "TableStyleMedium2",
-        showFirstColumn: false,
-        showLastColumn: false,
-        showRowStripes: true,
-        showColumnStripes: false,
-      },
-      columns: headers.map((header) => ({
-        name: header,
-        filterButton: true,
-      })),
-      rows: [],
-    });
-  }
+  createEventTable(
+    worksheet,
+    dynamicHeaders,
+    event.title,
+    event.id,
+  );
 
   await workbook.xlsx.writeFile(workbookPath);
 

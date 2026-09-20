@@ -70,7 +70,8 @@ function canManageRole(actorRole: UserRole, targetRole: UserRole): boolean {
   if (
     actorRole === "WEBMASTER" ||
     actorRole === "IEEE_COUNSELOR" ||
-    actorRole === "FACULTY_ADVISOR"
+    actorRole === "FACULTY_ADVISOR" ||
+    actorRole === "CHAIRMAN"
   ) {
     return (
       targetRole === "STUDENT" ||
@@ -190,15 +191,12 @@ function validateLeadershipEligibility(
   position: AssignLeadershipPositionInput["position"],
 ) {
   if (!targetUser.isActive) {
-    throw new Error(
-      "Inactive users cannot be assigned leadership positions",
-    );
+    throw new Error("Inactive users cannot be assigned leadership positions");
   }
 
-  const isStudentPosition =
-    STUDENT_LEADERSHIP_POSITIONS.includes(
-      position as (typeof STUDENT_LEADERSHIP_POSITIONS)[number],
-    );
+  const isStudentPosition = STUDENT_LEADERSHIP_POSITIONS.includes(
+    position as (typeof STUDENT_LEADERSHIP_POSITIONS)[number],
+  );
 
   if (isStudentPosition) {
     if (targetUser.role !== position) {
@@ -217,31 +215,16 @@ function validateLeadershipEligibility(
     }
   }
 
-  if (
-    position === "IEEE_COUNSELOR" &&
-    targetUser.role !== "IEEE_COUNSELOR"
-  ) {
-    throw new Error(
-      "IEEE_COUNSELOR position requires IEEE_COUNSELOR role",
-    );
+  if (position === "IEEE_COUNSELOR" && targetUser.role !== "IEEE_COUNSELOR") {
+    throw new Error("IEEE_COUNSELOR position requires IEEE_COUNSELOR role");
   }
 
-  if (
-    position === "FACULTY_MEMBER" &&
-    targetUser.role !== "FACULTY_MEMBER"
-  ) {
-    throw new Error(
-      "FACULTY_MEMBER position requires FACULTY_MEMBER role",
-    );
+  if (position === "FACULTY_MEMBER" && targetUser.role !== "FACULTY_MEMBER") {
+    throw new Error("FACULTY_MEMBER position requires FACULTY_MEMBER role");
   }
 
-  if (
-    position === "WEBMASTER" &&
-    targetUser.role !== "WEBMASTER"
-  ) {
-    throw new Error(
-      "WEBMASTER position requires WEBMASTER role",
-    );
+  if (position === "WEBMASTER" && targetUser.role !== "WEBMASTER") {
+    throw new Error("WEBMASTER position requires WEBMASTER role");
   }
 }
 
@@ -331,14 +314,12 @@ export async function getCurrentUser(userId: string) {
   return user;
 }
 
-function hasProfileManagementAccess(
-  user: {
-    role: UserRole;
-    leadershipPositions: {
-      position: string;
-    }[];
-  },
-) {
+function hasProfileManagementAccess(user: {
+  role: UserRole;
+  leadershipPositions: {
+    position: string;
+  }[];
+}) {
   if (
     user.role === "WEBMASTER" ||
     user.role === "IEEE_COUNSELOR" ||
@@ -350,18 +331,18 @@ function hasProfileManagementAccess(
 
   if (user.role === "FACULTY_MEMBER") {
     return user.leadershipPositions.some(
-      (leadership) =>
-        leadership.position === "FACULTY_MEMBER",
+      (leadership) => leadership.position === "FACULTY_MEMBER",
     );
   }
 
-  return STUDENT_LEADERSHIP_POSITIONS.includes(
-    user.role as (typeof STUDENT_LEADERSHIP_POSITIONS)[number],
-  ) &&
+  return (
+    STUDENT_LEADERSHIP_POSITIONS.includes(
+      user.role as (typeof STUDENT_LEADERSHIP_POSITIONS)[number],
+    ) &&
     user.leadershipPositions.some(
-      (leadership) =>
-        leadership.position === user.role,
-    );
+      (leadership) => leadership.position === user.role,
+    )
+  );
 }
 
 export async function updateOwnProfile(
@@ -407,169 +388,143 @@ export async function updateOwnProfile(
     );
   }
 
-  if (
-    input.ieeeMembershipNumber !== undefined
-  ) {
-    const ieeeMembershipNumber =
-      input.ieeeMembershipNumber.trim();
+  if (input.ieeeMembershipNumber !== undefined) {
+    const ieeeMembershipNumber = input.ieeeMembershipNumber.trim();
 
-    if (
-      ieeeMembershipNumber !==
-      (existingUser.ieeeMembershipNumber ?? "")
-    ) {
+    if (ieeeMembershipNumber !== (existingUser.ieeeMembershipNumber ?? "")) {
       if (ieeeMembershipNumber) {
-        const existingMembership =
-          await prisma.user.findFirst({
-            where: {
-              ieeeMembershipNumber,
-              id: {
-                not: userId,
-              },
+        const existingMembership = await prisma.user.findFirst({
+          where: {
+            ieeeMembershipNumber,
+            id: {
+              not: userId,
             },
-            select: {
-              id: true,
-            },
-          });
+          },
+          select: {
+            id: true,
+          },
+        });
 
         if (existingMembership) {
-          throw new Error(
-            "This IEEE Membership Number is already registered",
-          );
+          throw new Error("This IEEE Membership Number is already registered");
         }
       }
     }
   }
 
-  const isFacultyProfile = FACULTY_PROFILE_ROLES.includes(
-    existingUser.role,
-  );
+  const isFacultyProfile = FACULTY_PROFILE_ROLES.includes(existingUser.role);
 
   if (
     isFacultyProfile &&
-    (
-      input.department !== undefined ||
+    (input.department !== undefined ||
       input.course !== undefined ||
       input.year !== undefined ||
-      input.rollNumber !== undefined
-    )
+      input.rollNumber !== undefined)
   ) {
     throw new Error(
       "Department, course, year, and roll number are not available for faculty accounts",
     );
   }
 
-  const updatedUser =
-    await prisma.$transaction(async (tx) => {
-      const user = await tx.user.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          ...(input.firstName !== undefined
-            ? {
-                firstName:
-                  input.firstName.trim(),
-              }
-            : {}),
-          ...(input.lastName !== undefined
-            ? {
-                lastName:
-                  input.lastName.trim() || null,
-              }
-            : {}),
-          ...(input.phone !== undefined
-            ? {
-                phone:
-                  input.phone.trim() || null,
-              }
-            : {}),
-          ...(input.bio !== undefined
-            ? {
-                bio:
-                  input.bio.trim() || null,
-              }
-            : {}),
-          ...(input.ieeeMembershipNumber !==
-          undefined
-            ? {
-                ieeeMembershipNumber:
-                  input.ieeeMembershipNumber.trim() ||
-                  null,
-              }
-            : {}),
-        },
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          phone: true,
-          role: true,
-          isActive: true,
-          ieeeMembershipNumber: true,
-          profileImage: true,
-          bio: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      });
-
-      if (existingUser.memberProfile && !isFacultyProfile) {
-        await tx.memberProfile.update({
-          where: {
-            userId,
-          },
-          data: {
-            ...(input.department !== undefined
-              ? {
-                  department:
-                    input.department.trim() || null,
-                }
-              : {}),
-            ...(input.course !== undefined
-              ? {
-                  course:
-                    input.course.trim() || null,
-                }
-              : {}),
-            ...(input.year !== undefined
-              ? {
-                  year:
-                    input.year.trim() || null,
-                }
-              : {}),
-            ...(input.rollNumber !== undefined
-              ? {
-                  rollNumber:
-                    input.rollNumber.trim() || null,
-                }
-              : {}),
-          },
-        });
-      } else if (
-        input.department !== undefined ||
-        input.course !== undefined ||
-        input.year !== undefined ||
-        input.rollNumber !== undefined
-      ) {
-        throw new Error(
-          "Member profile information is not available for this account",
-        );
-      }
-
-      await tx.auditLog.create({
-        data: {
-          userId,
-          action: "UPDATE",
-          entityType: "USER",
-          entityId: userId,
-          description:
-            "Updated own profile information",
-        },
-      });
-
-      return user;
+  const updatedUser = await prisma.$transaction(async (tx) => {
+    const user = await tx.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        ...(input.firstName !== undefined
+          ? {
+              firstName: input.firstName.trim(),
+            }
+          : {}),
+        ...(input.lastName !== undefined
+          ? {
+              lastName: input.lastName.trim() || null,
+            }
+          : {}),
+        ...(input.phone !== undefined
+          ? {
+              phone: input.phone.trim() || null,
+            }
+          : {}),
+        ...(input.bio !== undefined
+          ? {
+              bio: input.bio.trim() || null,
+            }
+          : {}),
+        ...(input.ieeeMembershipNumber !== undefined
+          ? {
+              ieeeMembershipNumber: input.ieeeMembershipNumber.trim() || null,
+            }
+          : {}),
+      },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        phone: true,
+        role: true,
+        isActive: true,
+        ieeeMembershipNumber: true,
+        profileImage: true,
+        bio: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
+
+    if (existingUser.memberProfile && !isFacultyProfile) {
+      await tx.memberProfile.update({
+        where: {
+          userId,
+        },
+        data: {
+          ...(input.department !== undefined
+            ? {
+                department: input.department.trim() || null,
+              }
+            : {}),
+          ...(input.course !== undefined
+            ? {
+                course: input.course.trim() || null,
+              }
+            : {}),
+          ...(input.year !== undefined
+            ? {
+                year: input.year.trim() || null,
+              }
+            : {}),
+          ...(input.rollNumber !== undefined
+            ? {
+                rollNumber: input.rollNumber.trim() || null,
+              }
+            : {}),
+        },
+      });
+    } else if (
+      input.department !== undefined ||
+      input.course !== undefined ||
+      input.year !== undefined ||
+      input.rollNumber !== undefined
+    ) {
+      throw new Error(
+        "Member profile information is not available for this account",
+      );
+    }
+
+    await tx.auditLog.create({
+      data: {
+        userId,
+        action: "UPDATE",
+        entityType: "USER",
+        entityId: userId,
+        description: "Updated own profile information",
+      },
+    });
+
+    return user;
+  });
 
   return getCurrentUser(updatedUser.id);
 }
@@ -621,9 +576,7 @@ export async function changeOwnPassword(
     throw new Error("Current password is incorrect");
   }
 
-  const passwordHash = await argon2.hash(
-    input.newPassword,
-  );
+  const passwordHash = await argon2.hash(input.newPassword);
 
   await prisma.$transaction(async (tx) => {
     await tx.user.update({
@@ -641,8 +594,7 @@ export async function changeOwnPassword(
         action: "UPDATE",
         entityType: "USER",
         entityId: userId,
-        description:
-          "Changed account password",
+        description: "Changed account password",
       },
     });
   });
@@ -698,24 +650,20 @@ export async function createPrivilegedUser(
     throw new Error("An account with this email already exists");
   }
 
-  const ieeeMembershipNumber =
-    input.ieeeMembershipNumber?.trim() || null;
+  const ieeeMembershipNumber = input.ieeeMembershipNumber?.trim() || null;
 
   if (ieeeMembershipNumber) {
-    const existingMembership =
-      await prisma.user.findUnique({
-        where: {
-          ieeeMembershipNumber,
-        },
-        select: {
-          id: true,
-        },
-      });
+    const existingMembership = await prisma.user.findUnique({
+      where: {
+        ieeeMembershipNumber,
+      },
+      select: {
+        id: true,
+      },
+    });
 
     if (existingMembership) {
-      throw new Error(
-        "This IEEE Membership Number is already registered",
-      );
+      throw new Error("This IEEE Membership Number is already registered");
     }
   }
 
@@ -736,20 +684,16 @@ export async function createPrivilegedUser(
       },
     });
 
-    let memberProfile = null;
-
-    if (input.role === "STUDENT") {
-      memberProfile = await tx.memberProfile.create({
-        data: {
-          userId: user.id,
-          membershipStatus: "ACTIVE",
-          approvedById: actorId,
-          approvedAt: now,
-          joinedAt: now,
-          rejectionReason: null,
-        },
-      });
-    }
+    const memberProfile = await tx.memberProfile.create({
+      data: {
+        userId: user.id,
+        membershipStatus: "ACTIVE",
+        approvedById: actorId,
+        approvedAt: now,
+        joinedAt: now,
+        rejectionReason: null,
+      },
+    });
 
     await tx.auditLog.create({
       data: {
@@ -820,89 +764,119 @@ export async function updateUserRole(
   }
 
   if (targetUser.role === "WEBMASTER") {
-    throw new Error(
-      "WEBMASTER cannot be changed through this operation",
-    );
+    throw new Error("WEBMASTER cannot be changed through this operation");
   }
 
-  validateRoleChange(
-    actor.role,
-    targetUser.role,
-    input.role,
-  );
+  validateRoleChange(actor.role, targetUser.role, input.role);
 
   const now = new Date();
 
-  const updatedUser = await prisma.$transaction(
-    async (tx) => {
-      const user = await tx.user.update({
+  const updatedUser = await prisma.$transaction(async (tx) => {
+    const user = await tx.user.update({
+      where: {
+        id: targetUserId,
+      },
+      data: {
+        role: input.role,
+      },
+    });
+
+    if (
+      STUDENT_LEADERSHIP_POSITIONS.includes(
+        input.role as (typeof STUDENT_LEADERSHIP_POSITIONS)[number],
+      )
+    ) {
+      const existingMemberProfile = await tx.memberProfile.findUnique({
         where: {
-          id: targetUserId,
+          userId: targetUserId,
         },
-        data: {
-          role: input.role,
+        select: {
+          id: true,
         },
       });
 
-      for (const leadership of targetUser.leadershipPositions) {
-        let positionRemainsValid = true;
+      if (existingMemberProfile) {
+        await tx.memberProfile.update({
+          where: {
+            userId: targetUserId,
+          },
+          data: {
+            membershipStatus: "ACTIVE",
+            approvedById: actorId,
+            approvedAt: now,
+            joinedAt: now,
+            rejectionReason: null,
+          },
+        });
+      } else {
+        await tx.memberProfile.create({
+          data: {
+            userId: targetUserId,
+            membershipStatus: "ACTIVE",
+            approvedById: actorId,
+            approvedAt: now,
+            joinedAt: now,
+            rejectionReason: null,
+          },
+        });
+      }
+    }
 
-        if (
-          leadership.position === "WEBMASTER" &&
-          input.role !== "WEBMASTER"
-        ) {
-          positionRemainsValid = false;
-        }
+    for (const leadership of targetUser.leadershipPositions) {
+      let positionRemainsValid = true;
 
-        if (
-          leadership.position === "IEEE_COUNSELOR" &&
-          input.role !== "IEEE_COUNSELOR"
-        ) {
-          positionRemainsValid = false;
-        }
-
-        if (
-          leadership.position === "FACULTY_MEMBER" &&
-          input.role !== "FACULTY_MEMBER"
-        ) {
-          positionRemainsValid = false;
-        }
-
-        if (
-          STUDENT_LEADERSHIP_POSITIONS.includes(
-            leadership.position as (typeof STUDENT_LEADERSHIP_POSITIONS)[number],
-          ) &&
-          input.role !== leadership.position
-        ) {
-          positionRemainsValid = false;
-        }
-
-        if (!positionRemainsValid) {
-          await tx.branchLeadership.update({
-            where: {
-              id: leadership.id,
-            },
-            data: {
-              isCurrent: false,
-              endDate: now,
-            },
-          });
-        }
+      if (leadership.position === "WEBMASTER" && input.role !== "WEBMASTER") {
+        positionRemainsValid = false;
       }
 
-      await tx.auditLog.create({
-        data: {
-          userId: actorId,
-          action: "UPDATE",
-          entityType: "USER",
-          entityId: targetUserId,
-          description: `Changed user role from ${targetUser.role} to ${input.role}`,
-        },
-      });
+      if (
+        leadership.position === "IEEE_COUNSELOR" &&
+        input.role !== "IEEE_COUNSELOR"
+      ) {
+        positionRemainsValid = false;
+      }
 
-      return user;
-    },
-  );
+      if (
+        leadership.position === "FACULTY_MEMBER" &&
+        input.role !== "FACULTY_MEMBER"
+      ) {
+        positionRemainsValid = false;
+      }
+
+      if (
+        STUDENT_LEADERSHIP_POSITIONS.includes(
+          leadership.position as (typeof STUDENT_LEADERSHIP_POSITIONS)[number],
+        ) &&
+        input.role !== leadership.position
+      ) {
+        positionRemainsValid = false;
+      }
+
+      if (!positionRemainsValid) {
+        await tx.branchLeadership.update({
+          where: {
+            id: leadership.id,
+          },
+          data: {
+            isCurrent: false,
+            endDate: now,
+          },
+        });
+      }
+    }
+
+    await tx.auditLog.create({
+      data: {
+        userId: actorId,
+        action: "UPDATE",
+        entityType: "USER",
+        entityId: targetUserId,
+        description: `Changed user role from ${targetUser.role} to ${input.role}`,
+      },
+    });
+
+    return user;
+  });
 
   return toUserManagementResult(updatedUser);
 }
@@ -934,20 +908,13 @@ export async function setUserActiveStatus(
   }
 
   if (targetUser.role === "WEBMASTER") {
-    throw new Error(
-      "WEBMASTER account cannot be deactivated here",
-    );
+    throw new Error("WEBMASTER account cannot be deactivated here");
   }
 
-  const canManage = await canManageUser(
-    actorId,
-    targetUserId,
-  );
+  const canManage = await canManageUser(actorId, targetUserId);
 
   if (!canManage) {
-    throw new Error(
-      "You are not authorized to modify this user",
-    );
+    throw new Error("You are not authorized to modify this user");
   }
 
   const updatedUser = await prisma.user.update({
@@ -965,9 +932,7 @@ export async function setUserActiveStatus(
       action: "UPDATE",
       entityType: "USER",
       entityId: targetUserId,
-      description: `User account ${
-        isActive ? "activated" : "deactivated"
-      }`,
+      description: `User account ${isActive ? "activated" : "deactivated"}`,
     },
   });
 
@@ -976,9 +941,7 @@ export async function setUserActiveStatus(
 
 export async function listUsers(actorId: string) {
   if (!(await hasAdministrativeAccess(actorId))) {
-    throw new Error(
-      "You are not authorized to view users",
-    );
+    throw new Error("You are not authorized to view users");
   }
 
   const users = await prisma.user.findMany({
@@ -1047,9 +1010,7 @@ export async function assignLeadershipPosition(
   input: AssignLeadershipPositionInput,
 ) {
   if (!(await hasAdministrativeAccess(actorId))) {
-    throw new Error(
-      "You are not authorized to assign leadership positions",
-    );
+    throw new Error("You are not authorized to assign leadership positions");
   }
 
   const targetUser = await prisma.user.findUnique({
@@ -1065,10 +1026,7 @@ export async function assignLeadershipPosition(
     throw new Error("User not found");
   }
 
-  validateLeadershipEligibility(
-    targetUser,
-    input.position,
-  );
+  validateLeadershipEligibility(targetUser, input.position);
 
   const academicYear = await prisma.academicYear.findUnique({
     where: {
@@ -1080,25 +1038,18 @@ export async function assignLeadershipPosition(
     throw new Error("Academic year not found");
   }
 
-  if (
-    input.startDate &&
-    input.endDate &&
-    input.endDate <= input.startDate
-  ) {
-    throw new Error(
-      "Leadership end date must be after start date",
-    );
+  if (input.startDate && input.endDate && input.endDate <= input.startDate) {
+    throw new Error("Leadership end date must be after start date");
   }
 
-  const existingPosition =
-    await prisma.branchLeadership.findUnique({
-      where: {
-        position_academicYearId: {
-          position: input.position,
-          academicYearId: input.academicYearId,
-        },
+  const existingPosition = await prisma.branchLeadership.findUnique({
+    where: {
+      position_academicYearId: {
+        position: input.position,
+        academicYearId: input.academicYearId,
       },
-    });
+    },
+  });
 
   if (existingPosition) {
     throw new Error(
@@ -1106,70 +1057,67 @@ export async function assignLeadershipPosition(
     );
   }
 
-  const leadership = await prisma.$transaction(
-    async (tx) => {
-      const created =
-        await tx.branchLeadership.create({
-          data: {
-            userId: input.userId,
-            position: input.position,
-            academicYearId: input.academicYearId,
-            startDate: input.startDate ?? null,
-            endDate: input.endDate ?? null,
+  const leadership = await prisma.$transaction(async (tx) => {
+    const created = await tx.branchLeadership.create({
+      data: {
+        userId: input.userId,
+        position: input.position,
+        academicYearId: input.academicYearId,
+        startDate: input.startDate ?? null,
+        endDate: input.endDate ?? null,
+        isCurrent: true,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+            firstName: true,
+            lastName: true,
+            phone: true,
+            role: true,
+            isActive: true,
+            ieeeMembershipNumber: true,
+            profileImage: true,
+            bio: true,
+            memberProfile: {
+              select: {
+                id: true,
+                userId: true,
+                membershipStatus: true,
+                joinedAt: true,
+                department: true,
+                course: true,
+                year: true,
+                rollNumber: true,
+              },
+            },
+          },
+        },
+        academicYear: {
+          select: {
+            id: true,
+            name: true,
+            startDate: true,
+            endDate: true,
             isCurrent: true,
           },
-          include: {
-            user: {
-              select: {
-                id: true,
-                email: true,
-                firstName: true,
-                lastName: true,
-                phone: true,
-                role: true,
-                isActive: true,
-                ieeeMembershipNumber: true,
-                profileImage: true,
-                bio: true,
-                memberProfile: {
-                  select: {
-                    id: true,
-                    userId: true,
-                    membershipStatus: true,
-                    joinedAt: true,
-                    department: true,
-                    course: true,
-                    year: true,
-                    rollNumber: true,
-                  },
-                },
-              },
-            },
-            academicYear: {
-              select: {
-                id: true,
-                name: true,
-                startDate: true,
-                endDate: true,
-                isCurrent: true,
-              },
-            },
-          },
-        });
-
-      await tx.auditLog.create({
-        data: {
-          userId: actorId,
-          action: "CREATE",
-          entityType: "BRANCH_LEADERSHIP",
-          entityId: created.id,
-          description: `Assigned ${input.position} position`,
         },
-      });
+      },
+    });
 
-      return created;
-    },
-  );
+    await tx.auditLog.create({
+      data: {
+        userId: actorId,
+        action: "CREATE",
+        entityType: "BRANCH_LEADERSHIP",
+        entityId: created.id,
+        description: `Assigned ${input.position} position`,
+      },
+    });
+
+    return created;
+  });
 
   if (FACULTY_PROFILE_ROLES.includes(leadership.user.role)) {
     const { memberProfile, ...user } = leadership.user;
@@ -1198,24 +1146,21 @@ export async function updateLeadershipPosition(
   input: AssignLeadershipPositionInput,
 ) {
   if (!(await hasAdministrativeAccess(actorId))) {
-    throw new Error(
-      "You are not authorized to update leadership positions",
-    );
+    throw new Error("You are not authorized to update leadership positions");
   }
 
-  const existingLeadership =
-    await prisma.branchLeadership.findUnique({
-      where: {
-        id: leadershipId,
-      },
-      include: {
-        user: {
-          include: {
-            memberProfile: true,
-          },
+  const existingLeadership = await prisma.branchLeadership.findUnique({
+    where: {
+      id: leadershipId,
+    },
+    include: {
+      user: {
+        include: {
+          memberProfile: true,
         },
       },
-    });
+    },
+  });
 
   if (!existingLeadership) {
     throw new Error("Leadership position not found");
@@ -1234,45 +1179,34 @@ export async function updateLeadershipPosition(
     throw new Error("User not found");
   }
 
-  validateLeadershipEligibility(
-    targetUser,
-    input.position,
-  );
+  validateLeadershipEligibility(targetUser, input.position);
 
-  const academicYear =
-    await prisma.academicYear.findUnique({
-      where: {
-        id: input.academicYearId,
-      },
-    });
+  const academicYear = await prisma.academicYear.findUnique({
+    where: {
+      id: input.academicYearId,
+    },
+  });
 
   if (!academicYear) {
     throw new Error("Academic year not found");
   }
 
-  if (
-    input.startDate &&
-    input.endDate &&
-    input.endDate <= input.startDate
-  ) {
-    throw new Error(
-      "Leadership end date must be after start date",
-    );
+  if (input.startDate && input.endDate && input.endDate <= input.startDate) {
+    throw new Error("Leadership end date must be after start date");
   }
 
-  const duplicatePosition =
-    await prisma.branchLeadership.findFirst({
-      where: {
-        id: {
-          not: leadershipId,
-        },
-        position: input.position,
-        academicYearId: input.academicYearId,
+  const duplicatePosition = await prisma.branchLeadership.findFirst({
+    where: {
+      id: {
+        not: leadershipId,
       },
-      select: {
-        id: true,
-      },
-    });
+      position: input.position,
+      academicYearId: input.academicYearId,
+    },
+    select: {
+      id: true,
+    },
+  });
 
   if (duplicatePosition) {
     throw new Error(
@@ -1280,73 +1214,69 @@ export async function updateLeadershipPosition(
     );
   }
 
-  const updatedLeadership =
-    await prisma.$transaction(
-      async (tx) => {
-        const updated =
-          await tx.branchLeadership.update({
-            where: {
-              id: leadershipId,
-            },
-            data: {
-              userId: input.userId,
-              position: input.position,
-              academicYearId: input.academicYearId,
-              startDate: input.startDate ?? null,
-              endDate: input.endDate ?? null,
-            },
-            include: {
-              user: {
-                select: {
-                  id: true,
-                  email: true,
-                  firstName: true,
-                  lastName: true,
-                  phone: true,
-                  role: true,
-                  isActive: true,
-                  ieeeMembershipNumber: true,
-                  profileImage: true,
-                  bio: true,
-                  memberProfile: {
-                    select: {
-                      id: true,
-                      userId: true,
-                      membershipStatus: true,
-                      joinedAt: true,
-                      department: true,
-                      course: true,
-                      year: true,
-                      rollNumber: true,
-                    },
-                  },
-                },
-              },
-              academicYear: {
-                select: {
-                  id: true,
-                  name: true,
-                  startDate: true,
-                  endDate: true,
-                  isCurrent: true,
-                },
-              },
-            },
-          });
-
-        await tx.auditLog.create({
-          data: {
-            userId: actorId,
-            action: "UPDATE",
-            entityType: "BRANCH_LEADERSHIP",
-            entityId: leadershipId,
-            description: `Updated leadership position to ${input.position}`,
-          },
-        });
-
-        return updated;
+  const updatedLeadership = await prisma.$transaction(async (tx) => {
+    const updated = await tx.branchLeadership.update({
+      where: {
+        id: leadershipId,
       },
-    );
+      data: {
+        userId: input.userId,
+        position: input.position,
+        academicYearId: input.academicYearId,
+        startDate: input.startDate ?? null,
+        endDate: input.endDate ?? null,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+            firstName: true,
+            lastName: true,
+            phone: true,
+            role: true,
+            isActive: true,
+            ieeeMembershipNumber: true,
+            profileImage: true,
+            bio: true,
+            memberProfile: {
+              select: {
+                id: true,
+                userId: true,
+                membershipStatus: true,
+                joinedAt: true,
+                department: true,
+                course: true,
+                year: true,
+                rollNumber: true,
+              },
+            },
+          },
+        },
+        academicYear: {
+          select: {
+            id: true,
+            name: true,
+            startDate: true,
+            endDate: true,
+            isCurrent: true,
+          },
+        },
+      },
+    });
+
+    await tx.auditLog.create({
+      data: {
+        userId: actorId,
+        action: "UPDATE",
+        entityType: "BRANCH_LEADERSHIP",
+        entityId: leadershipId,
+        description: `Updated leadership position to ${input.position}`,
+      },
+    });
+
+    return updated;
+  });
 
   if (FACULTY_PROFILE_ROLES.includes(updatedLeadership.user.role)) {
     const { memberProfile, ...user } = updatedLeadership.user;
@@ -1374,50 +1304,45 @@ export async function removeLeadershipPosition(
   leadershipId: string,
 ) {
   if (!(await hasAdministrativeAccess(actorId))) {
-    throw new Error(
-      "You are not authorized to remove leadership positions",
-    );
+    throw new Error("You are not authorized to remove leadership positions");
   }
 
-  const leadership =
-    await prisma.branchLeadership.findUnique({
-      where: {
-        id: leadershipId,
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-          },
+  const leadership = await prisma.branchLeadership.findUnique({
+    where: {
+      id: leadershipId,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
         },
       },
-    });
+    },
+  });
 
   if (!leadership) {
     throw new Error("Leadership position not found");
   }
 
-  await prisma.$transaction(
-    async (tx) => {
-      await tx.branchLeadership.delete({
-        where: {
-          id: leadershipId,
-        },
-      });
+  await prisma.$transaction(async (tx) => {
+    await tx.branchLeadership.delete({
+      where: {
+        id: leadershipId,
+      },
+    });
 
-      await tx.auditLog.create({
-        data: {
-          userId: actorId,
-          action: "DELETE",
-          entityType: "BRANCH_LEADERSHIP",
-          entityId: leadershipId,
-          description: `Removed ${leadership.position} leadership position from ${leadership.user.firstName}${leadership.user.lastName ? ` ${leadership.user.lastName}` : ""}`,
-        },
-      });
-    },
-  );
+    await tx.auditLog.create({
+      data: {
+        userId: actorId,
+        action: "DELETE",
+        entityType: "BRANCH_LEADERSHIP",
+        entityId: leadershipId,
+        description: `Removed ${leadership.position} leadership position from ${leadership.user.firstName}${leadership.user.lastName ? ` ${leadership.user.lastName}` : ""}`,
+      },
+    });
+  });
 
   return {
     id: leadershipId,
@@ -1426,32 +1351,23 @@ export async function removeLeadershipPosition(
   };
 }
 
-function extractCloudinaryPublicId(
-  imageUrl: string,
-) {
+function extractCloudinaryPublicId(imageUrl: string) {
   try {
     const url = new URL(imageUrl);
-    const uploadIndex =
-      url.pathname.indexOf("/upload/");
+    const uploadIndex = url.pathname.indexOf("/upload/");
 
     if (uploadIndex === -1) {
       return null;
     }
 
-    let path = url.pathname.slice(
-      uploadIndex + "/upload/".length,
-    );
+    let path = url.pathname.slice(uploadIndex + "/upload/".length);
 
     path = path.replace(/^v\d+\//, "");
 
-    const extensionIndex =
-      path.lastIndexOf(".");
+    const extensionIndex = path.lastIndexOf(".");
 
     if (extensionIndex !== -1) {
-      path = path.slice(
-        0,
-        extensionIndex,
-      );
+      path = path.slice(0, extensionIndex);
     }
 
     return path || null;
@@ -1496,9 +1412,7 @@ export async function uploadUserProfileImage(
   const hasFacultyMemberPosition =
     user.role === "FACULTY_MEMBER" &&
     user.leadershipPositions.some(
-      (leadership) =>
-        leadership.position ===
-        "FACULTY_MEMBER",
+      (leadership) => leadership.position === "FACULTY_MEMBER",
     );
 
   const hasStudentLeadershipPosition =
@@ -1506,8 +1420,7 @@ export async function uploadUserProfileImage(
       user.role as (typeof STUDENT_LEADERSHIP_POSITIONS)[number],
     ) &&
     user.leadershipPositions.some(
-      (leadership) =>
-        leadership.position === user.role,
+      (leadership) => leadership.position === user.role,
     );
 
   if (
@@ -1521,50 +1434,43 @@ export async function uploadUserProfileImage(
   }
 
   if (!file) {
-    throw new Error(
-      "Profile image is required",
-    );
+    throw new Error("Profile image is required");
   }
 
   let uploadResult;
 
   try {
-    uploadResult =
-      await uploadProfileImageToCloudinary(
-        file.buffer,
-        file.originalname,
-      );
-  } catch {
-    throw new Error(
-      "Failed to upload profile image to Cloudinary",
+    uploadResult = await uploadProfileImageToCloudinary(
+      file.buffer,
+      file.originalname,
     );
+  } catch {
+    throw new Error("Failed to upload profile image to Cloudinary");
   }
 
   try {
-    const updatedUser =
-      await prisma.user.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          profileImage:
-            uploadResult.secureUrl,
-        },
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          phone: true,
-          role: true,
-          isActive: true,
-          ieeeMembershipNumber: true,
-          profileImage: true,
-          bio: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      });
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        profileImage: uploadResult.secureUrl,
+      },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        phone: true,
+        role: true,
+        isActive: true,
+        ieeeMembershipNumber: true,
+        profileImage: true,
+        bio: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
 
     await prisma.auditLog.create({
       data: {
@@ -1572,22 +1478,16 @@ export async function uploadUserProfileImage(
         action: "UPDATE",
         entityType: "USER",
         entityId: userId,
-        description:
-          "Updated profile image",
+        description: "Updated profile image",
       },
     });
 
     if (user.profileImage) {
-      const oldPublicId =
-        extractCloudinaryPublicId(
-          user.profileImage,
-        );
+      const oldPublicId = extractCloudinaryPublicId(user.profileImage);
 
       if (oldPublicId) {
         try {
-          await deleteImageFromCloudinary(
-            oldPublicId,
-          );
+          await deleteImageFromCloudinary(oldPublicId);
         } catch (error) {
           console.error(
             `Failed to delete previous profile image ${oldPublicId}:`,
@@ -1597,14 +1497,10 @@ export async function uploadUserProfileImage(
       }
     }
 
-    return toUserManagementResult(
-      updatedUser,
-    );
+    return toUserManagementResult(updatedUser);
   } catch (error) {
     try {
-      await deleteImageFromCloudinary(
-        uploadResult.publicId,
-      );
+      await deleteImageFromCloudinary(uploadResult.publicId);
     } catch (cleanupError) {
       console.error(
         `Failed to clean up profile image ${uploadResult.publicId}:`,
@@ -1617,63 +1513,62 @@ export async function uploadUserProfileImage(
 }
 
 export async function getPublicLeadership() {
-  const leadership =
-    await prisma.branchLeadership.findMany({
-      where: {
-        isCurrent: true,
-        user: {
+  const leadership = await prisma.branchLeadership.findMany({
+    where: {
+      isCurrent: true,
+      user: {
+        isActive: true,
+      },
+    },
+    orderBy: {
+      createdAt: "asc",
+    },
+    select: {
+      id: true,
+      userId: true,
+      position: true,
+      academicYearId: true,
+      startDate: true,
+      endDate: true,
+      isCurrent: true,
+      createdAt: true,
+      updatedAt: true,
+      user: {
+        select: {
+          id: true,
+          email: true,
+          firstName: true,
+          lastName: true,
+          phone: true,
+          role: true,
           isActive: true,
-        },
-      },
-      orderBy: {
-        createdAt: "asc",
-      },
-      select: {
-        id: true,
-        userId: true,
-        position: true,
-        academicYearId: true,
-        startDate: true,
-        endDate: true,
-        isCurrent: true,
-        createdAt: true,
-        updatedAt: true,
-        user: {
-          select: {
-            id: true,
-            email: true,
-            firstName: true,
-            lastName: true,
-            phone: true,
-            role: true,
-            isActive: true,
-            ieeeMembershipNumber: true,
-            profileImage: true,
-            bio: true,
-            memberProfile: {
-              select: {
-                id: true,
-                membershipStatus: true,
-                joinedAt: true,
-                department: true,
-                course: true,
-                year: true,
-                rollNumber: true,
-              },
+          ieeeMembershipNumber: true,
+          profileImage: true,
+          bio: true,
+          memberProfile: {
+            select: {
+              id: true,
+              membershipStatus: true,
+              joinedAt: true,
+              department: true,
+              course: true,
+              year: true,
+              rollNumber: true,
             },
           },
         },
-        academicYear: {
-          select: {
-            id: true,
-            name: true,
-            startDate: true,
-            endDate: true,
-            isCurrent: true,
-          },
+      },
+      academicYear: {
+        select: {
+          id: true,
+          name: true,
+          startDate: true,
+          endDate: true,
+          isCurrent: true,
         },
       },
-    });
+    },
+  });
 
   return leadership.map((item) => {
     if (!FACULTY_PROFILE_ROLES.includes(item.user.role)) {
@@ -1698,54 +1593,49 @@ export async function getPublicLeadership() {
   });
 }
 
-export async function listMembers(
-  actorId: string,
-) {
+export async function listMembers(actorId: string) {
   if (!(await hasAdministrativeAccess(actorId))) {
-    throw new Error(
-      "You are not authorized to view members",
-    );
+    throw new Error("You are not authorized to view members");
   }
 
-  const members =
-    await prisma.user.findMany({
-      where: {
-        isActive: true,
-        memberProfile: {
-          membershipStatus: "ACTIVE",
+  const members = await prisma.user.findMany({
+    where: {
+      isActive: true,
+      memberProfile: {
+        membershipStatus: "ACTIVE",
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    select: {
+      id: true,
+      email: true,
+      firstName: true,
+      lastName: true,
+      phone: true,
+      role: true,
+      isActive: true,
+      ieeeMembershipNumber: true,
+      profileImage: true,
+      bio: true,
+      createdAt: true,
+      updatedAt: true,
+      memberProfile: {
+        select: {
+          id: true,
+          membershipStatus: true,
+          joinedAt: true,
+          department: true,
+          course: true,
+          year: true,
+          rollNumber: true,
+          profileVisibility: true,
+          approvedAt: true,
         },
       },
-      orderBy: {
-        createdAt: "desc",
-      },
-      select: {
-        id: true,
-        email: true,
-        firstName: true,
-        lastName: true,
-        phone: true,
-        role: true,
-        isActive: true,
-        ieeeMembershipNumber: true,
-        profileImage: true,
-        bio: true,
-        createdAt: true,
-        updatedAt: true,
-        memberProfile: {
-          select: {
-            id: true,
-            membershipStatus: true,
-            joinedAt: true,
-            department: true,
-            course: true,
-            year: true,
-            rollNumber: true,
-            profileVisibility: true,
-            approvedAt: true,
-          },
-        },
-      },
-    });
+    },
+  });
 
   return members.map((member) => {
     if (!FACULTY_PROFILE_ROLES.includes(member.role)) {

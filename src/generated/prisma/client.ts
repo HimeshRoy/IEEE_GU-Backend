@@ -72,6 +72,31 @@ export type Event = Prisma.EventModel
  */
 export type EventRegistration = Prisma.EventRegistrationModel
 /**
+ * Model EventForm
+ * 
+ */
+export type EventForm = Prisma.EventFormModel
+/**
+ * Model EventFormField
+ * 
+ */
+export type EventFormField = Prisma.EventFormFieldModel
+/**
+ * Model EventFormResponse
+ * 
+ */
+export type EventFormResponse = Prisma.EventFormResponseModel
+/**
+ * Model EventFormAnswer
+ * 
+ */
+export type EventFormAnswer = Prisma.EventFormAnswerModel
+/**
+ * Model EventTeam
+ * 
+ */
+export type EventTeam = Prisma.EventTeamModel
+/**
  * Model Announcement
  * 
  */

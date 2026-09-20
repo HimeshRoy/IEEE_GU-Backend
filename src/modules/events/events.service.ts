@@ -1,4 +1,9 @@
 import { prisma } from "../../config/prisma.js";
+
+type TransactionClient = Parameters<
+  Parameters<typeof prisma.$transaction>[0]
+>[0];
+import { randomBytes } from "node:crypto";
 import { cloudinary } from "../../config/cloudinary.js";
 import {
   createNotification,
@@ -9,6 +14,212 @@ import type {
   EventListFilters,
   UpdateEventInput,
 } from "./events.types.js";
+
+function getTemplateParticipation(
+  template: CreateEventInput["registrationTemplate"],
+) {
+  if (template?.endsWith("_TEAM")) {
+    return "TEAM" as const;
+  }
+
+  if (template?.endsWith("_INDIVIDUAL")) {
+    return "INDIVIDUAL" as const;
+  }
+
+  return null;
+}
+
+function getDefaultFormFields(
+  template: CreateEventInput["registrationTemplate"],
+  participationType: CreateEventInput["participationType"],
+) {
+  type FormFieldSeed = {
+    key: string;
+    label: string;
+    type: "SHORT_ANSWER" | "EMAIL" | "PHONE";
+    scope: "PARTICIPANT" | "TEAM";
+    required: boolean;
+    placeholder: string;
+    isSystemField: boolean;
+  };
+
+  const fields: FormFieldSeed[] = [
+    {
+      key: "name",
+      label: "Full Name",
+      type: "SHORT_ANSWER" as const,
+      scope: "PARTICIPANT" as const,
+      required: true,
+      placeholder: "Enter your full name",
+      isSystemField: true,
+    },
+    {
+      key: "email",
+      label: "Email Address",
+      type: "EMAIL" as const,
+      scope: "PARTICIPANT" as const,
+      required: true,
+      placeholder: "Enter your email address",
+      isSystemField: true,
+    },
+    {
+      key: "phone",
+      label: "Mobile Number",
+      type: "PHONE" as const,
+      scope: "PARTICIPANT" as const,
+      required: true,
+      placeholder: "Enter your mobile number",
+      isSystemField: true,
+    },
+  ];
+
+  if (template === "UNIVERSITY_INDIVIDUAL" || template === "UNIVERSITY_TEAM") {
+    fields.push(
+      {
+        key: "department",
+        label: "Department",
+        type: "SHORT_ANSWER" as const,
+        scope: "PARTICIPANT" as const,
+        required: true,
+        placeholder: "Enter your department",
+        isSystemField: false,
+      },
+      {
+        key: "course",
+        label: "Course",
+        type: "SHORT_ANSWER" as const,
+        scope: "PARTICIPANT" as const,
+        required: true,
+        placeholder: "Enter your course",
+        isSystemField: false,
+      },
+      {
+        key: "year",
+        label: "Academic Year",
+        type: "SHORT_ANSWER" as const,
+        scope: "PARTICIPANT" as const,
+        required: true,
+        placeholder: "Enter your academic year",
+        isSystemField: false,
+      },
+      {
+        key: "roll_number",
+        label: "Roll Number",
+        type: "SHORT_ANSWER" as const,
+        scope: "PARTICIPANT" as const,
+        required: true,
+        placeholder: "Enter your roll number",
+        isSystemField: false,
+      },
+      {
+        key: "ieee_membership_number",
+        label: "IEEE Membership Number",
+        type: "SHORT_ANSWER" as const,
+        scope: "PARTICIPANT" as const,
+        required: false,
+        placeholder: "Enter your IEEE membership number",
+        isSystemField: false,
+      },
+    );
+  }
+
+  if (
+    template === "INTER_UNIVERSITY_INDIVIDUAL" ||
+    template === "INTER_UNIVERSITY_TEAM"
+  ) {
+    fields.push(
+      {
+        key: "institution",
+        label: "Institution",
+        type: "SHORT_ANSWER" as const,
+        scope: "PARTICIPANT" as const,
+        required: true,
+        placeholder: "Enter your institution",
+        isSystemField: false,
+      },
+      {
+        key: "department",
+        label: "Department",
+        type: "SHORT_ANSWER" as const,
+        scope: "PARTICIPANT" as const,
+        required: true,
+        placeholder: "Enter your department",
+        isSystemField: false,
+      },
+      {
+        key: "course",
+        label: "Course",
+        type: "SHORT_ANSWER" as const,
+        scope: "PARTICIPANT" as const,
+        required: true,
+        placeholder: "Enter your course",
+        isSystemField: false,
+      },
+      {
+        key: "year",
+        label: "Academic Year",
+        type: "SHORT_ANSWER" as const,
+        scope: "PARTICIPANT" as const,
+        required: true,
+        placeholder: "Enter your academic year",
+        isSystemField: false,
+      },
+    );
+  }
+
+  if (participationType === "TEAM") {
+    fields.unshift({
+      key: "team_name",
+      label: "Team Name",
+      type: "SHORT_ANSWER" as const,
+      scope: "TEAM" as const,
+      required: true,
+      placeholder: "Enter your team name",
+      isSystemField: true,
+    });
+  }
+
+  return fields;
+}
+
+async function ensureRegistrationForm(
+  tx: TransactionClient,
+  event: {
+    id: string;
+    title: string;
+    registrationTemplate: CreateEventInput["registrationTemplate"];
+    participationType: CreateEventInput["participationType"];
+  },
+) {
+  const existing = await tx.eventForm.findUnique({
+    where: { eventId: event.id },
+  });
+
+  if (existing) {
+    return existing;
+  }
+
+  const fields = getDefaultFormFields(
+    event.registrationTemplate,
+    event.participationType,
+  );
+
+  return tx.eventForm.create({
+    data: {
+      eventId: event.id,
+      title: `${event.title} Registration Form`,
+      description: "Complete the registration form for this event.",
+      template: event.registrationTemplate ?? null,
+      status: "DRAFT",
+      fields: {
+        create: fields.map((field, index) => ({
+          ...field,
+          order: index + 1,
+        })),
+      },
+    },
+  });
+}
 
 async function hasOperationalAccess(userId: string) {
   const user = await prisma.user.findUnique({
@@ -119,49 +330,71 @@ export async function createEvent(userId: string, input: CreateEventInput) {
     throw new Error("Registration deadline must be before the event date");
   }
 
-  const event = await prisma.event.create({
-    data: {
-      title: input.title,
-      slug: input.slug,
-      description: input.description,
-      eventDate: input.eventDate,
-      status: "DRAFT",
-      access: input.access,
-      createdById: userId,
-      approvalStatus: "PENDING",
-      isFeatured: input.isFeatured ?? false,
-      ...(input.shortDescription !== undefined && {
-        shortDescription: input.shortDescription,
-      }),
-      ...(input.bannerImage !== undefined && {
-        bannerImage: input.bannerImage,
-      }),
-      ...(input.venue !== undefined && {
-        venue: input.venue,
-      }),
-      ...(input.startTime !== undefined && {
-        startTime: input.startTime,
-      }),
-      ...(input.endTime !== undefined && {
-        endTime: input.endTime,
-      }),
-      ...(input.registrationDeadline !== undefined && {
-        registrationDeadline: input.registrationDeadline,
-      }),
-      ...(input.capacity !== undefined && {
-        capacity: input.capacity,
-      }),
-    },
-  });
+  const event = await prisma.$transaction(async (tx) => {
+    const createdEvent = await tx.event.create({
+      data: {
+        title: input.title,
+        slug: input.slug,
+        description: input.description,
+        eventDate: input.eventDate,
+        status: "DRAFT",
+        access: input.access,
+        createdById: userId,
+        approvalStatus: "PENDING",
+        isFeatured: input.isFeatured ?? false,
+        participationType: input.participationType,
+        enableQrAttendance: input.enableQrAttendance ?? false,
+        ...(input.registrationTemplate !== undefined && {
+          registrationTemplate: input.registrationTemplate,
+        }),
+        ...(input.minTeamSize !== undefined && {
+          minTeamSize: input.minTeamSize,
+        }),
+        ...(input.maxTeamSize !== undefined && {
+          maxTeamSize: input.maxTeamSize,
+        }),
+        ...(input.shortDescription !== undefined && {
+          shortDescription: input.shortDescription,
+        }),
+        ...(input.bannerImage !== undefined && {
+          bannerImage: input.bannerImage,
+        }),
+        ...(input.venue !== undefined && {
+          venue: input.venue,
+        }),
+        ...(input.startTime !== undefined && {
+          startTime: input.startTime,
+        }),
+        ...(input.endTime !== undefined && {
+          endTime: input.endTime,
+        }),
+        ...(input.registrationDeadline !== undefined && {
+          registrationDeadline: input.registrationDeadline,
+        }),
+        ...(input.capacity !== undefined && {
+          capacity: input.capacity,
+        }),
+      },
+    });
 
-  await prisma.auditLog.create({
-    data: {
-      userId,
-      action: "CREATE",
-      entityType: "EVENT",
-      entityId: event.id,
-      description: `Created event "${event.title}"`,
-    },
+    await ensureRegistrationForm(tx, {
+      id: createdEvent.id,
+      title: createdEvent.title,
+      registrationTemplate: createdEvent.registrationTemplate ?? undefined,
+      participationType: createdEvent.participationType,
+    });
+
+    await tx.auditLog.create({
+      data: {
+        userId,
+        action: "CREATE",
+        entityType: "EVENT",
+        entityId: createdEvent.id,
+        description: `Created event "${createdEvent.title}"`,
+      },
+    });
+
+    return createdEvent;
   });
 
   return event;
@@ -201,6 +434,61 @@ export async function updateEvent(
     }
   }
 
+  const existingRegistrationCount = await prisma.eventRegistration.count({
+    where: {
+      eventId,
+    },
+  });
+
+  const nextParticipationType =
+    input.participationType ?? event.participationType;
+  const nextTemplate =
+    input.registrationTemplate ?? event.registrationTemplate ?? undefined;
+  const templateParticipation = getTemplateParticipation(nextTemplate);
+
+  if (
+    templateParticipation &&
+    templateParticipation !== nextParticipationType
+  ) {
+    throw new Error("Registration template and participation type must match");
+  }
+
+  if (nextParticipationType === "TEAM") {
+    const nextMinTeamSize = input.minTeamSize ?? event.minTeamSize;
+    const nextMaxTeamSize = input.maxTeamSize ?? event.maxTeamSize;
+
+    if (nextMinTeamSize === null || nextMinTeamSize === undefined) {
+      throw new Error("Minimum team size is required for team events");
+    }
+
+    if (nextMaxTeamSize === null || nextMaxTeamSize === undefined) {
+      throw new Error("Maximum team size is required for team events");
+    }
+
+    if (nextMinTeamSize > nextMaxTeamSize) {
+      throw new Error(
+        "Maximum team size must be greater than or equal to minimum team size",
+      );
+    }
+  } else if (
+    input.minTeamSize !== undefined ||
+    input.maxTeamSize !== undefined
+  ) {
+    throw new Error("Team size can only be configured for team events");
+  }
+
+  if (
+    existingRegistrationCount > 0 &&
+    (input.participationType !== undefined ||
+      input.registrationTemplate !== undefined ||
+      input.minTeamSize !== undefined ||
+      input.maxTeamSize !== undefined)
+  ) {
+    throw new Error(
+      "Registration settings cannot be changed after registrations have been created",
+    );
+  }
+
   const eventDate = input.eventDate ?? event.eventDate;
   const startTime = input.startTime ?? event.startTime;
   const endTime = input.endTime ?? event.endTime;
@@ -215,61 +503,137 @@ export async function updateEvent(
     throw new Error("Registration deadline must be before the event date");
   }
 
-  const updatedEvent = await prisma.event.update({
-    where: {
-      id: eventId,
-    },
-    data: {
-      ...(input.title !== undefined && {
-        title: input.title,
-      }),
-      ...(input.slug !== undefined && {
-        slug: input.slug,
-      }),
-      ...(input.shortDescription !== undefined && {
-        shortDescription: input.shortDescription,
-      }),
-      ...(input.description !== undefined && {
-        description: input.description,
-      }),
-      ...(input.bannerImage !== undefined && {
-        bannerImage: input.bannerImage,
-      }),
-      ...(input.venue !== undefined && {
-        venue: input.venue,
-      }),
-      ...(input.eventDate !== undefined && {
-        eventDate: input.eventDate,
-      }),
-      ...(input.startTime !== undefined && {
-        startTime: input.startTime,
-      }),
-      ...(input.endTime !== undefined && {
-        endTime: input.endTime,
-      }),
-      ...(input.registrationDeadline !== undefined && {
-        registrationDeadline: input.registrationDeadline,
-      }),
-      ...(input.capacity !== undefined && {
-        capacity: input.capacity,
-      }),
-      ...(input.access !== undefined && {
-        access: input.access,
-      }),
-      ...(input.isFeatured !== undefined && {
-        isFeatured: input.isFeatured,
-      }),
-    },
-  });
+  const updatedEvent = await prisma.$transaction(async (tx) => {
+    const updated = await tx.event.update({
+      where: {
+        id: eventId,
+      },
+      data: {
+        ...(input.title !== undefined && {
+          title: input.title,
+        }),
+        ...(input.slug !== undefined && {
+          slug: input.slug,
+        }),
+        ...(input.shortDescription !== undefined && {
+          shortDescription: input.shortDescription,
+        }),
+        ...(input.description !== undefined && {
+          description: input.description,
+        }),
+        ...(input.bannerImage !== undefined && {
+          bannerImage: input.bannerImage,
+        }),
+        ...(input.venue !== undefined && {
+          venue: input.venue,
+        }),
+        ...(input.eventDate !== undefined && {
+          eventDate: input.eventDate,
+        }),
+        ...(input.startTime !== undefined && {
+          startTime: input.startTime,
+        }),
+        ...(input.endTime !== undefined && {
+          endTime: input.endTime,
+        }),
+        ...(input.registrationDeadline !== undefined && {
+          registrationDeadline: input.registrationDeadline,
+        }),
+        ...(input.capacity !== undefined && {
+          capacity: input.capacity,
+        }),
+        ...(input.access !== undefined && {
+          access: input.access,
+        }),
+        ...(input.isFeatured !== undefined && {
+          isFeatured: input.isFeatured,
+        }),
+        ...(input.registrationTemplate !== undefined && {
+          registrationTemplate: input.registrationTemplate,
+        }),
+        ...(input.participationType !== undefined && {
+          participationType: input.participationType,
+        }),
+        ...(input.minTeamSize !== undefined && {
+          minTeamSize: input.minTeamSize,
+        }),
+        ...(input.maxTeamSize !== undefined && {
+          maxTeamSize: input.maxTeamSize,
+        }),
+        ...(input.enableQrAttendance !== undefined && {
+          enableQrAttendance: input.enableQrAttendance,
+        }),
+      },
+    });
 
-  await prisma.auditLog.create({
-    data: {
-      userId,
-      action: "UPDATE",
-      entityType: "EVENT",
-      entityId: eventId,
-      description: `Updated event "${updatedEvent.title}"`,
-    },
+    if (
+      input.enableQrAttendance !== undefined &&
+      input.enableQrAttendance !== event.enableQrAttendance
+    ) {
+      if (input.enableQrAttendance) {
+        await tx.eventRegistration.updateMany({
+          where: {
+            eventId,
+            registrationStatus: "REGISTERED",
+          },
+          data: {
+            qrToken: null,
+          },
+        });
+
+        const registered = await tx.eventRegistration.findMany({
+          where: {
+            eventId,
+            registrationStatus: "REGISTERED",
+          },
+          select: { id: true },
+        });
+
+        for (const registration of registered) {
+          await tx.eventRegistration.update({
+            where: { id: registration.id },
+            data: {
+              qrToken: randomBytes(32).toString("hex"),
+            },
+          });
+        }
+      } else {
+        await tx.eventRegistration.updateMany({
+          where: { eventId },
+          data: { qrToken: null },
+        });
+      }
+    }
+
+    if (
+      input.registrationTemplate !== undefined ||
+      input.participationType !== undefined
+    ) {
+      const form = await tx.eventForm.findUnique({
+        where: { eventId },
+      });
+
+      if (form && form.status === "DRAFT") {
+        await tx.eventForm.update({
+          where: { id: form.id },
+          data: {
+            template: updated.registrationTemplate ?? null,
+          },
+        });
+      }
+    }
+
+    await tx.auditLog.create({
+      data: {
+        userId,
+        action: "UPDATE",
+        entityType: "EVENT",
+        entityId: eventId,
+        description: `Updated event "${updated.title}"`,
+      },
+    });
+
+    return updated;
   });
 
   return updatedEvent;
@@ -629,6 +993,24 @@ export async function publishEvent(userId: string, eventId: string) {
 
   if (event.status !== "APPROVED") {
     throw new Error("Only approved events can be published");
+  }
+
+  const form = await prisma.eventForm.findUnique({
+    where: { eventId },
+    select: {
+      id: true,
+      status: true,
+    },
+  });
+
+  if (!form) {
+    throw new Error("Registration form is not available");
+  }
+
+  if (form.status !== "PUBLISHED") {
+    throw new Error(
+      "Registration form must be published before the event can be published",
+    );
   }
 
   const updatedEvent = await prisma.event.update({
