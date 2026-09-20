@@ -48,7 +48,7 @@ export const createEventSchema = z
     registrationTemplate: eventRegistrationTemplateSchema.optional(),
     participationType: eventParticipationTypeSchema.default("INDIVIDUAL"),
     minTeamSize: z.number().int().min(1).optional(),
-    maxTeamSize: z.number().int().min(1).optional(),
+    maxTeamSize: z.number().int().min(2).optional(),
     enableQrAttendance: z.boolean().default(false),
   })
   .superRefine((data, ctx) => {
