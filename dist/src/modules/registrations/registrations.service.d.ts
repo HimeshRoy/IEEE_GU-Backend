@@ -5,6 +5,7 @@ export declare function registerForEvent(eventId: string, input: PublicRegistrat
         name: string;
         email: string;
         phone: string | null;
+        qrToken: string | null;
         answers: FormAnswerInput;
     }[];
     event: {

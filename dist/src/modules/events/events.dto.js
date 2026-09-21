@@ -40,7 +40,7 @@ export const createEventSchema = z
     isFeatured: z.boolean().default(false),
     registrationTemplate: eventRegistrationTemplateSchema.optional(),
     participationType: eventParticipationTypeSchema.default("INDIVIDUAL"),
-    minTeamSize: z.number().int().min(2).optional(),
+    minTeamSize: z.number().int().min(1).optional(),
     maxTeamSize: z.number().int().min(2).optional(),
     enableQrAttendance: z.boolean().default(false),
 })

@@ -230,11 +230,11 @@ function validateTemplateConfiguration(template, participationType, minTeamSize,
         if (maxTeamSize === null || maxTeamSize === undefined) {
             throw new Error("Maximum team size is required for team templates");
         }
-        if (minTeamSize < 2) {
-            throw new Error("Minimum team size must be at least 2");
+        if (minTeamSize < 1) {
+            throw new Error("Minimum team size must be at least 1");
         }
-        if (maxTeamSize < 2) {
-            throw new Error("Maximum team size must be at least 2");
+        if (maxTeamSize < 1) {
+            throw new Error("Maximum team size must be at least 1");
         }
         if (minTeamSize > maxTeamSize) {
             throw new Error("Minimum team size cannot exceed maximum team size");

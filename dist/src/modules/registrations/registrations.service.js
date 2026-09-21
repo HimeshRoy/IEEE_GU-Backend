@@ -2,6 +2,7 @@ import { Prisma } from "../../generated/prisma/client.js";
 import { randomBytes } from "node:crypto";
 import { prisma } from "../../config/prisma.js";
 import { createNotification } from "../notifications/notifications.service.js";
+import { sendRegistrationConfirmationEmail, } from "../../services/email.service.js";
 function normalizeEmail(email) {
     return email.trim().toLowerCase();
 }
@@ -467,6 +468,7 @@ async function createRegistrationWithCapacityCheck(eventId, input, userId) {
                 name: memberRegistration.name,
                 email: memberRegistration.email,
                 phone: memberRegistration.phone,
+                qrToken: memberRegistration.qrToken,
                 answers: member.answers,
             });
         }
@@ -525,7 +527,90 @@ export async function registerForEvent(eventId, input, userId) {
     const maxRetries = 3;
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
-            return await createRegistrationWithCapacityCheck(eventId, input, userId);
+            const registration = await createRegistrationWithCapacityCheck(eventId, input, userId);
+            try {
+                const event = await prisma.event.findUnique({
+                    where: {
+                        id: eventId,
+                    },
+                    select: {
+                        id: true,
+                        title: true,
+                        eventDate: true,
+                        startTime: true,
+                        endTime: true,
+                        venue: true,
+                        participationType: true,
+                        enableQrAttendance: true,
+                    },
+                });
+                if (!event) {
+                    console.error("Registration email skipped: event was not found.");
+                }
+                else {
+                    const participants = await prisma.eventRegistration.findMany({
+                        where: {
+                            eventId,
+                            ...(registration.teamId
+                                ? {
+                                    teamId: registration.teamId,
+                                }
+                                : {
+                                    id: registration.id,
+                                }),
+                        },
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                            qrToken: true,
+                            registrationStatus: true,
+                            isTeamLeader: true,
+                        },
+                        orderBy: [
+                            {
+                                isTeamLeader: "desc",
+                            },
+                            {
+                                registeredAt: "asc",
+                            },
+                        ],
+                    });
+                    const teamName = registration.team?.name ?? null;
+                    for (const participant of participants) {
+                        try {
+                            await sendRegistrationConfirmationEmail({
+                                participant: {
+                                    id: participant.id,
+                                    name: participant.name,
+                                    email: participant.email,
+                                    qrToken: participant.qrToken,
+                                    registrationStatus: participant.registrationStatus,
+                                    isTeamLeader: participant.isTeamLeader,
+                                },
+                                event: {
+                                    id: event.id,
+                                    title: event.title,
+                                    eventDate: event.eventDate,
+                                    startTime: event.startTime,
+                                    endTime: event.endTime,
+                                    venue: event.venue,
+                                    participationType: event.participationType,
+                                    enableQrAttendance: event.enableQrAttendance,
+                                },
+                                teamName,
+                            });
+                        }
+                        catch (emailError) {
+                            console.error(`Failed to send registration email to ${participant.email}:`, emailError);
+                        }
+                    }
+                }
+            }
+            catch (emailError) {
+                console.error("Registration email processing failed:", emailError);
+            }
+            return registration;
         }
         catch (error) {
             const isSerializationConflict = error instanceof Prisma.PrismaClientKnownRequestError &&
