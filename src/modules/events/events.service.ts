@@ -774,7 +774,18 @@ export async function getEvents(
       | "REJECTED"
       | "PUBLISHED"
       | "CANCELLED"
-      | "COMPLETED";
+      | "COMPLETED"
+      | {
+          in: Array<
+            | "DRAFT"
+            | "PENDING_APPROVAL"
+            | "APPROVED"
+            | "REJECTED"
+            | "PUBLISHED"
+            | "CANCELLED"
+            | "COMPLETED"
+          >;
+        };
     access?: "PUBLIC" | "UNIVERSITY" | "MEMBERS_ONLY" | "INVITE_ONLY";
     isFeatured?: boolean;
   } = {};
@@ -792,8 +803,9 @@ export async function getEvents(
   }
 
   if (!includeUnpublished) {
-    where.status = "PUBLISHED";
-    where.access = "PUBLIC";
+    where.status = {
+      in: ["PUBLISHED", "COMPLETED"],
+    };
   }
 
   return prisma.event.findMany({
@@ -828,7 +840,9 @@ export async function getEventById(
       ...(includeUnpublished
         ? {}
         : {
-            status: "PUBLISHED",
+            status: {
+              in: ["PUBLISHED", "COMPLETED"],
+            },
             access: "PUBLIC",
           }),
     },
@@ -1189,8 +1203,9 @@ export async function getEventBySlug(slug: string, includeUnpublished = false) {
       ...(includeUnpublished
         ? {}
         : {
-            status: "PUBLISHED",
-            access: "PUBLIC",
+            status: {
+              in: ["PUBLISHED", "COMPLETED"],
+            },
           }),
     },
     include: {
