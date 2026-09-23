@@ -1248,7 +1248,9 @@ export async function getStudentEvents(userId: string) {
 
   return prisma.event.findMany({
     where: {
-      status: "PUBLISHED",
+      status: {
+        in: ["PUBLISHED", "COMPLETED"],
+      },
       access: {
         in: accessValues,
       },
