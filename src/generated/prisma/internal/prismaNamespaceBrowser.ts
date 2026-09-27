@@ -63,6 +63,7 @@ export const ModelName = {
   EventFormAnswer: 'EventFormAnswer',
   EventTeam: 'EventTeam',
   Announcement: 'Announcement',
+  MaintenanceSettings: 'MaintenanceSettings',
   GalleryAlbum: 'GalleryAlbum',
   GalleryImage: 'GalleryImage',
   Notification: 'Notification',
@@ -291,6 +292,19 @@ export const AnnouncementScalarFieldEnum = {
 } as const
 
 export type AnnouncementScalarFieldEnum = (typeof AnnouncementScalarFieldEnum)[keyof typeof AnnouncementScalarFieldEnum]
+
+
+export const MaintenanceSettingsScalarFieldEnum = {
+  id: 'id',
+  enabled: 'enabled',
+  title: 'title',
+  message: 'message',
+  updatedById: 'updatedById',
+  updatedAt: 'updatedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type MaintenanceSettingsScalarFieldEnum = (typeof MaintenanceSettingsScalarFieldEnum)[keyof typeof MaintenanceSettingsScalarFieldEnum]
 
 
 export const GalleryAlbumScalarFieldEnum = {

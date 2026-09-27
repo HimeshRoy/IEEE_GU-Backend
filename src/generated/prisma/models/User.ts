@@ -259,6 +259,7 @@ export type UserWhereInput = {
   eventRegistrations?: Prisma.EventRegistrationListRelationFilter
   createdEvents?: Prisma.EventListRelationFilter
   announcementsCreated?: Prisma.AnnouncementListRelationFilter
+  maintenanceUpdates?: Prisma.MaintenanceSettingsListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
 }
@@ -283,6 +284,7 @@ export type UserOrderByWithRelationInput = {
   eventRegistrations?: Prisma.EventRegistrationOrderByRelationAggregateInput
   createdEvents?: Prisma.EventOrderByRelationAggregateInput
   announcementsCreated?: Prisma.AnnouncementOrderByRelationAggregateInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
 }
@@ -310,6 +312,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   eventRegistrations?: Prisma.EventRegistrationListRelationFilter
   createdEvents?: Prisma.EventListRelationFilter
   announcementsCreated?: Prisma.AnnouncementListRelationFilter
+  maintenanceUpdates?: Prisma.MaintenanceSettingsListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
 }, "id" | "email" | "ieeeMembershipNumber">
@@ -374,6 +377,7 @@ export type UserCreateInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsCreateNestedManyWithoutUpdatedByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
 }
@@ -398,6 +402,7 @@ export type UserUncheckedCreateInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUncheckedCreateNestedManyWithoutUpdatedByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
 }
@@ -422,6 +427,7 @@ export type UserUpdateInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUpdateManyWithoutUpdatedByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
 }
@@ -446,6 +452,7 @@ export type UserUncheckedUpdateInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUncheckedUpdateManyWithoutUpdatedByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -654,6 +661,22 @@ export type UserUpdateOneRequiredWithoutAnnouncementsCreatedNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAnnouncementsCreatedInput, Prisma.UserUpdateWithoutAnnouncementsCreatedInput>, Prisma.UserUncheckedUpdateWithoutAnnouncementsCreatedInput>
 }
 
+export type UserCreateNestedOneWithoutMaintenanceUpdatesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMaintenanceUpdatesInput, Prisma.UserUncheckedCreateWithoutMaintenanceUpdatesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMaintenanceUpdatesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutMaintenanceUpdatesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMaintenanceUpdatesInput, Prisma.UserUncheckedCreateWithoutMaintenanceUpdatesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMaintenanceUpdatesInput
+  upsert?: Prisma.UserUpsertWithoutMaintenanceUpdatesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMaintenanceUpdatesInput, Prisma.UserUpdateWithoutMaintenanceUpdatesInput>, Prisma.UserUncheckedUpdateWithoutMaintenanceUpdatesInput>
+}
+
 export type UserCreateNestedOneWithoutNotificationsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
@@ -703,6 +726,7 @@ export type UserCreateWithoutMemberProfileInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsCreateNestedManyWithoutUpdatedByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
 }
@@ -726,6 +750,7 @@ export type UserUncheckedCreateWithoutMemberProfileInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUncheckedCreateNestedManyWithoutUpdatedByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
 }
@@ -765,6 +790,7 @@ export type UserUpdateWithoutMemberProfileInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUpdateManyWithoutUpdatedByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
 }
@@ -788,6 +814,7 @@ export type UserUncheckedUpdateWithoutMemberProfileInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUncheckedUpdateManyWithoutUpdatedByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -811,6 +838,7 @@ export type UserCreateWithoutLeadershipPositionsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsCreateNestedManyWithoutUpdatedByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
 }
@@ -834,6 +862,7 @@ export type UserUncheckedCreateWithoutLeadershipPositionsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUncheckedCreateNestedManyWithoutUpdatedByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
 }
@@ -873,6 +902,7 @@ export type UserUpdateWithoutLeadershipPositionsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUpdateManyWithoutUpdatedByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
 }
@@ -896,6 +926,7 @@ export type UserUncheckedUpdateWithoutLeadershipPositionsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUncheckedUpdateManyWithoutUpdatedByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -919,6 +950,7 @@ export type UserCreateWithoutCreatedEventsInput = {
   leadershipPositions?: Prisma.BranchLeadershipCreateNestedManyWithoutUserInput
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsCreateNestedManyWithoutUpdatedByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
 }
@@ -942,6 +974,7 @@ export type UserUncheckedCreateWithoutCreatedEventsInput = {
   leadershipPositions?: Prisma.BranchLeadershipUncheckedCreateNestedManyWithoutUserInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUncheckedCreateNestedManyWithoutUpdatedByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
 }
@@ -981,6 +1014,7 @@ export type UserUpdateWithoutCreatedEventsInput = {
   leadershipPositions?: Prisma.BranchLeadershipUpdateManyWithoutUserNestedInput
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUpdateManyWithoutUpdatedByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
 }
@@ -1004,6 +1038,7 @@ export type UserUncheckedUpdateWithoutCreatedEventsInput = {
   leadershipPositions?: Prisma.BranchLeadershipUncheckedUpdateManyWithoutUserNestedInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUncheckedUpdateManyWithoutUpdatedByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1027,6 +1062,7 @@ export type UserCreateWithoutEventRegistrationsInput = {
   leadershipPositions?: Prisma.BranchLeadershipCreateNestedManyWithoutUserInput
   createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsCreateNestedManyWithoutUpdatedByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
 }
@@ -1050,6 +1086,7 @@ export type UserUncheckedCreateWithoutEventRegistrationsInput = {
   leadershipPositions?: Prisma.BranchLeadershipUncheckedCreateNestedManyWithoutUserInput
   createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUncheckedCreateNestedManyWithoutUpdatedByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
 }
@@ -1089,6 +1126,7 @@ export type UserUpdateWithoutEventRegistrationsInput = {
   leadershipPositions?: Prisma.BranchLeadershipUpdateManyWithoutUserNestedInput
   createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUpdateManyWithoutUpdatedByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
 }
@@ -1112,6 +1150,7 @@ export type UserUncheckedUpdateWithoutEventRegistrationsInput = {
   leadershipPositions?: Prisma.BranchLeadershipUncheckedUpdateManyWithoutUserNestedInput
   createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUncheckedUpdateManyWithoutUpdatedByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1135,6 +1174,7 @@ export type UserCreateWithoutAnnouncementsCreatedInput = {
   leadershipPositions?: Prisma.BranchLeadershipCreateNestedManyWithoutUserInput
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsCreateNestedManyWithoutUpdatedByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
 }
@@ -1158,6 +1198,7 @@ export type UserUncheckedCreateWithoutAnnouncementsCreatedInput = {
   leadershipPositions?: Prisma.BranchLeadershipUncheckedCreateNestedManyWithoutUserInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUncheckedCreateNestedManyWithoutUpdatedByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
 }
@@ -1197,6 +1238,7 @@ export type UserUpdateWithoutAnnouncementsCreatedInput = {
   leadershipPositions?: Prisma.BranchLeadershipUpdateManyWithoutUserNestedInput
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUpdateManyWithoutUpdatedByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
 }
@@ -1220,6 +1262,119 @@ export type UserUncheckedUpdateWithoutAnnouncementsCreatedInput = {
   leadershipPositions?: Prisma.BranchLeadershipUncheckedUpdateManyWithoutUserNestedInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUncheckedUpdateManyWithoutUpdatedByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutMaintenanceUpdatesInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName?: string | null
+  phone?: string | null
+  role?: $Enums.UserRole
+  isActive?: boolean
+  ieeeMembershipNumber?: string | null
+  profileImage?: string | null
+  profileImageCloudinaryId?: string | null
+  bio?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberProfile?: Prisma.MemberProfileCreateNestedOneWithoutUserInput
+  leadershipPositions?: Prisma.BranchLeadershipCreateNestedManyWithoutUserInput
+  eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
+  createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMaintenanceUpdatesInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName?: string | null
+  phone?: string | null
+  role?: $Enums.UserRole
+  isActive?: boolean
+  ieeeMembershipNumber?: string | null
+  profileImage?: string | null
+  profileImageCloudinaryId?: string | null
+  bio?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberProfile?: Prisma.MemberProfileUncheckedCreateNestedOneWithoutUserInput
+  leadershipPositions?: Prisma.BranchLeadershipUncheckedCreateNestedManyWithoutUserInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+  createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMaintenanceUpdatesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMaintenanceUpdatesInput, Prisma.UserUncheckedCreateWithoutMaintenanceUpdatesInput>
+}
+
+export type UserUpsertWithoutMaintenanceUpdatesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMaintenanceUpdatesInput, Prisma.UserUncheckedUpdateWithoutMaintenanceUpdatesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMaintenanceUpdatesInput, Prisma.UserUncheckedCreateWithoutMaintenanceUpdatesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMaintenanceUpdatesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMaintenanceUpdatesInput, Prisma.UserUncheckedUpdateWithoutMaintenanceUpdatesInput>
+}
+
+export type UserUpdateWithoutMaintenanceUpdatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ieeeMembershipNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileImageCloudinaryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberProfile?: Prisma.MemberProfileUpdateOneWithoutUserNestedInput
+  leadershipPositions?: Prisma.BranchLeadershipUpdateManyWithoutUserNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
+  createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMaintenanceUpdatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ieeeMembershipNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileImageCloudinaryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberProfile?: Prisma.MemberProfileUncheckedUpdateOneWithoutUserNestedInput
+  leadershipPositions?: Prisma.BranchLeadershipUncheckedUpdateManyWithoutUserNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+  createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1244,6 +1399,7 @@ export type UserCreateWithoutNotificationsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsCreateNestedManyWithoutUpdatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
 }
 
@@ -1267,6 +1423,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUncheckedCreateNestedManyWithoutUpdatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1306,6 +1463,7 @@ export type UserUpdateWithoutNotificationsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUpdateManyWithoutUpdatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
 }
 
@@ -1329,6 +1487,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUncheckedUpdateManyWithoutUpdatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1352,6 +1511,7 @@ export type UserCreateWithoutAuditLogsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsCreateNestedManyWithoutUpdatedByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
@@ -1375,6 +1535,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUncheckedCreateNestedManyWithoutUpdatedByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1414,6 +1575,7 @@ export type UserUpdateWithoutAuditLogsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUpdateManyWithoutUpdatedByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
@@ -1437,6 +1599,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  maintenanceUpdates?: Prisma.MaintenanceSettingsUncheckedUpdateManyWithoutUpdatedByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1450,6 +1613,7 @@ export type UserCountOutputType = {
   eventRegistrations: number
   createdEvents: number
   announcementsCreated: number
+  maintenanceUpdates: number
   notifications: number
   auditLogs: number
 }
@@ -1459,6 +1623,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   eventRegistrations?: boolean | UserCountOutputTypeCountEventRegistrationsArgs
   createdEvents?: boolean | UserCountOutputTypeCountCreatedEventsArgs
   announcementsCreated?: boolean | UserCountOutputTypeCountAnnouncementsCreatedArgs
+  maintenanceUpdates?: boolean | UserCountOutputTypeCountMaintenanceUpdatesArgs
   notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
 }
@@ -1504,6 +1669,13 @@ export type UserCountOutputTypeCountAnnouncementsCreatedArgs<ExtArgs extends run
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountMaintenanceUpdatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MaintenanceSettingsWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.NotificationWhereInput
 }
@@ -1536,6 +1708,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   eventRegistrations?: boolean | Prisma.User$eventRegistrationsArgs<ExtArgs>
   createdEvents?: boolean | Prisma.User$createdEventsArgs<ExtArgs>
   announcementsCreated?: boolean | Prisma.User$announcementsCreatedArgs<ExtArgs>
+  maintenanceUpdates?: boolean | Prisma.User$maintenanceUpdatesArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1599,6 +1772,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   eventRegistrations?: boolean | Prisma.User$eventRegistrationsArgs<ExtArgs>
   createdEvents?: boolean | Prisma.User$createdEventsArgs<ExtArgs>
   announcementsCreated?: boolean | Prisma.User$announcementsCreatedArgs<ExtArgs>
+  maintenanceUpdates?: boolean | Prisma.User$maintenanceUpdatesArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1614,6 +1788,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     eventRegistrations: Prisma.$EventRegistrationPayload<ExtArgs>[]
     createdEvents: Prisma.$EventPayload<ExtArgs>[]
     announcementsCreated: Prisma.$AnnouncementPayload<ExtArgs>[]
+    maintenanceUpdates: Prisma.$MaintenanceSettingsPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
   }
@@ -2031,6 +2206,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   eventRegistrations<T extends Prisma.User$eventRegistrationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$eventRegistrationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventRegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdEvents<T extends Prisma.User$createdEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   announcementsCreated<T extends Prisma.User$announcementsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$announcementsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  maintenanceUpdates<T extends Prisma.User$maintenanceUpdatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$maintenanceUpdatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaintenanceSettingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -2581,6 +2757,30 @@ export type User$announcementsCreatedArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.AnnouncementScalarFieldEnum | Prisma.AnnouncementScalarFieldEnum[]
+}
+
+/**
+ * User.maintenanceUpdates
+ */
+export type User$maintenanceUpdatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MaintenanceSettings
+   */
+  select?: Prisma.MaintenanceSettingsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MaintenanceSettings
+   */
+  omit?: Prisma.MaintenanceSettingsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MaintenanceSettingsInclude<ExtArgs> | null
+  where?: Prisma.MaintenanceSettingsWhereInput
+  orderBy?: Prisma.MaintenanceSettingsOrderByWithRelationInput | Prisma.MaintenanceSettingsOrderByWithRelationInput[]
+  cursor?: Prisma.MaintenanceSettingsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MaintenanceSettingsScalarFieldEnum | Prisma.MaintenanceSettingsScalarFieldEnum[]
 }
 
 /**

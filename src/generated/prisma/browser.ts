@@ -78,6 +78,11 @@ export type EventTeam = Prisma.EventTeamModel
  */
 export type Announcement = Prisma.AnnouncementModel
 /**
+ * Model MaintenanceSettings
+ * 
+ */
+export type MaintenanceSettings = Prisma.MaintenanceSettingsModel
+/**
  * Model GalleryAlbum
  * 
  */

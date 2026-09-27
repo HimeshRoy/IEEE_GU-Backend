@@ -15,6 +15,8 @@ import notificationsRoutes from "./modules/notifications/notifications.routes.js
 import academicYearRoutes from "./modules/academicYear/academicYear.routes.js";
 import eventFormsRoutes from "./modules/event-forms/event-forms.routes.js";
 import emailTestRoutes from "./routes/email-test.routes.js";
+import maintenanceRoutes from "./modules/maintenance/maintenance.routes.js";
+import auditRoutes from "./modules/audit/audit.routes.js";
 
 const app = express();
 
@@ -59,6 +61,8 @@ app.use("/api/announcements", announcementsRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/notifications", notificationsRoutes);
 app.use("/api/academic-years", academicYearRoutes);
+app.use("/api/maintenance", maintenanceRoutes);
+app.use("/api/audit", auditRoutes);
 app.use("/api/test", emailTestRoutes);
 
 export default app;

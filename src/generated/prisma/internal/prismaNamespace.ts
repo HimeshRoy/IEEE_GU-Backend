@@ -409,6 +409,7 @@ export const ModelName = {
   EventFormAnswer: 'EventFormAnswer',
   EventTeam: 'EventTeam',
   Announcement: 'Announcement',
+  MaintenanceSettings: 'MaintenanceSettings',
   GalleryAlbum: 'GalleryAlbum',
   GalleryImage: 'GalleryImage',
   Notification: 'Notification',
@@ -428,7 +429,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "memberProfile" | "academicYear" | "branchLeadership" | "event" | "eventRegistration" | "eventForm" | "eventFormField" | "eventFormResponse" | "eventFormAnswer" | "eventTeam" | "announcement" | "galleryAlbum" | "galleryImage" | "notification" | "auditLog"
+    modelProps: "user" | "memberProfile" | "academicYear" | "branchLeadership" | "event" | "eventRegistration" | "eventForm" | "eventFormField" | "eventFormResponse" | "eventFormAnswer" | "eventTeam" | "announcement" | "maintenanceSettings" | "galleryAlbum" | "galleryImage" | "notification" | "auditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1320,6 +1321,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    MaintenanceSettings: {
+      payload: Prisma.$MaintenanceSettingsPayload<ExtArgs>
+      fields: Prisma.MaintenanceSettingsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MaintenanceSettingsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceSettingsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MaintenanceSettingsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceSettingsPayload>
+        }
+        findFirst: {
+          args: Prisma.MaintenanceSettingsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceSettingsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MaintenanceSettingsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceSettingsPayload>
+        }
+        findMany: {
+          args: Prisma.MaintenanceSettingsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceSettingsPayload>[]
+        }
+        create: {
+          args: Prisma.MaintenanceSettingsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceSettingsPayload>
+        }
+        createMany: {
+          args: Prisma.MaintenanceSettingsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MaintenanceSettingsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceSettingsPayload>[]
+        }
+        delete: {
+          args: Prisma.MaintenanceSettingsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceSettingsPayload>
+        }
+        update: {
+          args: Prisma.MaintenanceSettingsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceSettingsPayload>
+        }
+        deleteMany: {
+          args: Prisma.MaintenanceSettingsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MaintenanceSettingsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MaintenanceSettingsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceSettingsPayload>[]
+        }
+        upsert: {
+          args: Prisma.MaintenanceSettingsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceSettingsPayload>
+        }
+        aggregate: {
+          args: Prisma.MaintenanceSettingsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMaintenanceSettings>
+        }
+        groupBy: {
+          args: Prisma.MaintenanceSettingsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MaintenanceSettingsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MaintenanceSettingsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MaintenanceSettingsCountAggregateOutputType> | number
+        }
+      }
+    }
     GalleryAlbum: {
       payload: Prisma.$GalleryAlbumPayload<ExtArgs>
       fields: Prisma.GalleryAlbumFieldRefs
@@ -1861,6 +1936,19 @@ export const AnnouncementScalarFieldEnum = {
 } as const
 
 export type AnnouncementScalarFieldEnum = (typeof AnnouncementScalarFieldEnum)[keyof typeof AnnouncementScalarFieldEnum]
+
+
+export const MaintenanceSettingsScalarFieldEnum = {
+  id: 'id',
+  enabled: 'enabled',
+  title: 'title',
+  message: 'message',
+  updatedById: 'updatedById',
+  updatedAt: 'updatedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type MaintenanceSettingsScalarFieldEnum = (typeof MaintenanceSettingsScalarFieldEnum)[keyof typeof MaintenanceSettingsScalarFieldEnum]
 
 
 export const GalleryAlbumScalarFieldEnum = {
@@ -2420,6 +2508,7 @@ export type GlobalOmitConfig = {
   eventFormAnswer?: Prisma.EventFormAnswerOmit
   eventTeam?: Prisma.EventTeamOmit
   announcement?: Prisma.AnnouncementOmit
+  maintenanceSettings?: Prisma.MaintenanceSettingsOmit
   galleryAlbum?: Prisma.GalleryAlbumOmit
   galleryImage?: Prisma.GalleryImageOmit
   notification?: Prisma.NotificationOmit

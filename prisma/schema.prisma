@@ -170,7 +170,8 @@ model User {
 
   createdEvents Event[] @relation("EventCreator")
 
-  announcementsCreated Announcement[] @relation("AnnouncementCreator")
+  announcementsCreated Announcement[]        @relation("AnnouncementCreator")
+  maintenanceUpdates   MaintenanceSettings[] @relation("MaintenanceUpdatedBy")
 
   notifications Notification[]
 
@@ -458,6 +459,20 @@ model Announcement {
 
   @@index([isPublished])
   @@index([approvalStatus])
+}
+
+model MaintenanceSettings {
+  id          String   @id @default(uuid())
+  enabled     Boolean  @default(false)
+  title       String   @default("We'll be back soon")
+  message     String   @default("The IEEE Geeta University website is temporarily unavailable while we perform maintenance.")
+  updatedById String?
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+
+  updatedBy User? @relation("MaintenanceUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
+
+  @@index([enabled])
 }
 
 model GalleryAlbum {
