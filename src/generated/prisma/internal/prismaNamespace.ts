@@ -1814,7 +1814,9 @@ export const EventScalarFieldEnum = {
   status: 'status',
   access: 'access',
   isFeatured: 'isFeatured',
+  registrationType: 'registrationType',
   registrationTemplate: 'registrationTemplate',
+  externalRegistrationUrl: 'externalRegistrationUrl',
   participationType: 'participationType',
   minTeamSize: 'minTeamSize',
   maxTeamSize: 'maxTeamSize',
@@ -2189,6 +2191,20 @@ export type EnumEventAccessFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'EventAccess[]'
  */
 export type ListEnumEventAccessFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventAccess[]'>
+    
+
+
+/**
+ * Reference to a field of type 'EventRegistrationType'
+ */
+export type EnumEventRegistrationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventRegistrationType'>
+    
+
+
+/**
+ * Reference to a field of type 'EventRegistrationType[]'
+ */
+export type ListEnumEventRegistrationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventRegistrationType[]'>
     
 
 

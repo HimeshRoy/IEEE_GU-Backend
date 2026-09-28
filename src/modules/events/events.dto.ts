@@ -17,14 +17,14 @@ const eventRegistrationTemplateSchema = z.enum([
   "CUSTOM",
 ]);
 
-const eventParticipationTypeSchema = z.enum([
-  "INDIVIDUAL",
-  "TEAM",
-]);
+const eventParticipationTypeSchema = z.enum(["INDIVIDUAL", "TEAM"]);
+
+const eventRegistrationTypeSchema = z.enum(["INTERNAL", "EXTERNAL"]);
 
 export const createEventSchema = z
   .object({
     title: z.string().trim().min(3).max(200),
+
     slug: z
       .string()
       .trim()
@@ -34,6 +34,7 @@ export const createEventSchema = z
         /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
         "Slug must contain only lowercase letters, numbers, and hyphens",
       ),
+
     shortDescription: z.string().trim().max(500).optional(),
     description: z.string().trim().min(10).max(10000),
     bannerImage: z.string().trim().url().optional(),
@@ -45,13 +46,34 @@ export const createEventSchema = z
     capacity: z.number().int().positive().optional(),
     access: eventAccessSchema.default("PUBLIC"),
     isFeatured: z.boolean().default(false),
+    registrationType: eventRegistrationTypeSchema.default("INTERNAL"),
     registrationTemplate: eventRegistrationTemplateSchema.optional(),
+    externalRegistrationUrl: z.string().trim().url().optional(),
     participationType: eventParticipationTypeSchema.default("INDIVIDUAL"),
     minTeamSize: z.number().int().min(1).optional(),
     maxTeamSize: z.number().int().min(2).optional(),
     enableQrAttendance: z.boolean().default(false),
   })
   .superRefine((data, ctx) => {
+    if (data.registrationType === "EXTERNAL") {
+      if (!data.externalRegistrationUrl) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["externalRegistrationUrl"],
+          message: "External registration URL is required",
+        });
+      }
+    }
+
+    if (data.registrationType === "INTERNAL" && data.externalRegistrationUrl) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["externalRegistrationUrl"],
+        message:
+          "External registration URL can only be provided for external registration",
+      });
+    }
+
     const isTeam =
       data.participationType === "TEAM" ||
       data.registrationTemplate === "UNIVERSITY_TEAM" ||
@@ -84,7 +106,8 @@ export const createEventSchema = z
       ctx.addIssue({
         code: "custom",
         path: ["maxTeamSize"],
-        message: "Maximum team size must be greater than or equal to minimum team size",
+        message:
+          "Maximum team size must be greater than or equal to minimum team size",
       });
     }
 
@@ -116,6 +139,7 @@ export const createEventSchema = z
 export const updateEventSchema = z
   .object({
     title: z.string().trim().min(3).max(200).optional(),
+
     slug: z
       .string()
       .trim()
@@ -126,6 +150,7 @@ export const updateEventSchema = z
         "Slug must contain only lowercase letters, numbers, and hyphens",
       )
       .optional(),
+
     shortDescription: z.string().trim().max(500).optional(),
     description: z.string().trim().min(10).max(10000).optional(),
     bannerImage: z.string().trim().url().optional(),
@@ -137,6 +162,8 @@ export const updateEventSchema = z
     capacity: z.number().int().positive().optional(),
     access: eventAccessSchema.optional(),
     isFeatured: z.boolean().optional(),
+    registrationType: eventRegistrationTypeSchema.optional(),
+    externalRegistrationUrl: z.string().trim().url().optional(),
     registrationTemplate: eventRegistrationTemplateSchema.optional(),
     participationType: eventParticipationTypeSchema.optional(),
     minTeamSize: z.number().int().min(2).optional(),
@@ -156,7 +183,27 @@ export const updateEventSchema = z
       ctx.addIssue({
         code: "custom",
         path: ["maxTeamSize"],
-        message: "Maximum team size must be greater than or equal to minimum team size",
+        message:
+          "Maximum team size must be greater than or equal to minimum team size",
+      });
+    }
+
+    if (data.registrationType === "EXTERNAL") {
+      if (!data.externalRegistrationUrl) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["externalRegistrationUrl"],
+          message: "External registration URL is required",
+        });
+      }
+    }
+
+    if (data.registrationType === "INTERNAL" && data.externalRegistrationUrl) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["externalRegistrationUrl"],
+        message:
+          "External registration URL can only be provided for external registration",
       });
     }
   });
@@ -177,7 +224,9 @@ export const eventListQuerySchema = z.object({
       "COMPLETED",
     ])
     .optional(),
+
   access: eventAccessSchema.optional(),
+
   featured: z
     .enum(["true", "false"])
     .transform((value) => value === "true")

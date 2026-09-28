@@ -54,7 +54,9 @@ export type EventMinAggregateOutputType = {
   status: $Enums.EventStatus | null
   access: $Enums.EventAccess | null
   isFeatured: boolean | null
+  registrationType: $Enums.EventRegistrationType | null
   registrationTemplate: $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl: string | null
   participationType: $Enums.EventParticipationType | null
   minTeamSize: number | null
   maxTeamSize: number | null
@@ -84,7 +86,9 @@ export type EventMaxAggregateOutputType = {
   status: $Enums.EventStatus | null
   access: $Enums.EventAccess | null
   isFeatured: boolean | null
+  registrationType: $Enums.EventRegistrationType | null
   registrationTemplate: $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl: string | null
   participationType: $Enums.EventParticipationType | null
   minTeamSize: number | null
   maxTeamSize: number | null
@@ -114,7 +118,9 @@ export type EventCountAggregateOutputType = {
   status: number
   access: number
   isFeatured: number
+  registrationType: number
   registrationTemplate: number
+  externalRegistrationUrl: number
   participationType: number
   minTeamSize: number
   maxTeamSize: number
@@ -158,7 +164,9 @@ export type EventMinAggregateInputType = {
   status?: true
   access?: true
   isFeatured?: true
+  registrationType?: true
   registrationTemplate?: true
+  externalRegistrationUrl?: true
   participationType?: true
   minTeamSize?: true
   maxTeamSize?: true
@@ -188,7 +196,9 @@ export type EventMaxAggregateInputType = {
   status?: true
   access?: true
   isFeatured?: true
+  registrationType?: true
   registrationTemplate?: true
+  externalRegistrationUrl?: true
   participationType?: true
   minTeamSize?: true
   maxTeamSize?: true
@@ -218,7 +228,9 @@ export type EventCountAggregateInputType = {
   status?: true
   access?: true
   isFeatured?: true
+  registrationType?: true
   registrationTemplate?: true
+  externalRegistrationUrl?: true
   participationType?: true
   minTeamSize?: true
   maxTeamSize?: true
@@ -335,7 +347,9 @@ export type EventGroupByOutputType = {
   status: $Enums.EventStatus
   access: $Enums.EventAccess
   isFeatured: boolean
+  registrationType: $Enums.EventRegistrationType
   registrationTemplate: $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl: string | null
   participationType: $Enums.EventParticipationType
   minTeamSize: number | null
   maxTeamSize: number | null
@@ -388,7 +402,9 @@ export type EventWhereInput = {
   status?: Prisma.EnumEventStatusFilter<"Event"> | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFilter<"Event"> | $Enums.EventAccess
   isFeatured?: Prisma.BoolFilter<"Event"> | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeFilter<"Event"> | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.EnumEventRegistrationTemplateNullableFilter<"Event"> | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.StringNullableFilter<"Event"> | string | null
   participationType?: Prisma.EnumEventParticipationTypeFilter<"Event"> | $Enums.EventParticipationType
   minTeamSize?: Prisma.IntNullableFilter<"Event"> | number | null
   maxTeamSize?: Prisma.IntNullableFilter<"Event"> | number | null
@@ -422,7 +438,9 @@ export type EventOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   access?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  registrationType?: Prisma.SortOrder
   registrationTemplate?: Prisma.SortOrderInput | Prisma.SortOrder
+  externalRegistrationUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   participationType?: Prisma.SortOrder
   minTeamSize?: Prisma.SortOrderInput | Prisma.SortOrder
   maxTeamSize?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -459,7 +477,9 @@ export type EventWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumEventStatusFilter<"Event"> | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFilter<"Event"> | $Enums.EventAccess
   isFeatured?: Prisma.BoolFilter<"Event"> | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeFilter<"Event"> | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.EnumEventRegistrationTemplateNullableFilter<"Event"> | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.StringNullableFilter<"Event"> | string | null
   participationType?: Prisma.EnumEventParticipationTypeFilter<"Event"> | $Enums.EventParticipationType
   minTeamSize?: Prisma.IntNullableFilter<"Event"> | number | null
   maxTeamSize?: Prisma.IntNullableFilter<"Event"> | number | null
@@ -493,7 +513,9 @@ export type EventOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   access?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  registrationType?: Prisma.SortOrder
   registrationTemplate?: Prisma.SortOrderInput | Prisma.SortOrder
+  externalRegistrationUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   participationType?: Prisma.SortOrder
   minTeamSize?: Prisma.SortOrderInput | Prisma.SortOrder
   maxTeamSize?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -531,7 +553,9 @@ export type EventScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumEventStatusWithAggregatesFilter<"Event"> | $Enums.EventStatus
   access?: Prisma.EnumEventAccessWithAggregatesFilter<"Event"> | $Enums.EventAccess
   isFeatured?: Prisma.BoolWithAggregatesFilter<"Event"> | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeWithAggregatesFilter<"Event"> | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.EnumEventRegistrationTemplateNullableWithAggregatesFilter<"Event"> | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.StringNullableWithAggregatesFilter<"Event"> | string | null
   participationType?: Prisma.EnumEventParticipationTypeWithAggregatesFilter<"Event"> | $Enums.EventParticipationType
   minTeamSize?: Prisma.IntNullableWithAggregatesFilter<"Event"> | number | null
   maxTeamSize?: Prisma.IntNullableWithAggregatesFilter<"Event"> | number | null
@@ -561,7 +585,9 @@ export type EventCreateInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationType?: $Enums.EventRegistrationType
   registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: string | null
   participationType?: $Enums.EventParticipationType
   minTeamSize?: number | null
   maxTeamSize?: number | null
@@ -594,7 +620,9 @@ export type EventUncheckedCreateInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationType?: $Enums.EventRegistrationType
   registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: string | null
   participationType?: $Enums.EventParticipationType
   minTeamSize?: number | null
   maxTeamSize?: number | null
@@ -627,7 +655,9 @@ export type EventUpdateInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeFieldUpdateOperationsInput | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
   minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -660,7 +690,9 @@ export type EventUncheckedUpdateInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeFieldUpdateOperationsInput | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
   minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -693,7 +725,9 @@ export type EventCreateManyInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationType?: $Enums.EventRegistrationType
   registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: string | null
   participationType?: $Enums.EventParticipationType
   minTeamSize?: number | null
   maxTeamSize?: number | null
@@ -723,7 +757,9 @@ export type EventUpdateManyMutationInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeFieldUpdateOperationsInput | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
   minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -752,7 +788,9 @@ export type EventUncheckedUpdateManyInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeFieldUpdateOperationsInput | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
   minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -792,7 +830,9 @@ export type EventCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   access?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  registrationType?: Prisma.SortOrder
   registrationTemplate?: Prisma.SortOrder
+  externalRegistrationUrl?: Prisma.SortOrder
   participationType?: Prisma.SortOrder
   minTeamSize?: Prisma.SortOrder
   maxTeamSize?: Prisma.SortOrder
@@ -828,7 +868,9 @@ export type EventMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   access?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  registrationType?: Prisma.SortOrder
   registrationTemplate?: Prisma.SortOrder
+  externalRegistrationUrl?: Prisma.SortOrder
   participationType?: Prisma.SortOrder
   minTeamSize?: Prisma.SortOrder
   maxTeamSize?: Prisma.SortOrder
@@ -858,7 +900,9 @@ export type EventMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   access?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  registrationType?: Prisma.SortOrder
   registrationTemplate?: Prisma.SortOrder
+  externalRegistrationUrl?: Prisma.SortOrder
   participationType?: Prisma.SortOrder
   minTeamSize?: Prisma.SortOrder
   maxTeamSize?: Prisma.SortOrder
@@ -941,6 +985,10 @@ export type EnumEventAccessFieldUpdateOperationsInput = {
   set?: $Enums.EventAccess
 }
 
+export type EnumEventRegistrationTypeFieldUpdateOperationsInput = {
+  set?: $Enums.EventRegistrationType
+}
+
 export type NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput = {
   set?: $Enums.EventRegistrationTemplate | null
 }
@@ -1011,7 +1059,9 @@ export type EventCreateWithoutCreatedByInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationType?: $Enums.EventRegistrationType
   registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: string | null
   participationType?: $Enums.EventParticipationType
   minTeamSize?: number | null
   maxTeamSize?: number | null
@@ -1043,7 +1093,9 @@ export type EventUncheckedCreateWithoutCreatedByInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationType?: $Enums.EventRegistrationType
   registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: string | null
   participationType?: $Enums.EventParticipationType
   minTeamSize?: number | null
   maxTeamSize?: number | null
@@ -1104,7 +1156,9 @@ export type EventScalarWhereInput = {
   status?: Prisma.EnumEventStatusFilter<"Event"> | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFilter<"Event"> | $Enums.EventAccess
   isFeatured?: Prisma.BoolFilter<"Event"> | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeFilter<"Event"> | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.EnumEventRegistrationTemplateNullableFilter<"Event"> | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.StringNullableFilter<"Event"> | string | null
   participationType?: Prisma.EnumEventParticipationTypeFilter<"Event"> | $Enums.EventParticipationType
   minTeamSize?: Prisma.IntNullableFilter<"Event"> | number | null
   maxTeamSize?: Prisma.IntNullableFilter<"Event"> | number | null
@@ -1134,7 +1188,9 @@ export type EventCreateWithoutRegistrationsInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationType?: $Enums.EventRegistrationType
   registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: string | null
   participationType?: $Enums.EventParticipationType
   minTeamSize?: number | null
   maxTeamSize?: number | null
@@ -1166,7 +1222,9 @@ export type EventUncheckedCreateWithoutRegistrationsInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationType?: $Enums.EventRegistrationType
   registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: string | null
   participationType?: $Enums.EventParticipationType
   minTeamSize?: number | null
   maxTeamSize?: number | null
@@ -1214,7 +1272,9 @@ export type EventUpdateWithoutRegistrationsInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeFieldUpdateOperationsInput | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
   minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1246,7 +1306,9 @@ export type EventUncheckedUpdateWithoutRegistrationsInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeFieldUpdateOperationsInput | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
   minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1278,7 +1340,9 @@ export type EventCreateWithoutRegistrationFormInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationType?: $Enums.EventRegistrationType
   registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: string | null
   participationType?: $Enums.EventParticipationType
   minTeamSize?: number | null
   maxTeamSize?: number | null
@@ -1310,7 +1374,9 @@ export type EventUncheckedCreateWithoutRegistrationFormInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationType?: $Enums.EventRegistrationType
   registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: string | null
   participationType?: $Enums.EventParticipationType
   minTeamSize?: number | null
   maxTeamSize?: number | null
@@ -1358,7 +1424,9 @@ export type EventUpdateWithoutRegistrationFormInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeFieldUpdateOperationsInput | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
   minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1390,7 +1458,9 @@ export type EventUncheckedUpdateWithoutRegistrationFormInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeFieldUpdateOperationsInput | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
   minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1422,7 +1492,9 @@ export type EventCreateWithoutTeamsInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationType?: $Enums.EventRegistrationType
   registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: string | null
   participationType?: $Enums.EventParticipationType
   minTeamSize?: number | null
   maxTeamSize?: number | null
@@ -1454,7 +1526,9 @@ export type EventUncheckedCreateWithoutTeamsInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationType?: $Enums.EventRegistrationType
   registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: string | null
   participationType?: $Enums.EventParticipationType
   minTeamSize?: number | null
   maxTeamSize?: number | null
@@ -1502,7 +1576,9 @@ export type EventUpdateWithoutTeamsInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeFieldUpdateOperationsInput | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
   minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1534,7 +1610,9 @@ export type EventUncheckedUpdateWithoutTeamsInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeFieldUpdateOperationsInput | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
   minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1566,7 +1644,9 @@ export type EventCreateManyCreatedByInput = {
   status?: $Enums.EventStatus
   access?: $Enums.EventAccess
   isFeatured?: boolean
+  registrationType?: $Enums.EventRegistrationType
   registrationTemplate?: $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: string | null
   participationType?: $Enums.EventParticipationType
   minTeamSize?: number | null
   maxTeamSize?: number | null
@@ -1595,7 +1675,9 @@ export type EventUpdateWithoutCreatedByInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeFieldUpdateOperationsInput | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
   minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1627,7 +1709,9 @@ export type EventUncheckedUpdateWithoutCreatedByInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeFieldUpdateOperationsInput | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
   minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1659,7 +1743,9 @@ export type EventUncheckedUpdateManyWithoutCreatedByInput = {
   status?: Prisma.EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   access?: Prisma.EnumEventAccessFieldUpdateOperationsInput | $Enums.EventAccess
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  registrationType?: Prisma.EnumEventRegistrationTypeFieldUpdateOperationsInput | $Enums.EventRegistrationType
   registrationTemplate?: Prisma.NullableEnumEventRegistrationTemplateFieldUpdateOperationsInput | $Enums.EventRegistrationTemplate | null
+  externalRegistrationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participationType?: Prisma.EnumEventParticipationTypeFieldUpdateOperationsInput | $Enums.EventParticipationType
   minTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   maxTeamSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1728,7 +1814,9 @@ export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   status?: boolean
   access?: boolean
   isFeatured?: boolean
+  registrationType?: boolean
   registrationTemplate?: boolean
+  externalRegistrationUrl?: boolean
   participationType?: boolean
   minTeamSize?: boolean
   maxTeamSize?: boolean
@@ -1763,7 +1851,9 @@ export type EventSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   status?: boolean
   access?: boolean
   isFeatured?: boolean
+  registrationType?: boolean
   registrationTemplate?: boolean
+  externalRegistrationUrl?: boolean
   participationType?: boolean
   minTeamSize?: boolean
   maxTeamSize?: boolean
@@ -1794,7 +1884,9 @@ export type EventSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   status?: boolean
   access?: boolean
   isFeatured?: boolean
+  registrationType?: boolean
   registrationTemplate?: boolean
+  externalRegistrationUrl?: boolean
   participationType?: boolean
   minTeamSize?: boolean
   maxTeamSize?: boolean
@@ -1825,7 +1917,9 @@ export type EventSelectScalar = {
   status?: boolean
   access?: boolean
   isFeatured?: boolean
+  registrationType?: boolean
   registrationTemplate?: boolean
+  externalRegistrationUrl?: boolean
   participationType?: boolean
   minTeamSize?: boolean
   maxTeamSize?: boolean
@@ -1839,7 +1933,7 @@ export type EventSelectScalar = {
   updatedAt?: boolean
 }
 
-export type EventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "shortDescription" | "description" | "bannerImage" | "venue" | "eventDate" | "startTime" | "endTime" | "registrationDeadline" | "capacity" | "status" | "access" | "isFeatured" | "registrationTemplate" | "participationType" | "minTeamSize" | "maxTeamSize" | "enableQrAttendance" | "createdById" | "approvalStatus" | "approvedById" | "approvedAt" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
+export type EventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "shortDescription" | "description" | "bannerImage" | "venue" | "eventDate" | "startTime" | "endTime" | "registrationDeadline" | "capacity" | "status" | "access" | "isFeatured" | "registrationType" | "registrationTemplate" | "externalRegistrationUrl" | "participationType" | "minTeamSize" | "maxTeamSize" | "enableQrAttendance" | "createdById" | "approvalStatus" | "approvedById" | "approvedAt" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
 export type EventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   registrationForm?: boolean | Prisma.Event$registrationFormArgs<ExtArgs>
@@ -1878,7 +1972,9 @@ export type $EventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     status: $Enums.EventStatus
     access: $Enums.EventAccess
     isFeatured: boolean
+    registrationType: $Enums.EventRegistrationType
     registrationTemplate: $Enums.EventRegistrationTemplate | null
+    externalRegistrationUrl: string | null
     participationType: $Enums.EventParticipationType
     minTeamSize: number | null
     maxTeamSize: number | null
@@ -2332,7 +2428,9 @@ export interface EventFieldRefs {
   readonly status: Prisma.FieldRef<"Event", 'EventStatus'>
   readonly access: Prisma.FieldRef<"Event", 'EventAccess'>
   readonly isFeatured: Prisma.FieldRef<"Event", 'Boolean'>
+  readonly registrationType: Prisma.FieldRef<"Event", 'EventRegistrationType'>
   readonly registrationTemplate: Prisma.FieldRef<"Event", 'EventRegistrationTemplate'>
+  readonly externalRegistrationUrl: Prisma.FieldRef<"Event", 'String'>
   readonly participationType: Prisma.FieldRef<"Event", 'EventParticipationType'>
   readonly minTeamSize: Prisma.FieldRef<"Event", 'Int'>
   readonly maxTeamSize: Prisma.FieldRef<"Event", 'Int'>

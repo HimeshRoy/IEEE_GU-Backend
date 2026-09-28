@@ -3,6 +3,7 @@ import { prisma } from "../../config/prisma.js";
 type TransactionClient = Parameters<
   Parameters<typeof prisma.$transaction>[0]
 >[0];
+
 import { randomBytes } from "node:crypto";
 import { cloudinary } from "../../config/cloudinary.js";
 import {
@@ -342,6 +343,10 @@ export async function createEvent(userId: string, input: CreateEventInput) {
         createdById: userId,
         approvalStatus: "PENDING",
         isFeatured: input.isFeatured ?? false,
+        registrationType: input.registrationType ?? "INTERNAL",
+        ...(input.externalRegistrationUrl !== undefined && {
+          externalRegistrationUrl: input.externalRegistrationUrl,
+        }),
         participationType: input.participationType,
         enableQrAttendance: input.enableQrAttendance ?? false,
         ...(input.registrationTemplate !== undefined && {
@@ -377,12 +382,14 @@ export async function createEvent(userId: string, input: CreateEventInput) {
       },
     });
 
-    await ensureRegistrationForm(tx, {
-      id: createdEvent.id,
-      title: createdEvent.title,
-      registrationTemplate: createdEvent.registrationTemplate ?? undefined,
-      participationType: createdEvent.participationType,
-    });
+    if (createdEvent.registrationType === "INTERNAL") {
+      await ensureRegistrationForm(tx, {
+        id: createdEvent.id,
+        title: createdEvent.title,
+        registrationTemplate: createdEvent.registrationTemplate ?? undefined,
+        participationType: createdEvent.participationType,
+      });
+    }
 
     await tx.auditLog.create({
       data: {
@@ -548,6 +555,19 @@ export async function updateEvent(
         ...(input.isFeatured !== undefined && {
           isFeatured: input.isFeatured,
         }),
+        ...(input.registrationType !== undefined && {
+          registrationType: input.registrationType,
+        }),
+
+        ...(input.registrationType === "INTERNAL"
+          ? {
+              externalRegistrationUrl: null,
+            }
+          : input.externalRegistrationUrl !== undefined
+            ? {
+                externalRegistrationUrl: input.externalRegistrationUrl,
+              }
+            : {}),
         ...(input.registrationTemplate !== undefined && {
           registrationTemplate: input.registrationTemplate,
         }),
@@ -806,13 +826,12 @@ export async function getEvents(
     where.status = {
       in: ["PUBLISHED", "COMPLETED"],
     };
+    
+    where.access = "PUBLIC";
   }
 
-  return prisma.event.findMany({
+  const events = await prisma.event.findMany({
     where,
-    orderBy: {
-      eventDate: "asc",
-    },
     include: {
       createdBy: {
         select: {
@@ -828,6 +847,46 @@ export async function getEvents(
       },
     },
   });
+
+  const sortedEvents = [...events].sort((a, b) => {
+    const aCompleted = a.status === "COMPLETED";
+    const bCompleted = b.status === "COMPLETED";
+
+    if (aCompleted !== bCompleted) {
+      return aCompleted ? 1 : -1;
+    }
+
+    const aDate = new Date(a.eventDate).getTime();
+    const bDate = new Date(b.eventDate).getTime();
+
+    if (!aCompleted) {
+      if (aDate !== bDate) {
+        return aDate - bDate;
+      }
+
+      const aStart = a.startTime
+        ? new Date(a.startTime).getTime()
+        : Number.MAX_SAFE_INTEGER;
+
+      const bStart = b.startTime
+        ? new Date(b.startTime).getTime()
+        : Number.MAX_SAFE_INTEGER;
+
+      return aStart - bStart;
+    }
+
+    if (aDate !== bDate) {
+      return bDate - aDate;
+    }
+
+    const aStart = a.startTime ? new Date(a.startTime).getTime() : 0;
+
+    const bStart = b.startTime ? new Date(b.startTime).getTime() : 0;
+
+    return bStart - aStart;
+  });
+
+  return sortedEvents;
 }
 
 export async function getEventById(
@@ -843,7 +902,6 @@ export async function getEventById(
             status: {
               in: ["PUBLISHED", "COMPLETED"],
             },
-            access: "PUBLIC",
           }),
     },
     include: {
@@ -1009,21 +1067,33 @@ export async function publishEvent(userId: string, eventId: string) {
     throw new Error("Only approved events can be published");
   }
 
-  const form = await prisma.eventForm.findUnique({
-    where: { eventId },
-    select: {
-      id: true,
-      status: true,
-    },
-  });
+  // FIXED:
+  // Removed the unused duplicate form query that was here.
+  // The actual form is queried below only for INTERNAL registration.
 
-  if (!form) {
-    throw new Error("Registration form is not available");
+  if (event.registrationType === "INTERNAL") {
+    const form = await prisma.eventForm.findUnique({
+      where: { eventId },
+      select: {
+        id: true,
+        status: true,
+      },
+    });
+
+    if (!form) {
+      throw new Error("Registration form is not available");
+    }
+
+    if (form.status !== "PUBLISHED") {
+      throw new Error(
+        "Registration form must be published before the event can be published",
+      );
+    }
   }
 
-  if (form.status !== "PUBLISHED") {
+  if (event.registrationType === "EXTERNAL" && !event.externalRegistrationUrl) {
     throw new Error(
-      "Registration form must be published before the event can be published",
+      "External registration URL is required before publishing the event",
     );
   }
 
@@ -1206,6 +1276,10 @@ export async function getEventBySlug(slug: string, includeUnpublished = false) {
             status: {
               in: ["PUBLISHED", "COMPLETED"],
             },
+
+            // ADDED:
+            // Public slug lookup must only expose PUBLIC events.
+            access: "PUBLIC",
           }),
     },
     include: {
@@ -1270,9 +1344,17 @@ export async function getStudentEvents(userId: string) {
         in: accessValues,
       },
     },
-    orderBy: {
-      eventDate: "asc",
-    },
+    orderBy: [
+      {
+        eventDate: "asc",
+      },
+      {
+        startTime: "asc",
+      },
+      {
+        createdAt: "asc",
+      },
+    ],
     include: {
       createdBy: {
         select: {

@@ -1,5 +1,6 @@
 import type {
   EventAccess,
+  EventRegistrationType,
   EventRegistrationTemplate,
   EventParticipationType,
   EventStatus,
@@ -19,6 +20,10 @@ export interface CreateEventInput {
   capacity?: number | undefined;
   access: EventAccess;
   isFeatured?: boolean | undefined;
+
+  registrationType?: EventRegistrationType | undefined;
+  externalRegistrationUrl?: string | undefined;
+
   registrationTemplate?: EventRegistrationTemplate | undefined;
   participationType: EventParticipationType;
   minTeamSize?: number | undefined;
@@ -40,6 +45,10 @@ export interface UpdateEventInput {
   capacity?: number | undefined;
   access?: EventAccess | undefined;
   isFeatured?: boolean | undefined;
+
+  registrationType?: EventRegistrationType | undefined;
+  externalRegistrationUrl?: string | undefined;
+
   registrationTemplate?: EventRegistrationTemplate | undefined;
   participationType?: EventParticipationType | undefined;
   minTeamSize?: number | undefined;

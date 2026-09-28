@@ -241,6 +241,13 @@ export type EnumEventAccessFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumEventAccessFilter<$PrismaModel> | $Enums.EventAccess
 }
 
+export type EnumEventRegistrationTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.EventRegistrationType | Prisma.EnumEventRegistrationTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.EventRegistrationType[] | Prisma.ListEnumEventRegistrationTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EventRegistrationType[] | Prisma.ListEnumEventRegistrationTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEventRegistrationTypeFilter<$PrismaModel> | $Enums.EventRegistrationType
+}
+
 export type EnumEventRegistrationTemplateNullableFilter<$PrismaModel = never> = {
   equals?: $Enums.EventRegistrationTemplate | Prisma.EnumEventRegistrationTemplateFieldRefInput<$PrismaModel> | null
   in?: $Enums.EventRegistrationTemplate[] | Prisma.ListEnumEventRegistrationTemplateFieldRefInput<$PrismaModel> | null
@@ -296,6 +303,16 @@ export type EnumEventAccessWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumEventAccessFilter<$PrismaModel>
   _max?: Prisma.NestedEnumEventAccessFilter<$PrismaModel>
+}
+
+export type EnumEventRegistrationTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.EventRegistrationType | Prisma.EnumEventRegistrationTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.EventRegistrationType[] | Prisma.ListEnumEventRegistrationTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EventRegistrationType[] | Prisma.ListEnumEventRegistrationTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEventRegistrationTypeWithAggregatesFilter<$PrismaModel> | $Enums.EventRegistrationType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumEventRegistrationTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumEventRegistrationTypeFilter<$PrismaModel>
 }
 
 export type EnumEventRegistrationTemplateNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -788,6 +805,13 @@ export type NestedEnumEventAccessFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumEventAccessFilter<$PrismaModel> | $Enums.EventAccess
 }
 
+export type NestedEnumEventRegistrationTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.EventRegistrationType | Prisma.EnumEventRegistrationTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.EventRegistrationType[] | Prisma.ListEnumEventRegistrationTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EventRegistrationType[] | Prisma.ListEnumEventRegistrationTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEventRegistrationTypeFilter<$PrismaModel> | $Enums.EventRegistrationType
+}
+
 export type NestedEnumEventRegistrationTemplateNullableFilter<$PrismaModel = never> = {
   equals?: $Enums.EventRegistrationTemplate | Prisma.EnumEventRegistrationTemplateFieldRefInput<$PrismaModel> | null
   in?: $Enums.EventRegistrationTemplate[] | Prisma.ListEnumEventRegistrationTemplateFieldRefInput<$PrismaModel> | null
@@ -854,6 +878,16 @@ export type NestedEnumEventAccessWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumEventAccessFilter<$PrismaModel>
   _max?: Prisma.NestedEnumEventAccessFilter<$PrismaModel>
+}
+
+export type NestedEnumEventRegistrationTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.EventRegistrationType | Prisma.EnumEventRegistrationTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.EventRegistrationType[] | Prisma.ListEnumEventRegistrationTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EventRegistrationType[] | Prisma.ListEnumEventRegistrationTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEventRegistrationTypeWithAggregatesFilter<$PrismaModel> | $Enums.EventRegistrationType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumEventRegistrationTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumEventRegistrationTypeFilter<$PrismaModel>
 }
 
 export type NestedEnumEventRegistrationTemplateNullableWithAggregatesFilter<$PrismaModel = never> = {

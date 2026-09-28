@@ -103,6 +103,14 @@ export const ApprovalStatus = {
 export type ApprovalStatus = (typeof ApprovalStatus)[keyof typeof ApprovalStatus]
 
 
+export const EventRegistrationType = {
+  INTERNAL: 'INTERNAL',
+  EXTERNAL: 'EXTERNAL'
+} as const
+
+export type EventRegistrationType = (typeof EventRegistrationType)[keyof typeof EventRegistrationType]
+
+
 export const EventRegistrationTemplate = {
   UNIVERSITY_INDIVIDUAL: 'UNIVERSITY_INDIVIDUAL',
   UNIVERSITY_TEAM: 'UNIVERSITY_TEAM',

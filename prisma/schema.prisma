@@ -77,6 +77,11 @@ enum ApprovalStatus {
   REJECTED
 }
 
+enum EventRegistrationType {
+  INTERNAL
+  EXTERNAL
+}
+
 enum EventRegistrationTemplate {
   UNIVERSITY_INDIVIDUAL
   UNIVERSITY_TEAM
@@ -264,7 +269,10 @@ model Event {
   access     EventAccess @default(PUBLIC)
   isFeatured Boolean     @default(false)
 
-  registrationTemplate EventRegistrationTemplate?
+  registrationType EventRegistrationType @default(INTERNAL)
+
+  registrationTemplate    EventRegistrationTemplate?
+  externalRegistrationUrl String?
   participationType    EventParticipationType     @default(INDIVIDUAL)
   minTeamSize          Int?
   maxTeamSize          Int?
