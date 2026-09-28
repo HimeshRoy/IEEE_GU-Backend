@@ -1274,10 +1274,7 @@ export async function getEventBySlug(slug: string, includeUnpublished = false) {
             status: {
               in: ["PUBLISHED", "COMPLETED"],
             },
-
-            // ADDED:
-            // Public slug lookup must only expose PUBLIC events.
-            access: "PUBLIC",
+            
           }),
     },
     include: {
