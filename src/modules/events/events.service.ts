@@ -826,8 +826,6 @@ export async function getEvents(
     where.status = {
       in: ["PUBLISHED", "COMPLETED"],
     };
-    
-    where.access = "PUBLIC";
   }
 
   const events = await prisma.event.findMany({
